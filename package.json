@@ -2,12 +2,11 @@
   "name": "gptua",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html --no-cache"
+    "dev": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html --no-cache"
   },
   "repository": {
     "type": "git",
@@ -27,8 +26,26 @@
   "devDependencies": {
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "gh-pages": "^5.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
     "parcel": "^2.8.3",
     "typescript": "^4.9.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }

@@ -1,12 +1,13 @@
 {
-    "compilerOptions": {
-        // web
-        "lib": [
-            "esnext",
-            "dom"
-        ],
-        "jsx": "react",
-        "esModuleInterop": true,
-    },
-    "include": ["src"]
+  "compilerOptions": {
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "jsx": "react",
+    "esModuleInterop": true
+  },
+  "include": [
+    "src"
+  ]
 }
