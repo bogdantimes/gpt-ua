@@ -6,7 +6,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "dev": "parcel ./src/index.html",
-    "build": "parcel build ./src/index.html --no-cache"
+    "build": "parcel build ./src/index.html --no-cache",
+    "postinstall": "husky install"
   },
   "repository": {
     "type": "git",
@@ -44,7 +45,8 @@
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
-      "eslint --fix",
+      "tsc ./src/**/* --noEmit",
+      "eslint ./src/**/* --fix",
       "git add"
     ]
   }
