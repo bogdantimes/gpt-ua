@@ -1,53 +1,58 @@
 {
-  "name": "gptua",
-  "version": "1.0.0",
+  "name": "gpt-ua",
+  "version": "0.0.1",
   "description": "",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
-    "dev": "parcel ./src/index.html",
-    "build": "parcel build ./src/index.html --no-cache",
-    "postinstall": "husky install"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bogdantimes/gptua.git"
-  },
-  "keywords": [],
-  "author": "Bohdan Kovalov",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bogdantimes/gptua/issues"
-  },
-  "homepage": "https://github.com/bogdantimes/gptua#readme",
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "glogin": "clasp login",
+    "glogout": "clasp logout",
+    "gcreate": "clasp create --title gpt-ua --type standalone --rootDir ./apps-script",
+    "gedit": "clasp open -P ./apps-script",
+    "gopen": "clasp open -P ./apps-script --webapp",
+    "gbuild": "tsc -noEmit --project ./ && node gas-build.js",
+    "gpush": "clasp push -P ./apps-script -f",
+    "gdeploy": "npm run gbuild && npm run gpush",
+    "start": "parcel src/web/index.html",
+    "build": "parcel build src/web/index.html",
+    "prod": "npm run gbuild && parcel build src/web/index.html --no-cache",
+    "lint": "eslint --fix --ext .ts,.tsx ./src",
+    "prepare": "husky install",
+    "deploy": "npm run prod && gh-pages -d dist && npm run gpush"
   },
   "devDependencies": {
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "@typescript-eslint/eslint-plugin": "^5.49.0",
-    "@typescript-eslint/parser": "^5.49.0",
-    "eslint": "^8.32.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "gh-pages": "^5.0.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.1.0",
-    "parcel": "^2.8.3",
-    "typescript": "^4.9.4"
+    "@google/clasp": "2.4.2",
+    "@types/google-apps-script": "1.0.57",
+    "@types/google.script.client-side": "0.1.1",
+    "@typescript-eslint/eslint-plugin": "5.49.0",
+    "esbuild": "0.17.4",
+    "esbuild-gas-plugin": "0.5.0",
+    "eslint": "8.32.0",
+    "eslint-config-prettier": "8.6.0",
+    "eslint-config-standard-with-typescript": "32.0.0",
+    "eslint-import-resolver-typescript": "3.5.3",
+    "eslint-plugin-googleappsscript": "1.0.4",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-n": "15.6.1",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-promise": "6.1.1",
+    "eslint-plugin-react": "7.32.1",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "husky": "8.0.3",
+    "parcel": "2.8.3",
+    "prettier": "2.8.3",
+    "process": "0.11.10",
+    "typescript": "4.9.4",
+    "gh-pages": "5.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "tsc ./src/**/* --noEmit",
-      "eslint ./src/**/* --fix",
-      "git add"
-    ]
+  "author": "Bohdan Kovalov",
+  "license": "MIT",
+  "dependencies": {
+    "@emotion/react": "11.10.5",
+    "@emotion/styled": "11.10.5",
+    "@mui/icons-material": "5.11.0",
+    "@mui/material": "5.11.6",
+    "react-markdown": "8.0.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }

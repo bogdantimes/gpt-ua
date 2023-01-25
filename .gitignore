@@ -1,5 +1,15 @@
-./.idea
-./.parcel-cache
-./dist
-./node_modules
-./.husky
+# User configs
+.clasp.json
+
+# Build artefacts
+apps-script
+node_modules
+.parcel-cache
+parcel-bundle-reports
+!apps-script/appsscript.json
+yarn.lock
+dist/index.html
+
+# IDE setting
+.idea
+.vscode
