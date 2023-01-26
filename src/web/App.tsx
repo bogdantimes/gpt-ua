@@ -117,7 +117,7 @@ export default function App(): JSX.Element {
           </FormControl>
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
-          {answer.length > 0 && <Card sx={{padding: 2}}>
+          {answer.length > 0 && <Card sx={{padding: 2, overflowX: "auto"}}>
             <ReactMarkdown>{answer}</ReactMarkdown>
           </Card>}
           {moneyLeft >= 0 && (
