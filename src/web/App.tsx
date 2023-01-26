@@ -46,6 +46,19 @@ export default function App(): JSX.Element {
     setPrompt(event.target.value);
   };
 
+  // initiate lang using the browser's language
+  React.useEffect(() => {
+    const browserLang = navigator?.language?.split("-")[0];
+    // if the browser's language is not supported, use 'uk' as default
+    // supported langs are 'uk', 'ru' and 'en'.
+    const supportedLangs = ["uk", "ru", "en"];
+    if (supportedLangs.includes(browserLang)) {
+      setLang(browserLang);
+    } else {
+      setLang("uk");
+    }
+  }, []);
+
   const handleSend = () => {
     setAnswer("");
     setError("")
