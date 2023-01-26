@@ -79,7 +79,7 @@ export default function App(): JSX.Element {
       })
       .catch((err) => {
         console.log(err);
-        setError(err?.error || JSON.stringify(err));
+        setError(err?.error || err?.answer || JSON.stringify(err));
         if (isFinite(+(err?.moneyLeft))) {
           setMoneyLeft(+err.moneyLeft);
           setLastRequestCost(0);
