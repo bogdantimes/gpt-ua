@@ -123,7 +123,7 @@ export default function App(): JSX.Element {
               {lang === "uk" &&
                 <>
                   Цей запит коштував: ${lastRequestCost.toFixed(4)}<br/>
-                  У меня осталось: ${moneyLeft.toFixed(2)}<br/>
+                  В мене залишилось: ${moneyLeft.toFixed(2)}<br/>
                   Донат:{" "}
                 </>
               }
