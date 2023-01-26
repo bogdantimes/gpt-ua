@@ -13,6 +13,7 @@ import {
   Input,
   InputLabel,
   LinearProgress,
+  Link,
   MenuItem,
   OutlinedInput,
   Select,
@@ -141,9 +142,9 @@ export default function App(): JSX.Element {
                   Донат:{" "}
                 </>
               }
-              <a href="https://patreon.com/bogdantimes">
+              <Link href="https://patreon.com/bogdantimes">
                 patreon.com/bogdantimes
-              </a>
+              </Link>
             </Alert>
           )}
         </Stack>
