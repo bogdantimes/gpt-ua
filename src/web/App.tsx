@@ -3,6 +3,7 @@ import {useState} from "react";
 import {
   Alert,
   Card,
+  Container,
   createTheme,
   CssBaseline,
   IconButton,
@@ -61,7 +62,7 @@ export default function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
-      <Card>
+      <Container>
         <Stack spacing={2}>
           <Select
             value={lang}
@@ -108,7 +109,7 @@ export default function App(): JSX.Element {
             </Alert>
           )}
         </Stack>
-      </Card>
+      </Container>
     </ThemeProvider>
   );
 }
