@@ -2,15 +2,22 @@ import * as React from "react";
 import {useState} from "react";
 import {
   Alert,
+  Box,
   Card,
   Container,
   createTheme,
   CssBaseline,
+  FormControl,
+  FormHelperText,
   IconButton,
   Input,
+  InputLabel,
+  LinearProgress,
   MenuItem,
+  OutlinedInput,
   Select,
   Stack,
+  TextField,
   ThemeProvider,
   useMediaQuery,
 } from "@mui/material";
@@ -39,6 +46,11 @@ export default function App(): JSX.Element {
   };
 
   const handleSend = () => {
+    setAnswer("");
+    setError("")
+
+    if (prompt.length === 0) return;
+
     setLoading(true);
     const serviceURL = "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws"
     const url = `${serviceURL}?prompt=${encodeURI(prompt)}&lang=${lang}`;
@@ -59,11 +71,20 @@ export default function App(): JSX.Element {
       .finally(() => setLoading(false));
   };
 
+  const langToLabel = {
+    en: "Ask me about anything",
+    uk: "Задай мені будь-що",
+    ru: "Попроси меня о чем угодно",
+  }
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
-      <Container>
+      <Container maxWidth="sm" sx={{padding: 2}}>
         <Stack spacing={2}>
+          {/* center aligned GPT-UA */}
+          <Box sx={{padding: 2, textAlign: "center"}}>
+            <h1>GPT-UA</h1>
+          </Box>
           <Select
             value={lang}
             onChange={(event) => setLang(event.target.value)}
@@ -72,34 +93,51 @@ export default function App(): JSX.Element {
             <MenuItem value="uk">Українська</MenuItem>
             <MenuItem value="ru">Русский</MenuItem>
           </Select>
-          <Input
-            value={prompt}
-            onChange={handlePromptChange}
-            placeholder={lang === "en" ? "Ask me anything" : lang === "uk" ? "Задай мені будь-що" : "Спроси меня что угодно"}
-          />
-          <IconButton onClick={handleSend}>
-            <Send/>
-          </IconButton>
-          <ReactMarkdown>{answer}</ReactMarkdown>
-          {loading && <Alert severity="info">Loading...</Alert>}
+          <FormControl>
+            <InputLabel htmlFor="prompt">{langToLabel[lang]}</InputLabel>
+            <OutlinedInput
+              id="prompt"
+              label={langToLabel[lang]}
+              value={prompt}
+              onChange={handlePromptChange}
+              onKeyDown={(event) => {
+                if (event.ctrlKey && event.key === "Enter") {
+                  handleSend();
+                }
+              }}
+              endAdornment={
+                <IconButton onClick={handleSend} disabled={loading || prompt.length === 0}>
+                  <Send/>
+                </IconButton>
+              }
+            />
+            <FormHelperText>Ctrl+Enter</FormHelperText>
+          </FormControl>
+          {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
+          {answer.length > 0 && <Card sx={{padding: 2}}>
+            <ReactMarkdown>{answer}</ReactMarkdown>
+          </Card>}
           {moneyLeft >= 0 && (
             <Alert severity="info">
               {lang === "uk" &&
                 <>
-                  Цей запит коштував: ${lastRequestCost.toFixed(4)}. У мене залишилось ${moneyLeft.toFixed(2)}.
+                  Цей запит коштував: ${lastRequestCost.toFixed(4)}<br/>
+                  У меня осталось: ${moneyLeft.toFixed(2)}<br/>
                   Донат:{" "}
                 </>
               }
               {lang === "en" &&
                 <>
-                  This request cost: ${lastRequestCost.toFixed(4)}. I have left ${moneyLeft.toFixed(2)}.
+                  This request cost: ${lastRequestCost.toFixed(4)}<br/>
+                  I have left: ${moneyLeft.toFixed(2)}<br/>
                   Donate:{" "}
                 </>
               }
               {lang === "ru" &&
                 <>
-                  Этот запрос стоил: ${lastRequestCost.toFixed(4)}. У меня осталось ${moneyLeft.toFixed(2)}.
+                  Этот запрос стоил: ${lastRequestCost.toFixed(4)}<br/>
+                  У меня осталось: ${moneyLeft.toFixed(2)}<br/>
                   Донат:{" "}
                 </>
               }
