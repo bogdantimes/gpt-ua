@@ -26,7 +26,7 @@ export default function App(): JSX.Element {
   );
 
   const [prompt, setPrompt] = useState("");
-  const [lang, setLang] = useState("en");
+  const [lang, setLang] = useState("uk");
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
