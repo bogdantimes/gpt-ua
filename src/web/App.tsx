@@ -61,7 +61,7 @@ export default function App(): JSX.Element {
 
   const handleSend = () => {
     setAnswer("");
-    setError("")
+    setError("");
 
     if (prompt.length === 0) return;
 
@@ -76,11 +76,10 @@ export default function App(): JSX.Element {
         setAnswer(gptReply.answer);
         setMoneyLeft(+gptReply.moneyLeft);
         setLastRequestCost(+gptReply.cost);
-        setError("");
       })
       .catch((err) => {
         console.log(err);
-        setError(err.error);
+        setError(JSON.stringify(err));
       })
       .finally(() => setLoading(false));
   };
