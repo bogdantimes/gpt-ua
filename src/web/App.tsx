@@ -100,6 +100,7 @@ export default function App(): JSX.Element {
               id="prompt"
               label={langToLabel[lang]}
               value={prompt}
+              multiline
               onChange={handlePromptChange}
               onKeyDown={(event) => {
                 if (event.ctrlKey && event.key === "Enter") {
