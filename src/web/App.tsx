@@ -142,21 +142,21 @@ export default function App(): JSX.Element {
                 <>
                   Цей запит коштував: ${lastRequestCost.toFixed(4)}<br/>
                   Грошей в проекті залишилось: ${moneyLeft.toFixed(2)}<br/>
-                  Зробити свій внесок для проекту:{" "}
+                  Додати до загального бюджету:{" "}
                 </>
               }
               {lang === "en" &&
                 <>
                   This request cost: ${lastRequestCost.toFixed(4)}<br/>
                   Remaining project budget: ${moneyLeft.toFixed(2)}<br/>
-                  Make your contribution:{" "}
+                  Top-up the shared budget:{" "}
                 </>
               }
               {lang === "ru" &&
                 <>
                   Этот запрос стоил: ${lastRequestCost.toFixed(4)}<br/>
                   Денег в проекте осталось: ${moneyLeft.toFixed(2)}<br/>
-                  Сделать свой взнос для проекта:{" "}
+                  Добавить в общий бюджет:{" "}
                 </>
               }
               <Link href="https://patreon.com/bogdantimes" target="_blank">Patreon</Link>
