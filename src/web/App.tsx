@@ -141,27 +141,26 @@ export default function App(): JSX.Element {
               {lang === "uk" &&
                 <>
                   Цей запит коштував: ${lastRequestCost.toFixed(4)}<br/>
-                  В мене залишилось: ${moneyLeft.toFixed(2)}<br/>
-                  Донат:{" "}
+                  Грошей в проекті залишилось: ${moneyLeft.toFixed(2)}<br/>
+                  Зробити свій внесок для проекту:{" "}
                 </>
               }
               {lang === "en" &&
                 <>
                   This request cost: ${lastRequestCost.toFixed(4)}<br/>
-                  I have left: ${moneyLeft.toFixed(2)}<br/>
-                  Donate:{" "}
+                  Remaining project budget: ${moneyLeft.toFixed(2)}<br/>
+                  Make your contribution:{" "}
                 </>
               }
               {lang === "ru" &&
                 <>
                   Этот запрос стоил: ${lastRequestCost.toFixed(4)}<br/>
-                  У меня осталось: ${moneyLeft.toFixed(2)}<br/>
-                  Донат:{" "}
+                  Денег в проекте осталось: ${moneyLeft.toFixed(2)}<br/>
+                  Сделать свой взнос для проекта:{" "}
                 </>
               }
-              <Link href="https://patreon.com/bogdantimes">
-                patreon.com/bogdantimes
-              </Link>
+              <Link href="https://patreon.com/bogdantimes" target="_blank">Patreon</Link>
+              {" | "}<Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>
             </Alert>
           )}
         </Stack>
