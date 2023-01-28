@@ -91,7 +91,7 @@ export default function App(): JSX.Element {
   const langToLabel = {
     en: "Ask me anything",
     uk: "Задай мені будь-що",
-    ru: "Задай мне угодно",
+    ru: "Задай мне что угодно",
   }
   return (
     <ThemeProvider theme={theme}>
