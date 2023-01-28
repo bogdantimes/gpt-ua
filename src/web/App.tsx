@@ -25,8 +25,6 @@ import {
 import ReactMarkdown from "react-markdown";
 import {Send} from "@mui/icons-material";
 
-const gasURL = `https://script.google.com/macros/s/AKfycbxTxPG_EdYlm0IeRodTswSlBPpZ1cW_VDD3A_tgi5TrvGkbKbNHkRt0rvpY_4KBWkuSTA/exec`;
-
 export default function App(): JSX.Element {
   const mode = useMediaQuery(`(prefers-color-scheme: dark)`);
   const theme = React.useMemo(
