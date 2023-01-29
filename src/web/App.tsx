@@ -61,7 +61,15 @@ export default function App(): JSX.Element {
     setAnswer("");
     setError("");
 
-    if (prompt.length === 0) return;
+    if (prompt.length <= 5) {
+      const langToLabel = {
+        en: "Please, ask a more detailed question",
+        uk: "Будь ласка, задайте більш детальний запит",
+        ru: "Пожалуйста, задайте более детальный запрос",
+      }
+      setError(langToLabel[lang]);
+      return;
+    }
 
     setLoading(true);
     const serviceURL = "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws"
