@@ -165,8 +165,9 @@ export default function App(): JSX.Element {
                   Добавить в общий бюджет:{" "}
                 </>
               }
-              <Link href="https://patreon.com/bogdantimes" target="_blank">Patreon</Link>
-              {" | "}<Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>
+              <Link href="https://paypal.me/BohdanKovalov" target="_blank">PayPal</Link>{" | "}
+              <Link href="https://patreon.com/bogdantimes" target="_blank">Patreon</Link>{" | "}
+              <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>
             </Alert>
           )}
         </Stack>
