@@ -9,6 +9,7 @@ import {
   CssBaseline,
   FormControl,
   FormHelperText,
+  Grid,
   IconButton,
   Input,
   InputLabel,
@@ -23,7 +24,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import ReactMarkdown from "react-markdown";
-import {Send} from "@mui/icons-material";
+import {GitHub, Instagram, Send, Twitter} from "@mui/icons-material";
 
 export default function App(): JSX.Element {
   const mode = useMediaQuery(`(prefers-color-scheme: dark)`);
@@ -170,6 +171,23 @@ export default function App(): JSX.Element {
               <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>
             </Alert>
           )}
+          <Grid container justifyContent="center" spacing={2}>
+            <Grid item>
+              <Link href="https://github.com/bogdantimes" target="_blank">
+                <GitHub/>
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="https://twitter.com/bogdantimes" target="_blank">
+                <Twitter/>
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="https://www.instagram.com/bogdantimes" target="_blank">
+                <Instagram/>
+              </Link>
+            </Grid>
+          </Grid>
         </Stack>
       </Container>
     </ThemeProvider>
