@@ -113,9 +113,9 @@ export default function App(): JSX.Element {
             value={lang}
             onChange={(event) => setLang(event.target.value)}
           >
-            <MenuItem value="en">English</MenuItem>
-            <MenuItem value="uk">Українська</MenuItem>
-            <MenuItem value="ru">Русский</MenuItem>
+            <MenuItem value="en">English (original)</MenuItem>
+            <MenuItem value="uk">Українська (з перекладом)</MenuItem>
+            <MenuItem value="ru">Русский (с переводом)</MenuItem>
           </Select>
           <FormControl>
             <InputLabel htmlFor="prompt">{langToLabel[lang]}</InputLabel>
