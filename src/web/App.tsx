@@ -62,7 +62,7 @@ export default function App(): JSX.Element {
     setAnswer("");
     setError("");
 
-    if (prompt.length <= 5) {
+    if (prompt.length <= 1) {
       const langToLabel = {
         en: "Please, ask a more detailed question",
         uk: "Будь ласка, задайте більш детальний запит",
