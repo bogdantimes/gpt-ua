@@ -148,21 +148,21 @@ export default function App(): JSX.Element {
             <Alert severity="info">
               {lang === "uk" &&
                 <>
-                  Цей запит коштував: ${lastRequestCost.toFixed(4)}<br/>
+                  Цей запит коштував спільноті: ${lastRequestCost.toFixed(4)}<br/>
                   Грошей в проекті залишилось: ${moneyLeft.toFixed(2)}<br/>
                   Додати до загального бюджету:{" "}
                 </>
               }
               {lang === "en" &&
                 <>
-                  This request cost: ${lastRequestCost.toFixed(4)}<br/>
-                  Remaining project budget: ${moneyLeft.toFixed(2)}<br/>
+                  This request cost the community: ${lastRequestCost.toFixed(4)}<br/>
+                  Money left in the project: ${moneyLeft.toFixed(2)}<br/>
                   Top-up the shared budget:{" "}
                 </>
               }
               {lang === "ru" &&
                 <>
-                  Этот запрос стоил: ${lastRequestCost.toFixed(4)}<br/>
+                  Этот запрос стоит сообществу: ${lastRequestCost.toFixed(4)}<br/>
                   Денег в проекте осталось: ${moneyLeft.toFixed(2)}<br/>
                   Добавить в общий бюджет:{" "}
                 </>
