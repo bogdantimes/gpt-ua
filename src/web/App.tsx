@@ -75,22 +75,23 @@ export default function App(): JSX.Element {
     setLoading(true);
     const serviceURL = "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws"
     const url = `${serviceURL}?prompt=${encodeURI(prompt)}&lang=${lang}`;
-    // set the request's mode to 'no-cors' to fetch the resource with CORS disabled
     fetch(url)
       .then((response) => response.json())
       .then((gptReply) => {
         console.log(gptReply);
-        setAnswer(gptReply.answer);
-        setMoneyLeft(+gptReply.moneyLeft);
-        setLastRequestCost(+gptReply.cost);
+        if (gptReply?.error) {
+          setError(gptReply?.answer || gptReply?.error);
+        } else {
+          setAnswer(gptReply?.answer);
+        }
+        if (isFinite(+(gptReply?.moneyLeft))) {
+          setMoneyLeft(+gptReply?.moneyLeft);
+          setLastRequestCost(+gptReply?.cost || 0);
+        }
       })
       .catch((err) => {
         console.log(err);
-        setError(err?.error || err?.answer || JSON.stringify(err));
-        if (isFinite(+(err?.moneyLeft))) {
-          setMoneyLeft(+err.moneyLeft);
-          setLastRequestCost(0);
-        }
+        setError(err?.message);
       })
       .finally(() => setLoading(false));
   };
