@@ -31,7 +31,7 @@ import {
   Twitter,
   ContentCopy,
 } from "@mui/icons-material";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 
 const SUPPORTED_LANGS = [
   {
@@ -49,7 +49,7 @@ const SUPPORTED_LANGS = [
 ];
 
 export default function App(): JSX.Element {
-  const { t, i18n } = useTranslation("translation");
+  const {t, i18n} = useTranslation("translation");
   const mode = useMediaQuery(`(prefers-color-scheme: dark)`);
   const theme = React.useMemo(
     () => createTheme({palette: {mode: mode ? `dark` : `light`}}),
@@ -60,7 +60,7 @@ export default function App(): JSX.Element {
   const [answer, setAnswer] = useState("");
   const [originalAnswer, setOriginalAnswer] = useState("");
   const [showOriginal, setShowOriginal] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<null | string>("");
   const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState(-1);
@@ -69,7 +69,7 @@ export default function App(): JSX.Element {
   const lang = i18n.language;
 
   const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng); 
+    i18n.changeLanguage(lng);
   };
 
   const handlePromptChange = (event) => {
@@ -146,7 +146,7 @@ export default function App(): JSX.Element {
             value={lang}
             onChange={(event) => changeLanguage(event.target.value)}
           >
-            {SUPPORTED_LANGS.map((lang) => <MenuItem value={lang.name}>{lang.label}</MenuItem>)}
+            {SUPPORTED_LANGS.map((lang) => <MenuItem key={lang.name} value={lang.name}>{lang.label}</MenuItem>)}
           </Select>
           <FormControl>
             <InputLabel htmlFor="prompt">{t('input.label')}</InputLabel>
@@ -205,7 +205,7 @@ export default function App(): JSX.Element {
               <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>
             </Alert>
           )}
-          <Grid container justifyContent="center" spacing={2}>
+          <Grid container justifyContent="center" spacing={2} paddingRight={"24px"}>
             <Grid item>
               <Link href="https://github.com/bogdantimes" target="_blank">
                 <GitHub/>
