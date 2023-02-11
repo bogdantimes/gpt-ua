@@ -38,6 +38,8 @@ export default function App(): JSX.Element {
   const [prompt, setPrompt] = useState("");
   const [lang, setLang] = useState("uk");
   const [answer, setAnswer] = useState("");
+  const [originalAnswer, setOriginalAnswer] = useState("");
+  const [showOriginal, setShowOriginal] = useState(false);
   const [error, setError] = useState("");
   const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -64,6 +66,7 @@ export default function App(): JSX.Element {
   const handleSend = () => {
     setAnswer("");
     setError("");
+    setShowOriginal(false);
 
     if (prompt.length <= 1) {
       const langToLabel = {
@@ -85,7 +88,8 @@ export default function App(): JSX.Element {
         if (gptReply?.error) {
           setError(gptReply?.answer || gptReply?.error);
         } else {
-          setAnswer(gptReply?.answer);
+          setAnswer(gptReply?.answer ?? "");
+          setOriginalAnswer(gptReply?.choices?.[0]?.text.trim() ?? "");
         }
         if (isFinite(+(gptReply?.moneyLeft))) {
           setMoneyLeft(+gptReply?.moneyLeft);
@@ -101,7 +105,7 @@ export default function App(): JSX.Element {
 
   const handleCopy = async () => {
     if (window.isSecureContext && navigator.clipboard) {
-      await navigator.clipboard.writeText(answer);
+      await navigator.clipboard.writeText(showOriginal ? originalAnswer : answer);
       setCbTooltipOpen(true);
       setTimeout(() => setCbTooltipOpen(false), 2000);
     } else {
@@ -163,24 +167,27 @@ export default function App(): JSX.Element {
           </FormControl>
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
-          {answer.length > 0 && <Card sx={{padding: 2, overflowX: "auto"}}>
-            <CardActions sx={{ justifyContent: 'flex-end', padding: 0 }}>
+          {answer.length > 0 &&
+            <Card sx={{padding: 2, overflowX: "auto", position: "relative"}}>
               <Tooltip
                 disableHoverListener
                 open={cbTooltipOpen}
                 title={langToCbTooltip[lang]}
                 placement="left"
                 TransitionComponent={Fade}
-                TransitionProps={{ timeout: 600 }}>
-                <IconButton onPointerDown={handleCopy}>
+                TransitionProps={{timeout: 600}}>
+                <IconButton onPointerDown={handleCopy} sx={{position: "absolute", right: 12, top: 10}}>
                   <ContentCopy/>
                 </IconButton>
               </Tooltip>
-            </CardActions>
-            <CardContent sx={{ padding: 0 }}>
-              <ReactMarkdown>{answer}</ReactMarkdown>
-            </CardContent>
-          </Card>}
+              <ReactMarkdown>{showOriginal ? originalAnswer : answer}</ReactMarkdown>
+              {lang !== "en" && <Link sx={{fontSize: 12, cursor: "pointer"}}
+                                      onClick={() => setShowOriginal(!showOriginal)}
+              >
+                {lang === "ru" && (showOriginal ? "показать перевод" : "показать оригинал")}
+                {lang === "uk" && (showOriginal ? "показати переклад" : "показати оригінал")}
+              </Link>}
+            </Card>}
           {moneyLeft >= 0 && (
             <Alert severity="info">
               {lang === "uk" &&
