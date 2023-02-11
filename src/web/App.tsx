@@ -4,14 +4,16 @@ import {
   Alert,
   Box,
   Card,
+  CardActions,
+  CardContent,
   Container,
   createTheme,
   CssBaseline,
+  Fade,
   FormControl,
   FormHelperText,
   Grid,
   IconButton,
-  Input,
   InputLabel,
   LinearProgress,
   Link,
@@ -19,12 +21,12 @@ import {
   OutlinedInput,
   Select,
   Stack,
-  TextField,
   ThemeProvider,
+  Tooltip,
   useMediaQuery,
 } from "@mui/material";
 import ReactMarkdown from "react-markdown";
-import {GitHub, Instagram, Send, Twitter} from "@mui/icons-material";
+import {GitHub, Instagram, Send, Twitter, ContentCopy} from "@mui/icons-material";
 
 export default function App(): JSX.Element {
   const mode = useMediaQuery(`(prefers-color-scheme: dark)`);
@@ -37,6 +39,7 @@ export default function App(): JSX.Element {
   const [lang, setLang] = useState("uk");
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState("");
+  const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState(-1);
   const [lastRequestCost, setLastRequestCost] = useState(-1);
@@ -96,11 +99,30 @@ export default function App(): JSX.Element {
       .finally(() => setLoading(false));
   };
 
+  const handleCopy = async () => {
+    if (window.isSecureContext && navigator.clipboard) {
+      await navigator.clipboard.writeText(answer);
+      setCbTooltipOpen(true);
+      setTimeout(() => setCbTooltipOpen(false), 2000);
+    } else {
+      setError(
+        "This feature is available only in secure contexts (HTTPS), in some or all supporting browsers."
+      );
+    }
+  };
+
   const langToLabel = {
     en: "Ask me anything",
     uk: "Задай мені будь-що",
     ru: "Задай мне что угодно",
-  }
+  };
+
+  const langToCbTooltip = {
+    en: "Copied to clipboard",
+    uk: "Скопійовано в буфер обміну",
+    ru: "Скопировано в буфер обмена",
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
@@ -142,7 +164,22 @@ export default function App(): JSX.Element {
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
           {answer.length > 0 && <Card sx={{padding: 2, overflowX: "auto"}}>
-            <ReactMarkdown>{answer}</ReactMarkdown>
+            <CardActions sx={{ justifyContent: 'flex-end', padding: 0 }}>
+              <Tooltip
+                disableHoverListener
+                open={cbTooltipOpen}
+                title={langToCbTooltip[lang]}
+                placement="left"
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}>
+                <IconButton onPointerDown={handleCopy}>
+                  <ContentCopy/>
+                </IconButton>
+              </Tooltip>
+            </CardActions>
+            <CardContent sx={{ padding: 0 }}>
+              <ReactMarkdown>{answer}</ReactMarkdown>
+            </CardContent>
           </Card>}
           {moneyLeft >= 0 && (
             <Alert severity="info">
