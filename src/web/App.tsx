@@ -176,7 +176,7 @@ export default function App(): JSX.Element {
                 placement="left"
                 TransitionComponent={Fade}
                 TransitionProps={{timeout: 600}}>
-                <IconButton onPointerDown={handleCopy} sx={{position: "absolute", right: 12, top: 10}}>
+                <IconButton onPointerDown={handleCopy} sx={{position: "absolute", bottom: 5, top: 5}}>
                   <ContentCopy/>
                 </IconButton>
               </Tooltip>
