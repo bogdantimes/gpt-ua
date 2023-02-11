@@ -1,0 +1,22 @@
+{
+  "input": {
+    "label": "Ask me anything",
+    "placeholder": "Ask me anything"
+  },
+  "answer": {
+    "showOriginal": "show original",
+    "showTranslation": "show translation"
+  },
+  "clipboard": {
+    "tooltip": "Copied to clipboard"
+  },
+  "errors": {
+    "notEnoughDetails": "Please, ask a more detailed question",
+    "insecureContext": "This feature is available only in secure contexts (HTTPS), in some or all supporting browsers."
+  },
+  "budget": {
+    "spent": "This request cost the community: ${{amount}}",
+    "remainingFunds": "Money left in the project: ${{amount}}",
+    "increase": "Top-up the shared budget:"
+  }
+}

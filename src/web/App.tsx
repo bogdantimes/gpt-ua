@@ -4,8 +4,6 @@ import {
   Alert,
   Box,
   Card,
-  CardActions,
-  CardContent,
   Container,
   createTheme,
   CssBaseline,
@@ -26,9 +24,32 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import ReactMarkdown from "react-markdown";
-import {GitHub, Instagram, Send, Twitter, ContentCopy} from "@mui/icons-material";
+import {
+  GitHub,
+  Instagram,
+  Send,
+  Twitter,
+  ContentCopy,
+} from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
+
+const SUPPORTED_LANGS = [
+  {
+    name: "uk",
+    label: "Українська (з перекладом)",
+  },
+  {
+    name: "ru",
+    label: "Русский (с переводом)",
+  },
+  {
+    name: "en",
+    label: "English (original)",
+  },
+];
 
 export default function App(): JSX.Element {
+  const { t, i18n } = useTranslation("translation");
   const mode = useMediaQuery(`(prefers-color-scheme: dark)`);
   const theme = React.useMemo(
     () => createTheme({palette: {mode: mode ? `dark` : `light`}}),
@@ -36,7 +57,6 @@ export default function App(): JSX.Element {
   );
 
   const [prompt, setPrompt] = useState("");
-  const [lang, setLang] = useState("uk");
   const [answer, setAnswer] = useState("");
   const [originalAnswer, setOriginalAnswer] = useState("");
   const [showOriginal, setShowOriginal] = useState(false);
@@ -45,6 +65,12 @@ export default function App(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState(-1);
   const [lastRequestCost, setLastRequestCost] = useState(-1);
+
+  const lang = i18n.language;
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng); 
+  };
 
   const handlePromptChange = (event) => {
     setPrompt(event.target.value);
@@ -55,11 +81,10 @@ export default function App(): JSX.Element {
     const browserLang = navigator?.language?.split("-")[0];
     // if the browser's language is not supported, use 'uk' as default
     // supported langs are 'uk', 'ru' and 'en'.
-    const supportedLangs = ["uk", "ru", "en"];
-    if (supportedLangs.includes(browserLang)) {
-      setLang(browserLang);
+    if (SUPPORTED_LANGS.find((lang) => lang.name === browserLang)) {
+      changeLanguage(browserLang);
     } else {
-      setLang("uk");
+      changeLanguage("uk");
     }
   }, []);
 
@@ -69,12 +94,7 @@ export default function App(): JSX.Element {
     setShowOriginal(false);
 
     if (prompt.length <= 1) {
-      const langToLabel = {
-        en: "Please, ask a more detailed question",
-        uk: "Будь ласка, задайте більш детальний запит",
-        ru: "Пожалуйста, задайте более детальный запрос",
-      }
-      setError(langToLabel[lang]);
+      setError(t('errors.notEnoughDetails'));
       return;
     }
 
@@ -109,22 +129,8 @@ export default function App(): JSX.Element {
       setCbTooltipOpen(true);
       setTimeout(() => setCbTooltipOpen(false), 2000);
     } else {
-      setError(
-        "This feature is available only in secure contexts (HTTPS), in some or all supporting browsers."
-      );
+      setError(t('errors.insecureContext'));
     }
-  };
-
-  const langToLabel = {
-    en: "Ask me anything",
-    uk: "Задай мені будь-що",
-    ru: "Задай мне что угодно",
-  };
-
-  const langToCbTooltip = {
-    en: "Copied to clipboard",
-    uk: "Скопійовано в буфер обміну",
-    ru: "Скопировано в буфер обмена",
   };
 
   return (
@@ -138,17 +144,15 @@ export default function App(): JSX.Element {
           </Box>
           <Select
             value={lang}
-            onChange={(event) => setLang(event.target.value)}
+            onChange={(event) => changeLanguage(event.target.value)}
           >
-            <MenuItem value="en">English (original)</MenuItem>
-            <MenuItem value="uk">Українська (з перекладом)</MenuItem>
-            <MenuItem value="ru">Русский (с переводом)</MenuItem>
+            {SUPPORTED_LANGS.map((lang) => <MenuItem value={lang.name}>{lang.label}</MenuItem>)}
           </Select>
           <FormControl>
-            <InputLabel htmlFor="prompt">{langToLabel[lang]}</InputLabel>
+            <InputLabel htmlFor="prompt">{t('input.label')}</InputLabel>
             <OutlinedInput
               id="prompt"
-              label={langToLabel[lang]}
+              label={t('input.label')}
               value={prompt}
               multiline
               onChange={handlePromptChange}
@@ -172,7 +176,7 @@ export default function App(): JSX.Element {
               <Tooltip
                 disableHoverListener
                 open={cbTooltipOpen}
-                title={langToCbTooltip[lang]}
+                title={t('clipboard.tooltip')}
                 placement="left"
                 TransitionComponent={Fade}
                 TransitionProps={{timeout: 600}}>
@@ -184,31 +188,16 @@ export default function App(): JSX.Element {
               {lang !== "en" && <Link sx={{fontSize: 12, cursor: "pointer"}}
                                       onClick={() => setShowOriginal(!showOriginal)}
               >
-                {lang === "ru" && (showOriginal ? "показать перевод" : "показать оригинал")}
-                {lang === "uk" && (showOriginal ? "показати переклад" : "показати оригінал")}
+                {showOriginal ? t('answer.showTranslation') : t('answer.showOriginal')}
               </Link>}
             </Card>}
           {moneyLeft >= 0 && (
             <Alert severity="info">
-              {lang === "uk" &&
+              {
                 <>
-                  Цей запит коштував спільноті: ${lastRequestCost.toFixed(4)}<br/>
-                  Грошей в проекті залишилось: ${moneyLeft.toFixed(2)}<br/>
-                  Додати до загального бюджету:{" "}
-                </>
-              }
-              {lang === "en" &&
-                <>
-                  This request cost the community: ${lastRequestCost.toFixed(4)}<br/>
-                  Money left in the project: ${moneyLeft.toFixed(2)}<br/>
-                  Top-up the shared budget:{" "}
-                </>
-              }
-              {lang === "ru" &&
-                <>
-                  Этот запрос стоит сообществу: ${lastRequestCost.toFixed(4)}<br/>
-                  Денег в проекте осталось: ${moneyLeft.toFixed(2)}<br/>
-                  Добавить в общий бюджет:{" "}
+                  {t('budget.spent', {amount: lastRequestCost.toFixed(4)})}<br/>
+                  {t('budget.remainingFunds', {amount: moneyLeft.toFixed(2)})}<br/>
+                  {t('budget.increase')}{" "}
                 </>
               }
               <Link href="https://paypal.me/BohdanKovalov" target="_blank">PayPal</Link>{" | "}

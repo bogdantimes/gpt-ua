@@ -15,8 +15,7 @@
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/no-extraneous-class": "off",
-    "@typescript-eslint/no-dynamic-delete": "off",
-    "quotes": ["error", "backtick"]
+    "@typescript-eslint/no-dynamic-delete": "off"
   },
   "settings": {
     "import/resolver": {
