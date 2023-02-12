@@ -6,7 +6,7 @@
     "start": "parcel src/web/index.html",
     "build": "parcel build src/web/index.html",
     "lint": "eslint --fix --ext .ts,.tsx ./src",
-    "deploy": "parcel build src/web/index.html --no-cache && gh-pages -d dist",
+    "deploy": "parcel build src/web/index.html --no-cache && gh-pages -d dist -a",
     "prepare": "husky install"
   },
   "devDependencies": {
