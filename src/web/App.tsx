@@ -30,6 +30,7 @@ import {
   Send,
   Twitter,
   ContentCopy,
+  Reply,
 } from "@mui/icons-material";
 import {useTranslation} from "react-i18next";
 
@@ -93,14 +94,14 @@ export default function App(): JSX.Element {
     setError("");
     setShowOriginal(false);
 
-    if (prompt.length <= 1) {
+    if (prompt.trim().length <= 1) {
       setError(t('errors.notEnoughDetails'));
       return;
     }
 
     setLoading(true);
     const serviceURL = "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws"
-    const url = `${serviceURL}?prompt=${encodeURI(prompt)}&lang=${lang}`;
+    const url = `${serviceURL}?prompt=${encodeURI(prompt.trim())}&lang=${lang}`;
     fetch(url)
       .then((response) => response.json())
       .then((gptReply) => {
@@ -180,9 +181,15 @@ export default function App(): JSX.Element {
                 placement="left"
                 TransitionComponent={Fade}
                 TransitionProps={{timeout: 600}}>
-                <IconButton onPointerDown={handleCopy} sx={{position: "absolute", bottom: 5, right: 5}}>
-                  <ContentCopy/>
-                </IconButton>
+                <Stack direction="row" alignItems="center" sx={{position: "absolute", bottom: 5, right: 5}}>
+                  <IconButton onClick={() => {
+                    setPrompt(prompt + `\n\nAssistant: ${answer}\n\nHuman: `);
+                    document.getElementById("prompt")?.focus();
+                  }}><Reply/></IconButton>
+                  <IconButton onPointerDown={handleCopy}>
+                    <ContentCopy/>
+                  </IconButton>
+                </Stack>
               </Tooltip>
               <ReactMarkdown>{showOriginal ? originalAnswer : answer}</ReactMarkdown>
               {lang !== "en" && <Link sx={{fontSize: 12, cursor: "pointer"}}
