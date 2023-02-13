@@ -18,5 +18,9 @@
     "spent": "This request cost the community: ${{amount}}",
     "remainingFunds": "Money left in the project: ${{amount}}",
     "increase": "Top-up the shared budget:"
+  },
+  "conversation": {
+    "ai": "Assistant",
+    "user": "Human"
   }
 }

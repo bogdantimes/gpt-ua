@@ -183,7 +183,7 @@ export default function App(): JSX.Element {
                 TransitionProps={{timeout: 600}}>
                 <Stack direction="row" alignItems="center" sx={{position: "absolute", bottom: 5, right: 5}}>
                   <IconButton onClick={() => {
-                    setPrompt(prompt + `\n\nAssistant: ${answer}\n\nHuman: `);
+                    setPrompt(prompt + `\n\n${t('conversation.ai')}: ${answer}\n\n${t('conversation.user')}: `);
                     document.getElementById("prompt")?.focus();
                   }}><Reply/></IconButton>
                   <IconButton onPointerDown={handleCopy}>
