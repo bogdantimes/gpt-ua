@@ -141,8 +141,9 @@ export default function App(): JSX.Element {
       <Container maxWidth="sm" sx={{padding: 2}}>
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}
-          <Box sx={{padding: 2, textAlign: "center"}}>
+          <Box sx={{padding: 2, textAlign: "center", position: "relative"}}>
             <h1>GPT-UA</h1>
+            <p style={{marginLeft: "105px", marginTop: "-38px", marginBottom: 0, padding: 0}}>chat</p>
           </Box>
           <Select
             value={lang}
