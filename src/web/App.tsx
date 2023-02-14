@@ -33,6 +33,7 @@ import {
   Reply,
 } from "@mui/icons-material";
 import {useTranslation} from "react-i18next";
+import Answer from "./Answer";
 
 const SUPPORTED_LANGS = [
   {
@@ -62,7 +63,6 @@ export default function App(): JSX.Element {
   const [originalAnswer, setOriginalAnswer] = useState("");
   const [showOriginal, setShowOriginal] = useState(false);
   const [error, setError] = useState<null | string>("");
-  const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState(-1);
   const [lastRequestCost, setLastRequestCost] = useState(-1);
@@ -124,16 +124,6 @@ export default function App(): JSX.Element {
       .finally(() => setLoading(false));
   };
 
-  const handleCopy = async () => {
-    if (window.isSecureContext && navigator.clipboard) {
-      await navigator.clipboard.writeText(showOriginal ? originalAnswer : answer);
-      setCbTooltipOpen(true);
-      setTimeout(() => setCbTooltipOpen(false), 2000);
-    } else {
-      setError(t('errors.insecureContext'));
-    }
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
@@ -173,31 +163,14 @@ export default function App(): JSX.Element {
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
           {answer.length > 0 &&
-            <Card sx={{padding: 2, overflowX: "auto", position: "relative"}}>
-              <Tooltip
-                disableHoverListener
-                open={cbTooltipOpen}
-                title={t('clipboard.tooltip')}
-                placement="left"
-                TransitionComponent={Fade}
-                TransitionProps={{timeout: 600}}>
-                <Stack direction="row" alignItems="center" sx={{position: "absolute", bottom: 5, right: 5}}>
-                  <IconButton onClick={() => {
-                    setPrompt(prompt + `\n\n${t('conversation.ai')}: ${answer}\n\n${t('conversation.user')}: `);
-                    document.getElementById("prompt")?.focus();
-                  }}><Reply/></IconButton>
-                  <IconButton onPointerDown={handleCopy}>
-                    <ContentCopy/>
-                  </IconButton>
-                </Stack>
-              </Tooltip>
-              <ReactMarkdown>{showOriginal ? originalAnswer : answer}</ReactMarkdown>
-              {lang !== "en" && <Link sx={{fontSize: 12, cursor: "pointer"}}
-                                      onClick={() => setShowOriginal(!showOriginal)}
-              >
-                {showOriginal ? t('answer.showTranslation') : t('answer.showOriginal')}
-              </Link>}
-            </Card>}
+            <Answer
+              lang={lang}
+              answer={answer}
+              originalAnswer={originalAnswer}
+              onReplyClick={() => {
+                setPrompt(prompt + `\n\n${t('conversation.ai')}: ${answer}\n\n${t('conversation.user')}: `);
+              }}/>
+          }
           {moneyLeft >= 0 && (
             <Alert severity="info">
               {
