@@ -31,7 +31,7 @@ const Prompt: React.FC<PromptProps> = ({elem, onClickSend, sendDisabled}) => {
       label={label}
       value={text}
       multiline
-      focused={isStartPrompt ? undefined : !isAnsweredReply}
+      focused={isAnsweredReply ? false : undefined}
       onChange={(event) => setText(event.target.value)}
       helperText={!isAnsweredReply && 'Ctrl+Enter'}
       onKeyDown={(event) => {

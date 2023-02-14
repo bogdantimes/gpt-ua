@@ -168,6 +168,14 @@ export default function App(): JSX.Element {
                       conversation[index].replyClicked = true;
                       return [...conversation, ConversationElem.newPrompt(conversation.length, "")];
                     });
+                    // focus on the new prompt after it is rendered
+                    setTimeout(() => {
+                      const prompt = document.getElementById(`prompt-${conversation.length}`);
+                      if (prompt) {
+                        prompt.scrollIntoView();
+                        prompt.focus();
+                      }
+                    }, 10);
                   }
                   }
                 />
