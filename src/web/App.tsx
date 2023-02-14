@@ -78,6 +78,11 @@ export default function App(): JSX.Element {
   const handleSend = (el: PromptElem) => {
     setError("");
 
+    if (el.getText().length <= 1) {
+      setError(t('errors.notEnoughDetails'));
+      return;
+    }
+
     // if el is start prompt, then clear the conversation
     if (el.getId() === 0) {
       conversation.splice(1);
@@ -94,11 +99,6 @@ export default function App(): JSX.Element {
       }
     }
     prompt = prompt.trim();
-
-    if (prompt.length <= 1) {
-      setError(t('errors.notEnoughDetails'));
-      return;
-    }
 
     setLoading(true);
     const serviceURL = "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws"

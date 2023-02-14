@@ -14,13 +14,13 @@ export interface AnswerElem {
 }
 
 export class ConversationElem implements PromptElem, AnswerElem {
-  id: number;
-  text: string;
-  originalText: string;
-  showOriginal: boolean;
-  replyClicked: boolean;
-  isUser: boolean;
-  answered: boolean;
+  id = 0;
+  text = "";
+  originalText = "";
+  showOriginal = false;
+  replyClicked = false;
+  isUser = false;
+  answered = false;
 
   static newPrompt(id: number, text: string): ConversationElem {
     let elem = new ConversationElem();
@@ -42,16 +42,16 @@ export class ConversationElem implements PromptElem, AnswerElem {
     return this.id;
   }
 
+  getText(): string {
+    return this.text.trim();
+  }
+
   getOriginalText(): string {
-    return this.originalText;
+    return this.originalText.trim();
   }
 
   isAnswered(): boolean {
     return this.answered;
-  }
-
-  getText(): string {
-    return this.text;
   }
 
   setText(text: string): void {
