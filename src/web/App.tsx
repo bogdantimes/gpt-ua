@@ -209,7 +209,7 @@ export default function App(): JSX.Element {
               <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>
             </Alert>
           )}
-          <Grid container justifyContent="center" spacing={2} paddingRight={"24px"}>
+          <Grid container justifyContent="center" spacing={2} paddingRight={"30px"}>
             <Grid item>
               <Link href="https://github.com/bogdantimes" target="_blank">
                 <GitHub/>
@@ -226,6 +226,12 @@ export default function App(): JSX.Element {
               </Link>
             </Grid>
           </Grid>
+          {/*  Link to check OpenAI service status */}
+          <Box sx={{textAlign: "center"}}>
+            <Link href="https://status.openai.com/" target="_blank" style={{fontSize: "12px"}}>
+              OpenAI status
+            </Link>
+          </Box>
         </Stack>
       </Container>
     </ThemeProvider>
