@@ -228,7 +228,7 @@ export default function App(): JSX.Element {
           </Grid>
           {/*  Link to check OpenAI service status */}
           <Box sx={{textAlign: "center"}}>
-            <Link href="https://status.openai.com/" target="_blank" style={{fontSize: "12px"}}>
+            <span style={{fontSize: "12px"}}>{t(`openai.slowResponse`)}</span> <Link href="https://status.openai.com/" target="_blank" style={{fontSize: "12px"}}>
               OpenAI status
             </Link>
           </Box>

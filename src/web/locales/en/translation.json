@@ -23,5 +23,8 @@
     "spent": "This request cost the community: ${{amount}}",
     "remainingFunds": "Money left in the project: ${{amount}}",
     "increase": "Top-up the shared budget:"
+  },
+  "openai": {
+    "slowResponse": "No response? Check status:"
   }
 }
