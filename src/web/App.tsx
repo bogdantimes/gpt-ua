@@ -3,11 +3,9 @@ import {useState} from "react";
 import {
   Alert,
   Box,
-  Card,
   Container,
   createTheme,
   CssBaseline,
-  Fade,
   FormControl,
   FormHelperText,
   Grid,
@@ -20,20 +18,13 @@ import {
   Select,
   Stack,
   ThemeProvider,
-  Tooltip,
   useMediaQuery,
 } from "@mui/material";
-import ReactMarkdown from "react-markdown";
-import {
-  GitHub,
-  Instagram,
-  Send,
-  Twitter,
-  ContentCopy,
-  Reply,
-} from "@mui/icons-material";
+import {GitHub, Instagram, Send, Twitter,} from "@mui/icons-material";
 import {useTranslation} from "react-i18next";
 import Answer from "./Answer";
+import Prompt from "./Prompt";
+import {ConversationElem, PromptElem} from "./Types";
 
 const SUPPORTED_LANGS = [
   {
@@ -58,23 +49,18 @@ export default function App(): JSX.Element {
     [mode]
   );
 
-  const [prompt, setPrompt] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [originalAnswer, setOriginalAnswer] = useState("");
-  const [showOriginal, setShowOriginal] = useState(false);
   const [error, setError] = useState<null | string>("");
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState(-1);
   const [lastRequestCost, setLastRequestCost] = useState(-1);
+  const [conversation, setConversation] = useState<ConversationElem[]>([
+    ConversationElem.newPrompt(0, ""),
+  ]);
 
   const lang = i18n.language;
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-  };
-
-  const handlePromptChange = (event) => {
-    setPrompt(event.target.value);
   };
 
   // initiate lang using the browser's language
@@ -89,12 +75,27 @@ export default function App(): JSX.Element {
     }
   }, []);
 
-  const handleSend = () => {
-    setAnswer("");
+  const handleSend = (el: PromptElem) => {
     setError("");
-    setShowOriginal(false);
 
-    if (prompt.trim().length <= 1) {
+    // if el is start prompt, then clear the conversation
+    if (el.getId() === 0) {
+      conversation.splice(1);
+      setConversation(conversation);
+    }
+
+    // Concat the whole conversation into a single string in the format
+    let prompt = "";
+    for (const elem of conversation) {
+      if (elem.isUser) {
+        prompt += `${t('conversation.user')}: ${elem.text}\n\n`;
+      } else {
+        prompt += `${t('conversation.bot')}: ${elem.text}\n\n`;
+      }
+    }
+    prompt = prompt.trim();
+
+    if (prompt.length <= 1) {
       setError(t('errors.notEnoughDetails'));
       return;
     }
@@ -109,8 +110,18 @@ export default function App(): JSX.Element {
         if (gptReply?.error) {
           setError(gptReply?.answer || gptReply?.error);
         } else {
-          setAnswer(gptReply?.answer ?? "");
-          setOriginalAnswer(gptReply?.choices?.[0]?.text.trim() ?? "");
+          const answer = gptReply?.answer ?? "";
+          const originalAnswer = gptReply?.choices?.[0]?.text.trim() ?? "";
+          const lastPrompt = conversation.filter((elem) => elem.isUser).pop();
+          if (lastPrompt) {
+            lastPrompt.answered = true;
+          }
+          setConversation((conversation: ConversationElem[]) => {
+            return [
+              ...conversation,
+              ConversationElem.newAnswer(conversation.length, answer, originalAnswer),
+            ]
+          });
         }
         if (isFinite(+(gptReply?.moneyLeft))) {
           setMoneyLeft(+gptReply?.moneyLeft);
@@ -139,38 +150,31 @@ export default function App(): JSX.Element {
           >
             {SUPPORTED_LANGS.map((lang) => <MenuItem key={lang.name} value={lang.name}>{lang.label}</MenuItem>)}
           </Select>
-          <FormControl>
-            <InputLabel htmlFor="prompt">{t('input.label')}</InputLabel>
-            <OutlinedInput
-              id="prompt"
-              label={t('input.label')}
-              value={prompt}
-              multiline
-              onChange={handlePromptChange}
-              onKeyDown={(event) => {
-                if (event.ctrlKey && event.key === "Enter") {
-                  handleSend();
-                }
-              }}
-              endAdornment={
-                <IconButton onClick={handleSend} disabled={loading || prompt.length === 0}>
-                  <Send/>
-                </IconButton>
-              }
-            />
-            <FormHelperText>Ctrl+Enter</FormHelperText>
-          </FormControl>
+          {conversation.map((elem, index) => {
+            return (
+              elem.isUser ?
+                <Prompt
+                  key={index}
+                  elem={elem}
+                  onClickSend={handleSend}
+                  sendDisabled={loading}
+                /> :
+                <Answer
+                  key={index}
+                  lang={lang}
+                  elem={elem}
+                  onReplyClick={() => {
+                    setConversation((conversation) => {
+                      conversation[index].replyClicked = true;
+                      return [...conversation, ConversationElem.newPrompt(conversation.length, "")];
+                    });
+                  }
+                  }
+                />
+            );
+          })}
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
-          {answer.length > 0 &&
-            <Answer
-              lang={lang}
-              answer={answer}
-              originalAnswer={originalAnswer}
-              onReplyClick={() => {
-                setPrompt(prompt + `\n\n${t('conversation.ai')}: ${answer}\n\n${t('conversation.user')}: `);
-              }}/>
-          }
           {moneyLeft >= 0 && (
             <Alert severity="info">
               {

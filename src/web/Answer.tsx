@@ -4,22 +4,22 @@ import {t} from "i18next";
 import ReactMarkdown from "react-markdown";
 import {ContentCopy, Reply} from "@mui/icons-material";
 import {useState} from "react";
+import { ConversationElem, AnswerElem } from "./Types";
 
 interface AnswerProps {
-  answer: string;
-  originalAnswer: string;
   lang: string;
-  onReplyClick: (answer: string) => void;
+  elem: AnswerElem;
+  onReplyClick: (elem: AnswerElem) => void;
 }
 
-const Answer: React.FC<AnswerProps> = ({answer, originalAnswer, lang, onReplyClick}) => {
+const Answer: React.FC<AnswerProps> = ({elem, lang, onReplyClick}) => {
   const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
   const [error, setError] = useState<null | string>("");
-  const [showOriginal, setShowOriginal] = useState(false);
+  const [showOriginal, setShowOriginal] = useState(elem.getShowOriginal());
 
   const handleCopy = async () => {
     if (window.isSecureContext && navigator.clipboard) {
-      await navigator.clipboard.writeText(showOriginal ? originalAnswer : answer);
+      await navigator.clipboard.writeText(elem.getShowOriginal() ? elem.getOriginalText() : elem.getText());
       setCbTooltipOpen(true);
       setTimeout(() => setCbTooltipOpen(false), 2000);
     } else {
@@ -37,16 +37,15 @@ const Answer: React.FC<AnswerProps> = ({answer, originalAnswer, lang, onReplyCli
         TransitionComponent={Fade}
         TransitionProps={{timeout: 600}}>
         <Stack direction="row" alignItems="center" sx={{position: "absolute", bottom: 5, right: 5}}>
-          <IconButton onClick={() => {
-            onReplyClick(answer);
-            document.getElementById("prompt")?.focus();
-          }}><Reply/></IconButton>
+          <IconButton disabled={elem.getReplyClicked()} onClick={() => onReplyClick(elem)}>
+            <Reply/>
+          </IconButton>
           <IconButton onPointerDown={handleCopy}>
             <ContentCopy/>
           </IconButton>
         </Stack>
       </Tooltip>
-      <ReactMarkdown>{showOriginal ? originalAnswer : answer}</ReactMarkdown>
+      <ReactMarkdown>{showOriginal ? elem.getOriginalText() : elem.getText()}</ReactMarkdown>
       {lang !== "en" && <Link sx={{fontSize: 12, cursor: "pointer"}}
                               onClick={() => setShowOriginal(!showOriginal)}
       >

@@ -1,6 +1,11 @@
 {
+  "conversation": {
+    "start": "Ask me anything",
+    "bot": "Assistant",
+    "user": "Human",
+    "you": "You"
+  },
   "input": {
-    "label": "Ask me anything",
     "placeholder": "Ask me anything"
   },
   "answer": {
@@ -18,9 +23,5 @@
     "spent": "This request cost the community: ${{amount}}",
     "remainingFunds": "Money left in the project: ${{amount}}",
     "increase": "Top-up the shared budget:"
-  },
-  "conversation": {
-    "ai": "Assistant",
-    "user": "Human"
   }
 }
