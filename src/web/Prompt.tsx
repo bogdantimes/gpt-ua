@@ -43,7 +43,10 @@ const Prompt: React.FC<PromptProps> = ({elem, onClickSend, sendDisabled}) => {
       InputProps={{
         readOnly: isAnsweredReply,
         endAdornment:
-          !isAnsweredReply && <IconButton disabled={sendDisabled} onClick={() => onClickSend(elem)}>
+          !isAnsweredReply && <IconButton disabled={sendDisabled} onClick={() => {
+            elem.setText(text)
+            onClickSend(elem);
+          }}>
             <Send/>
           </IconButton>
       }}
