@@ -102,9 +102,20 @@ export default function App(): JSX.Element {
 
     setLoading(true);
     const serviceURL = "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws"
-    const url = `${serviceURL}?prompt=${encodeURI(prompt.trim())}&lang=${lang}`;
-    fetch(url)
-      .then((response) => response.json())
+    fetch(serviceURL, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({prompt, lang}),
+    })
+      .then((response) => {
+        return response.text().then((text) => {
+          try {
+            return JSON.parse(text);
+          } catch (e) {
+            throw new Error(text);
+          }
+        });
+      })
       .then((gptReply) => {
         console.log(gptReply);
         if (gptReply?.error) {
