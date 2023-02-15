@@ -9,10 +9,9 @@ import { ConversationElem, AnswerElem } from "./Types";
 interface AnswerProps {
   lang: string;
   elem: AnswerElem;
-  onReplyClick: (elem: AnswerElem) => void;
 }
 
-const Answer: React.FC<AnswerProps> = ({elem, lang, onReplyClick}) => {
+const Answer: React.FC<AnswerProps> = ({elem, lang}) => {
   const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
   const [error, setError] = useState<null | string>("");
   const [showOriginal, setShowOriginal] = useState(elem.getShowOriginal());
@@ -37,9 +36,6 @@ const Answer: React.FC<AnswerProps> = ({elem, lang, onReplyClick}) => {
         TransitionComponent={Fade}
         TransitionProps={{timeout: 600}}>
         <Stack direction="row" alignItems="center" sx={{position: "absolute", bottom: 5, right: 5}}>
-          <IconButton disabled={elem.getReplyClicked()} onClick={() => onReplyClick(elem)}>
-            <Reply color={elem.getReplyClicked() ? "inherit" : "success"}/>
-          </IconButton>
           <IconButton onPointerDown={handleCopy}>
             <ContentCopy/>
           </IconButton>

@@ -131,8 +131,17 @@ export default function App(): JSX.Element {
             return [
               ...conversation,
               ConversationElem.newAnswer(conversation.length, answer, originalAnswer),
+              ConversationElem.newPrompt(conversation.length + 1, ""),
             ]
           });
+          // focus on the new prompt after it is rendered
+          setTimeout(() => {
+            const prompt = document.getElementById(`prompt-${conversation.length+1}`);
+            if (prompt) {
+              prompt.scrollIntoView();
+              prompt.focus();
+            }
+          }, 10);
         }
         if (isFinite(+(gptReply?.moneyLeft))) {
           setMoneyLeft(+gptReply?.moneyLeft);
@@ -175,21 +184,6 @@ export default function App(): JSX.Element {
                   key={index}
                   lang={lang}
                   elem={elem}
-                  onReplyClick={() => {
-                    setConversation((conversation) => {
-                      conversation[index].replyClicked = true;
-                      return [...conversation, ConversationElem.newPrompt(conversation.length, "")];
-                    });
-                    // focus on the new prompt after it is rendered
-                    setTimeout(() => {
-                      const prompt = document.getElementById(`prompt-${conversation.length}`);
-                      if (prompt) {
-                        prompt.scrollIntoView();
-                        prompt.focus();
-                      }
-                    }, 10);
-                  }
-                  }
                 />
             );
           })}
@@ -228,9 +222,11 @@ export default function App(): JSX.Element {
           </Grid>
           {/*  Link to check OpenAI service status */}
           <Box sx={{textAlign: "center"}}>
-            <span style={{fontSize: "12px"}}>{t(`openai.slowResponse`)}</span> <Link href="https://status.openai.com/" target="_blank" style={{fontSize: "12px"}}>
-              OpenAI status
-            </Link>
+            <span style={{fontSize: "12px"}}>{t(`openai.slowResponse`)}</span> <Link href="https://status.openai.com/"
+                                                                                     target="_blank"
+                                                                                     style={{fontSize: "12px"}}>
+            OpenAI status
+          </Link>
           </Box>
         </Stack>
       </Container>
