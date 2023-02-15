@@ -38,7 +38,7 @@ const Answer: React.FC<AnswerProps> = ({elem, lang, onReplyClick}) => {
         TransitionProps={{timeout: 600}}>
         <Stack direction="row" alignItems="center" sx={{position: "absolute", bottom: 5, right: 5}}>
           <IconButton disabled={elem.getReplyClicked()} onClick={() => onReplyClick(elem)}>
-            <Reply/>
+            <Reply color={"success"}/>
           </IconButton>
           <IconButton onPointerDown={handleCopy}>
             <ContentCopy/>
