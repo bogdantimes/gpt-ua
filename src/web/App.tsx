@@ -66,12 +66,12 @@ export default function App(): JSX.Element {
   // initiate lang using the browser's language
   React.useEffect(() => {
     const browserLang = navigator?.language?.split("-")[0];
-    // if the browser's language is not supported, use 'uk' as default
+    // if the browser's language is not supported, use 'en' as default
     // supported langs are 'uk', 'ru' and 'en'.
     if (SUPPORTED_LANGS.find((lang) => lang.name === browserLang)) {
       changeLanguage(browserLang);
     } else {
-      changeLanguage("uk");
+      changeLanguage("en"); // Any (aka English) by default
     }
   }, []);
 
