@@ -37,7 +37,7 @@ const SUPPORTED_LANGS = [
   },
   {
     name: "en",
-    label: "English (original)",
+    label: "Any (English is better)",
   },
 ];
 
@@ -157,12 +157,16 @@ export default function App(): JSX.Element {
             <h1>GPT-UA</h1>
             <p style={{marginLeft: "105px", marginTop: "-38px", marginBottom: 0, padding: 0}}>chat</p>
           </Box>
-          <Select
-            value={lang}
-            onChange={(event) => changeLanguage(event.target.value)}
-          >
-            {SUPPORTED_LANGS.map((lang) => <MenuItem key={lang.name} value={lang.name}>{lang.label}</MenuItem>)}
-          </Select>
+          <FormControl>
+            <InputLabel id="lang">{t('language')}</InputLabel>
+            <Select
+              label={t('language')}
+              value={lang}
+              onChange={(event) => changeLanguage(event.target.value)}
+            >
+              {SUPPORTED_LANGS.map((lang) => <MenuItem key={lang.name} value={lang.name}>{lang.label}</MenuItem>)}
+            </Select>
+          </FormControl>
           {conversation.map((elem, index) => {
             return (
               elem.isUser ?
