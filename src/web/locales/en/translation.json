@@ -1,9 +1,9 @@
 {
   "conversation": {
-    "start": "Ask me anything",
+    "start": "Start conversation about anything",
     "bot": "Assistant",
     "user": "Human",
-    "you": "You"
+    "you": "Your reply"
   },
   "input": {
     "placeholder": "Ask me anything"

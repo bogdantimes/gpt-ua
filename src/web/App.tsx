@@ -134,14 +134,6 @@ export default function App(): JSX.Element {
               ConversationElem.newPrompt(conversation.length + 1, ""),
             ]
           });
-          // focus on the new prompt after it is rendered
-          setTimeout(() => {
-            const prompt = document.getElementById(`prompt-${conversation.length+1}`);
-            if (prompt) {
-              prompt.scrollIntoView();
-              prompt.focus();
-            }
-          }, 10);
         }
         if (isFinite(+(gptReply?.moneyLeft))) {
           setMoneyLeft(+gptReply?.moneyLeft);
