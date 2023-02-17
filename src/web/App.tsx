@@ -85,27 +85,19 @@ export default function App(): JSX.Element {
 
     // if el is start prompt, then clear the conversation
     if (el.getId() === 0) {
-      conversation.splice(1);
+      conversation.splice(0);
+      conversation.push(ConversationElem.newPrompt(0, el.getText()));
       setConversation(conversation);
     }
 
-    // Concat the whole conversation into a single string in the format
-    let prompt = "";
-    for (const elem of conversation) {
-      if (elem.isUser) {
-        prompt += `${t('conversation.user')}: ${elem.text}\n\n`;
-      } else {
-        prompt += `${t('conversation.bot')}: ${elem.text}\n\n`;
-      }
-    }
-    prompt = prompt.trim();
+    const messages = buildMessaages(conversation, lang);
 
     setLoading(true);
     const serviceURL = "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws"
     fetch(serviceURL, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({prompt, lang}),
+      body: JSON.stringify({messages}),
     })
       .then((response) => {
         return response.text().then((text) => {
@@ -128,6 +120,15 @@ export default function App(): JSX.Element {
             lastPrompt.answered = true;
           }
           setConversation((conversation: ConversationElem[]) => {
+
+            // Apply free translations
+            gptReply?.translatedMessages?.forEach((msg: Message) => {
+              let el = conversation.find((elem) => elem.getId() === msg.id);
+              if (el) {
+                el.originalText = msg.en || "";
+              }
+            })
+
             return [
               ...conversation,
               ConversationElem.newAnswer(conversation.length, answer, originalAnswer),
@@ -228,4 +229,26 @@ export default function App(): JSX.Element {
       </Container>
     </ThemeProvider>
   );
+}
+
+interface Message {
+  id: number;
+  lang: string;
+  original: string;
+  en?: string;
+  isUser: boolean;
+}
+
+function buildMessaages(conversation: ConversationElem[], lang: string): Message[] {
+  const messages: Message[] = [];
+  for (const elem of conversation) {
+    messages.push({
+      id: elem.getId(),
+      lang,
+      original: elem.text,
+      en: elem.originalText,
+      isUser: elem.isUser,
+    });
+  }
+  return messages;
 }
