@@ -4,7 +4,8 @@ import {t} from "i18next";
 import ReactMarkdown from "react-markdown";
 import {ContentCopy, Reply} from "@mui/icons-material";
 import {useState} from "react";
-import { ConversationElem, AnswerElem } from "./Types";
+import {ConversationElem, AnswerElem} from "./Types";
+import Typist from 'react-typist';
 
 interface AnswerProps {
   lang: string;
@@ -41,7 +42,12 @@ const Answer: React.FC<AnswerProps> = ({elem, lang}) => {
           </IconButton>
         </Stack>
       </Tooltip>
-      <ReactMarkdown>{showOriginal ? elem.getOriginalText() : elem.getText()}</ReactMarkdown>
+      <Typist key={+showOriginal} avgTypingDelay={1} stdTypingDelay={50} cursor={{show: false}}>
+        <ReactMarkdown>
+          {showOriginal ? elem.getOriginalText() : elem.getText()}
+        </ReactMarkdown>
+      </Typist>
+
       {lang !== "en" && <Link sx={{fontSize: 12, cursor: "pointer"}}
                               onClick={() => setShowOriginal(!showOriginal)}
       >

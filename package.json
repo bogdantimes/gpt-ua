@@ -23,12 +23,12 @@
     "eslint-plugin-promise": "6.1.1",
     "eslint-plugin-react": "7.32.1",
     "eslint-plugin-react-hooks": "4.6.0",
+    "gh-pages": "5.0.0",
     "husky": "8.0.3",
     "parcel": "2.8.3",
     "prettier": "2.8.3",
     "process": "0.11.10",
-    "typescript": "4.9.4",
-    "gh-pages": "5.0.0"
+    "typescript": "4.9.4"
   },
   "author": "Bohdan Kovalov",
   "license": "MIT",
@@ -42,6 +42,13 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "12.1.5",
-    "react-markdown": "8.0.5"
+    "react-markdown": "8.0.5",
+    "react-typist": "2.0.5"
+  },
+  "overrides": {
+    "react-typist": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
   }
 }
