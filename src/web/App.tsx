@@ -243,10 +243,10 @@ function buildMessaages(conversation: ConversationElem[], lang: string): Message
   const messages: Message[] = [];
   for (const elem of conversation) {
     messages.push({
-      id: elem.getId(),
       lang,
-      original: elem.text,
-      en: elem.originalText,
+      id: elem.getId(),
+      original: elem.getText(),
+      en: elem.getOriginalText(),
       isUser: elem.isUser,
     });
   }
