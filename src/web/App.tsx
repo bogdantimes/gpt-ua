@@ -55,7 +55,10 @@ export default function App(): JSX.Element {
   const [lastRequestCost, setLastRequestCost] = useState(-1);
   const [conversation, setConversation] = useState<ConversationElem[]>(conversationLoader);
   useEffect(() => {
-    localStorage.setItem('gpt_conversation', JSON.stringify(conversation));
+    try {
+      localStorage.setItem('gpt_conversation', JSON.stringify(conversation));
+    } catch (e) {
+    }
   }, [conversation]);
 
   const lang = i18n.language;
