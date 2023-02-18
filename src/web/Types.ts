@@ -11,6 +11,7 @@ export interface AnswerElem {
   getOriginalText(): string;
   getShowOriginal(): boolean;
   getReplyClicked(): boolean;
+  isStatic(): boolean;
 }
 
 export class ConversationElem implements PromptElem, AnswerElem {
@@ -21,6 +22,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
   replyClicked = false;
   isUser = false;
   answered = false;
+  staticMode = false;
 
   static newPrompt(id: number, text: string): ConversationElem {
     let elem = new ConversationElem();
@@ -64,5 +66,9 @@ export class ConversationElem implements PromptElem, AnswerElem {
 
   getShowOriginal(): boolean {
     return this.showOriginal;
+  }
+
+  isStatic(): boolean {
+    return this.staticMode;
   }
 }

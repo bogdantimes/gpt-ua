@@ -42,11 +42,15 @@ const Answer: React.FC<AnswerProps> = ({elem, lang}) => {
           </IconButton>
         </Stack>
       </Tooltip>
-      <Typist key={+showOriginal} avgTypingDelay={1} stdTypingDelay={50} cursor={{show: false}}>
+      {elem.isStatic() ?
         <ReactMarkdown>
           {showOriginal ? elem.getOriginalText() : elem.getText()}
-        </ReactMarkdown>
-      </Typist>
+        </ReactMarkdown> :
+        <Typist key={+showOriginal} avgTypingDelay={1} stdTypingDelay={50} cursor={{show: false}}>
+          <ReactMarkdown>
+            {showOriginal ? elem.getOriginalText() : elem.getText()}
+          </ReactMarkdown>
+        </Typist>}
 
       {lang !== "en" && <Link sx={{fontSize: 12, cursor: "pointer"}}
                               onClick={() => setShowOriginal(!showOriginal)}

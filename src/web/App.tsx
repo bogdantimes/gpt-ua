@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {
   Alert,
   Box,
@@ -53,9 +53,10 @@ export default function App(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState(-1);
   const [lastRequestCost, setLastRequestCost] = useState(-1);
-  const [conversation, setConversation] = useState<ConversationElem[]>([
-    ConversationElem.newPrompt(0, ""),
-  ]);
+  const [conversation, setConversation] = useState<ConversationElem[]>(conversationLoader);
+  useEffect(() => {
+    localStorage.setItem('gpt_conversation', JSON.stringify(conversation));
+  }, [conversation]);
 
   const lang = i18n.language;
 
@@ -252,3 +253,19 @@ function buildMessaages(conversation: ConversationElem[], lang: string): Message
   }
   return messages;
 }
+
+const conversationLoader = () => {
+  try {
+    const c = localStorage.getItem('gpt_conversation');
+    if (c) {
+      const convArr = JSON.parse(c) as ConversationElem[];
+      return convArr.map(e => {
+        return Object.assign(new ConversationElem(), e, {staticMode: true});
+      })
+    } else {
+      return [ConversationElem.newPrompt(0, "")]
+    }
+  } catch (e) {
+    return [ConversationElem.newPrompt(0, "")]
+  }
+};
