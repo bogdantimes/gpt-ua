@@ -172,20 +172,21 @@ export default function App(): JSX.Element {
               {SUPPORTED_LANGS.map((lang) => <MenuItem key={lang.name} value={lang.name}>{lang.label}</MenuItem>)}
             </Select>
           </FormControl>
-          {conversation.map((elem, index) => {
+          {conversation.map((elem, i) => {
             return (
               elem.isUser ?
                 <Prompt
-                  key={`${index}_${elem.text.length}`}
+                  key={`${i}_${elem.text.length}`}
                   elem={elem}
                   onClickSend={handleSend}
                   onClear={() => {
                     setConversation([ConversationElem.newPrompt(0, "")]);
                   }}
+                  showClear={conversation.length > 1}
                   sendDisabled={loading}
                 /> :
                 <Answer
-                  key={index}
+                  key={i}
                   lang={lang}
                   elem={elem}
                 />

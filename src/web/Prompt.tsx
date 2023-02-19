@@ -20,9 +20,10 @@ interface PromptProps {
   onClickSend: (el: PromptElem) => void;
   onClear: () => void;
   sendDisabled: boolean;
+  showClear: boolean;
 }
 
-const Prompt: React.FC<PromptProps> = ({elem, onClickSend, onClear, sendDisabled}) => {
+const Prompt: React.FC<PromptProps> = ({elem, onClickSend, onClear, sendDisabled, showClear}) => {
   const [text, setText] = React.useState(elem.getText());
   const isStartPrompt = elem.getId() === 0;
   const isAnsweredReply = !isStartPrompt && elem.isAnswered();
@@ -46,7 +47,7 @@ const Prompt: React.FC<PromptProps> = ({elem, onClickSend, onClear, sendDisabled
         readOnly: isAnsweredReply,
         endAdornment:
           <>
-            {isStartPrompt && <IconButton onClick={() => {
+            {isStartPrompt && (text || showClear) && <IconButton onClick={() => {
               setText('')
               onClear()
             }}><Clear/></IconButton>}
