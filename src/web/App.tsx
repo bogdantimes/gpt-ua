@@ -176,9 +176,12 @@ export default function App(): JSX.Element {
             return (
               elem.isUser ?
                 <Prompt
-                  key={index}
+                  key={`${index}_${elem.text.length}`}
                   elem={elem}
                   onClickSend={handleSend}
+                  onClear={() => {
+                    setConversation([ConversationElem.newPrompt(0, "")]);
+                  }}
                   sendDisabled={loading}
                 /> :
                 <Answer

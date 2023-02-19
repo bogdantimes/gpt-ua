@@ -10,17 +10,19 @@ import {
   TextField
 } from "@mui/material";
 import {t} from "i18next";
-import {Send} from "@mui/icons-material";
+import {Clear, Send} from "@mui/icons-material";
 import {ConversationElem, PromptElem} from "./Types";
 import ReactMarkdown from "react-markdown";
+import {useEffect} from "react";
 
 interface PromptProps {
   elem: PromptElem;
   onClickSend: (el: PromptElem) => void;
+  onClear: () => void;
   sendDisabled: boolean;
 }
 
-const Prompt: React.FC<PromptProps> = ({elem, onClickSend, sendDisabled}) => {
+const Prompt: React.FC<PromptProps> = ({elem, onClickSend, onClear, sendDisabled}) => {
   const [text, setText] = React.useState(elem.getText());
   const isStartPrompt = elem.getId() === 0;
   const isAnsweredReply = !isStartPrompt && elem.isAnswered();
@@ -43,13 +45,19 @@ const Prompt: React.FC<PromptProps> = ({elem, onClickSend, sendDisabled}) => {
       InputProps={{
         readOnly: isAnsweredReply,
         endAdornment:
-          <IconButton sx={{opacity: isAnsweredReply ? 0 : 1}} disabled={sendDisabled || isAnsweredReply}
-                      onClick={() => {
-                        elem.setText(text)
-                        onClickSend(elem);
-                      }}>
-            <Send/>
-          </IconButton>
+          <>
+            {isStartPrompt && <IconButton onClick={() => {
+              setText('')
+              onClear()
+            }}><Clear/></IconButton>}
+            <IconButton sx={{opacity: isAnsweredReply ? 0 : 1}} disabled={sendDisabled || isAnsweredReply}
+                        onClick={() => {
+                          elem.setText(text)
+                          onClickSend(elem);
+                        }}>
+              <Send/>
+            </IconButton>
+          </>
       }}
     />
   );
