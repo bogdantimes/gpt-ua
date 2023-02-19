@@ -65,10 +65,24 @@ export default function App(): JSX.Element {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
+    try {
+      localStorage.setItem('gpt_lang', lng);
+    } catch (e) {
+    }
   };
 
   // initiate lang using the browser's language
   React.useEffect(() => {
+    // try get the language from the storage
+    try {
+      const storedLang = localStorage.getItem('gpt_lang');
+      if (storedLang) {
+        changeLanguage(storedLang);
+        return;
+      }
+    } catch (e) {
+    }
+
     const browserLang = navigator?.language?.split("-")[0];
     // if the browser's language is not supported, use 'en' as default
     // supported langs are 'uk', 'ru' and 'en'.
