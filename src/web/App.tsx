@@ -219,7 +219,7 @@ export default function App(): JSX.Element {
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
           {isFinite(moneyLeft) && (
-            <Alert severity="info">
+            <Alert severity={moneyLeft <= 0.05 ? "warning" : "info"}>
               {
                 <>
                   {t('budget.spent', {amount: lastRequestCost.toFixed(4)})}<br/>
