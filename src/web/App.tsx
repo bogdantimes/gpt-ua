@@ -218,7 +218,7 @@ export default function App(): JSX.Element {
           })}
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
-          {moneyLeft >= 0 && (
+            {isFinite(moneyLeft) && (
             <Alert severity="info">
               {
                 <>
