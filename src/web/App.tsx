@@ -218,12 +218,12 @@ export default function App(): JSX.Element {
           })}
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
-            {isFinite(moneyLeft) && (
+          {isFinite(moneyLeft) && (
             <Alert severity="info">
               {
                 <>
                   {t('budget.spent', {amount: lastRequestCost.toFixed(4)})}<br/>
-                  {t('budget.remainingFunds', {amount: moneyLeft.toFixed(2)})}<br/>
+                  {moneyLeft < 0 ? "-" : ""}{t('budget.remainingFunds', {amount: Math.abs(moneyLeft).toFixed(2)})}<br/>
                   {t('budget.increase')}{" "}
                 </>
               }
