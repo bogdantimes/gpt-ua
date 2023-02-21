@@ -51,8 +51,8 @@ export default function App(): JSX.Element {
 
   const [error, setError] = useState<null | string>("");
   const [loading, setLoading] = useState(false);
-  const [moneyLeft, setMoneyLeft] = useState(-1);
-  const [lastRequestCost, setLastRequestCost] = useState(-1);
+  const [moneyLeft, setMoneyLeft] = useState<number | null>(null);
+  const [lastRequestCost, setLastRequestCost] = useState(0);
   const [conversation, setConversation] = useState<ConversationElem[]>(conversationLoader);
   useEffect(() => {
     try {
@@ -218,7 +218,7 @@ export default function App(): JSX.Element {
           })}
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
-          {isFinite(moneyLeft) && (
+          {moneyLeft !== null && isFinite(moneyLeft) && (
             <Alert severity={moneyLeft <= 0.05 ? "warning" : "info"}>
               {
                 <>
