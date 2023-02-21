@@ -7,24 +7,24 @@ import {
   createTheme,
   CssBaseline,
   FormControl,
-  FormHelperText,
   Grid,
-  IconButton,
   InputLabel,
   LinearProgress,
   Link,
   MenuItem,
-  OutlinedInput,
+  Modal,
   Select,
   Stack,
   ThemeProvider,
   useMediaQuery,
 } from "@mui/material";
-import {GitHub, Instagram, Send, Twitter,} from "@mui/icons-material";
+import {GitHub, Instagram, Twitter,} from "@mui/icons-material";
 import {useTranslation} from "react-i18next";
 import Answer from "./Answer";
 import Prompt from "./Prompt";
 import {ConversationElem, PromptElem} from "./Types";
+// @ts-ignore
+import binanceQR from "./img/binanceQR.png"
 
 const SUPPORTED_LANGS = [
   {
@@ -174,6 +174,8 @@ export default function App(): JSX.Element {
       .finally(() => setLoading(false));
   };
 
+  const [binancePayOpen, setBinancePayOpen] = useState(false)
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
@@ -225,9 +227,9 @@ export default function App(): JSX.Element {
                   {t('budget.increase')}{" "}
                 </>
               }
-              <Link href="https://paypal.me/BohdanKovalov" target="_blank">PayPal</Link>{" | "}
               <Link href="https://patreon.com/bogdantimes" target="_blank">Patreon</Link>{" | "}
-              <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>
+              <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>{" | "}
+              <Link onClick={() => setBinancePayOpen(true)}>Binance Pay</Link>
             </Alert>
           )}
           <Grid container justifyContent="center" spacing={2} paddingRight={"30px"}>
@@ -256,6 +258,19 @@ export default function App(): JSX.Element {
           </Link>
           </Box>
         </Stack>
+        <Modal
+          open={!!binancePayOpen}
+          onClose={() => setBinancePayOpen(false)}
+        >
+          <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+          }}>
+            <img src={binanceQR} height={400} alt="Binance Pay QR Code"/>
+          </Box>
+        </Modal>
       </Container>
     </ThemeProvider>
   );
