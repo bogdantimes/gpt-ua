@@ -46,7 +46,7 @@ const Answer: React.FC<AnswerProps> = ({elem, lang}) => {
         <ReactMarkdown>
           {showOriginal ? elem.getOriginalText() : elem.getText()}
         </ReactMarkdown> :
-        <Typist key={+showOriginal} avgTypingDelay={1} stdTypingDelay={50} cursor={{show: false}}>
+        <Typist key={+showOriginal} avgTypingDelay={0} stdTypingDelay={40} cursor={{show: false}}>
           <ReactMarkdown>
             {showOriginal ? elem.getOriginalText() : elem.getText()}
           </ReactMarkdown>

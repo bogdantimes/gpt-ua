@@ -147,11 +147,19 @@ export default function App(): JSX.Element {
               }
             })
 
-            return [
+            const newConv = [
               ...conversation,
               ConversationElem.newAnswer(conversation.length, answer, originalAnswer),
               ConversationElem.newPrompt(conversation.length + 1, ""),
-            ]
+            ];
+            // Mark dropped messages
+            const lastDroppedMessageId = gptReply.lastDroppedMessageId ?? -1;
+            if (lastDroppedMessageId >= 0) {
+              newConv.forEach(el => {
+                el.dropped = el.id <= lastDroppedMessageId
+              })
+            }
+            return newConv
           });
         }
         if (isFinite(+(gptReply?.moneyLeft))) {
@@ -264,6 +272,7 @@ interface Message {
 function buildMessaages(conversation: ConversationElem[], lang: string): Message[] {
   const messages: Message[] = [];
   for (const elem of conversation) {
+    if (elem.dropped) continue
     messages.push({
       lang,
       id: elem.getId(),

@@ -23,6 +23,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
   isUser = false;
   answered = false;
   staticMode = false;
+  dropped = false;
 
   static newPrompt(id: number, text: string): ConversationElem {
     let elem = new ConversationElem();
