@@ -22,7 +22,7 @@
   },
   "budget": {
     "spent": "Цей запит коштував спільноті: ${{amount}}",
-    "remainingFunds": "Грошей в проекті залишилось: ${{amount}}",
+    "remainingFunds": "Грошей в проекті залишилось: {{sign}}${{amount}}",
     "increase": "Додати до загального бюджету:"
   },
   "openai": {

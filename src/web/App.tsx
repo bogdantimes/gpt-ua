@@ -223,7 +223,10 @@ export default function App(): JSX.Element {
               {
                 <>
                   {t('budget.spent', {amount: lastRequestCost.toFixed(4)})}<br/>
-                  {moneyLeft < 0 ? "-" : ""}{t('budget.remainingFunds', {amount: Math.abs(moneyLeft).toFixed(2)})}<br/>
+                  {t('budget.remainingFunds', {
+                    sign: moneyLeft < 0 ? "-" : "",
+                    amount: Math.abs(moneyLeft).toFixed(2)
+                  })}<br/>
                   {t('budget.increase')}{" "}
                 </>
               }

@@ -22,7 +22,7 @@
   },
   "budget": {
     "spent": "This request cost the community: ${{amount}}",
-    "remainingFunds": "Money left in the project: ${{amount}}",
+    "remainingFunds": "Money left in the project: {{sign}}${{amount}}",
     "increase": "Top-up the shared budget:"
   },
   "openai": {
