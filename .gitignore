@@ -8,8 +8,9 @@ node_modules
 parcel-bundle-reports
 !apps-script/appsscript.json
 yarn.lock
-dist/index.html
+dist
 
 # IDE setting
 .idea
 .vscode
+.cache
