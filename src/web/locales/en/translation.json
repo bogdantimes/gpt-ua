@@ -1,31 +1,24 @@
 {
-  "language": "Language",
   "conversation": {
-    "start": "Start the dialog (in any language)",
-    "bot": "Assistant",
-    "user": "Human",
-    "you": "Your reply"
+    "start": "Start a conversation (in any language)",
+    "you": "Your response"
   },
   "input": {
     "placeholder": "Ask me anything"
-  },
-  "answer": {
-    "showOriginal": "show original",
-    "showTranslation": "show translation"
   },
   "clipboard": {
     "tooltip": "Copied to clipboard"
   },
   "errors": {
-    "notEnoughDetails": "Please, ask a more detailed question",
-    "insecureContext": "This feature is available only in secure contexts (HTTPS), in some or all supporting browsers."
+    "notEnoughDetails": "Please provide more details for your request",
+    "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
   },
   "budget": {
     "spent": "This request cost the community: ${{amount}}",
-    "remainingFunds": "Money left in the project: {{sign}}${{amount}}",
-    "increase": "Top-up the shared budget:"
+    "remainingFunds": "Remaining funds in the project: {{sign}}${{amount}}",
+    "increase": "Add to the overall budget:"
   },
   "openai": {
-    "slowResponse": "No response? Check status:"
+    "slowResponse": "No response? Check the status:"
   }
 }
