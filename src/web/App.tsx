@@ -26,21 +26,6 @@ import {ConversationElem, PromptElem} from "./Types";
 // @ts-ignore
 import binanceQR from "./img/binanceQR.png"
 
-const SUPPORTED_LANGS = [
-  {
-    name: "uk",
-    label: "Українська (з перекладом)",
-  },
-  {
-    name: "ru",
-    label: "Русский (с переводом)",
-  },
-  {
-    name: "en",
-    label: "Any (English is better)",
-  },
-];
-
 export default function App(): JSX.Element {
   const {t, i18n} = useTranslation("translation");
   const mode = useMediaQuery(`(prefers-color-scheme: dark)`);
@@ -65,32 +50,12 @@ export default function App(): JSX.Element {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    try {
-      localStorage.setItem('gpt_lang', lng);
-    } catch (e) {
-    }
   };
 
   // initiate lang using the browser's language
   React.useEffect(() => {
-    // try get the language from the storage
-    try {
-      const storedLang = localStorage.getItem('gpt_lang');
-      if (storedLang) {
-        changeLanguage(storedLang);
-        return;
-      }
-    } catch (e) {
-    }
-
-    const browserLang = navigator?.language?.split("-")[0];
-    // if the browser's language is not supported, use 'en' as default
-    // supported langs are 'uk', 'ru' and 'en'.
-    if (SUPPORTED_LANGS.find((lang) => lang.name === browserLang)) {
-      changeLanguage(browserLang);
-    } else {
-      changeLanguage("en"); // Any (aka English) by default
-    }
+    const browserLang = navigator?.language?.split("-")[0] || "en";
+    changeLanguage(browserLang);
   }, []);
 
   const handleSend = (el: PromptElem) => {
@@ -132,20 +97,12 @@ export default function App(): JSX.Element {
           setError(gptReply?.answer || gptReply?.error);
         } else {
           const answer = gptReply?.answer ?? "";
-          const originalAnswer = gptReply?.choices?.[0]?.text.trim() ?? "";
+          const originalAnswer = gptReply?.choices?.[0]?.message.content.trim() ?? "";
           const lastPrompt = conversation.filter((elem) => elem.isUser).pop();
           if (lastPrompt) {
             lastPrompt.answered = true;
           }
           setConversation((conversation: ConversationElem[]) => {
-
-            // Apply free translations
-            gptReply?.translatedMessages?.forEach((msg: Message) => {
-              let el = conversation.find((elem) => elem.getId() === msg.id);
-              if (el) {
-                el.originalText = msg.en || "";
-              }
-            })
 
             const newConv = [
               ...conversation,
@@ -186,16 +143,6 @@ export default function App(): JSX.Element {
             <h1>GPT-UA</h1>
             <p style={{marginLeft: "105px", marginTop: "-38px", marginBottom: 0, padding: 0}}>chat</p>
           </Box>
-          <FormControl>
-            <InputLabel id="lang">{t('language')}</InputLabel>
-            <Select
-              label={t('language')}
-              value={lang}
-              onChange={(event) => changeLanguage(event.target.value)}
-            >
-              {SUPPORTED_LANGS.map((lang) => <MenuItem key={lang.name} value={lang.name}>{lang.label}</MenuItem>)}
-            </Select>
-          </FormControl>
           {conversation.map((elem, i) => {
             return (
               elem.isUser ?
@@ -211,7 +158,6 @@ export default function App(): JSX.Element {
                 /> :
                 <Answer
                   key={i}
-                  lang={lang}
                   elem={elem}
                 />
             );
@@ -283,7 +229,6 @@ interface Message {
   id: number;
   lang: string;
   original: string;
-  en?: string;
   isUser: boolean;
 }
 
@@ -295,7 +240,6 @@ function buildMessaages(conversation: ConversationElem[], lang: string): Message
       lang,
       id: elem.getId(),
       original: elem.getText(),
-      en: elem.getOriginalText(),
       isUser: elem.isUser,
     });
   }

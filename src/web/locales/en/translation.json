@@ -1,7 +1,7 @@
 {
   "language": "Language",
   "conversation": {
-    "start": "Start conversation about anything",
+    "start": "Start the conversation (in any language)",
     "bot": "Assistant",
     "user": "Human",
     "you": "Your reply"

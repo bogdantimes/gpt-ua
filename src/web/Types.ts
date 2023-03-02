@@ -8,8 +8,6 @@ export interface PromptElem {
 export interface AnswerElem {
   getId(): number;
   getText(): string;
-  getOriginalText(): string;
-  getShowOriginal(): boolean;
   getReplyClicked(): boolean;
   isStatic(): boolean;
 }
@@ -17,8 +15,6 @@ export interface AnswerElem {
 export class ConversationElem implements PromptElem, AnswerElem {
   id = 0;
   text = "";
-  originalText = "";
-  showOriginal = false;
   replyClicked = false;
   isUser = false;
   answered = false;
@@ -37,7 +33,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
     let elem = new ConversationElem();
     elem.id = id;
     elem.text = text;
-    elem.originalText = originalText;
     return elem;
   }
 
@@ -47,10 +42,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
 
   getText(): string {
     return this.text.trim();
-  }
-
-  getOriginalText(): string {
-    return this.originalText.trim();
   }
 
   isAnswered(): boolean {
@@ -63,10 +54,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
 
   getReplyClicked(): boolean {
     return this.replyClicked;
-  }
-
-  getShowOriginal(): boolean {
-    return this.showOriginal;
   }
 
   isStatic(): boolean {

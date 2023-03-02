@@ -8,18 +8,16 @@ import {ConversationElem, AnswerElem} from "./Types";
 import Typist from 'react-typist';
 
 interface AnswerProps {
-  lang: string;
   elem: AnswerElem;
 }
 
-const Answer: React.FC<AnswerProps> = ({elem, lang}) => {
+const Answer: React.FC<AnswerProps> = ({elem}) => {
   const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
   const [error, setError] = useState<null | string>("");
-  const [showOriginal, setShowOriginal] = useState(elem.getShowOriginal());
 
   const handleCopy = async () => {
     if (window.isSecureContext && navigator.clipboard) {
-      await navigator.clipboard.writeText(elem.getShowOriginal() ? elem.getOriginalText() : elem.getText());
+      await navigator.clipboard.writeText(elem.getText());
       setCbTooltipOpen(true);
       setTimeout(() => setCbTooltipOpen(false), 2000);
     } else {
@@ -44,19 +42,14 @@ const Answer: React.FC<AnswerProps> = ({elem, lang}) => {
       </Tooltip>
       {elem.isStatic() ?
         <ReactMarkdown>
-          {showOriginal ? elem.getOriginalText() : elem.getText()}
+          {elem.getText()}
         </ReactMarkdown> :
-        <Typist key={+showOriginal} avgTypingDelay={0} stdTypingDelay={40} cursor={{show: false}}>
+        <Typist key={`${elem.getId()}_${elem.getText().length}`} avgTypingDelay={0} stdTypingDelay={40}
+                cursor={{show: false}}>
           <ReactMarkdown>
-            {showOriginal ? elem.getOriginalText() : elem.getText()}
+            {elem.getText()}
           </ReactMarkdown>
         </Typist>}
-
-      {lang !== "en" && <Link sx={{fontSize: 12, cursor: "pointer"}}
-                              onClick={() => setShowOriginal(!showOriginal)}
-      >
-        {showOriginal ? t('answer.showTranslation') : t('answer.showOriginal')}
-      </Link>}
     </Card>
   );
 };
