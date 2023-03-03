@@ -166,19 +166,12 @@ export default function App(): JSX.Element {
           {error && <Alert severity="error">{error}</Alert>}
           {moneyLeft !== null && isFinite(moneyLeft) && (
             <Alert severity={moneyLeft <= 0.05 ? "warning" : "info"}>
-              {
-                <>
-                  {t('budget.spent', {amount: lastRequestCost.toFixed(4)})}<br/>
-                  {t('budget.remainingFunds', {
-                    sign: moneyLeft < 0 ? "-" : "",
-                    amount: Math.abs(moneyLeft).toFixed(2)
-                  })}<br/>
-                  {t('budget.increase')}{" "}
-                </>
-              }
-              <Link href="https://patreon.com/bogdantimes" target="_blank">Patreon</Link>{" | "}
-              <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>{" | "}
-              <Link onClick={() => setBinancePayOpen(true)}>Binance Pay</Link>
+              {t('budget.increase')}{" "}
+              <Box display={"inline-block"}>
+                <Link href="https://patreon.com/bogdantimes" target="_blank">Patreon</Link>{" | "}
+                <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>{" | "}
+                <Link onClick={() => setBinancePayOpen(true)}>Binance Pay</Link>
+              </Box>
             </Alert>
           )}
           <Grid container justifyContent="center" spacing={2} paddingRight={"30px"}>

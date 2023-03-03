@@ -14,9 +14,7 @@
     "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
   },
   "budget": {
-    "spent": "This request cost the community: ${{amount}}",
-    "remainingFunds": "Remaining funds in the project: {{sign}}${{amount}}",
-    "increase": "Add to the overall budget:"
+    "increase": "Surprise the author with a coffee ☕:"
   },
   "openai": {
     "slowResponse": "No response? Check the status:"
