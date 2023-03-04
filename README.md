@@ -1,5 +1,5 @@
-# GPT-UA
-Simple free website where you can use the #OpenAI #GPT3 service without the need to register, and you can ask anything in Ukrainian, Russian or English:
+# GPT-UA chat
+Simple and free website where you can use #OpenAI #ChatGPT service without need to register. GPT-UA is also able to search information online, which original ChatGPT cannot do:
 
 https://gpt-ua.click
 
