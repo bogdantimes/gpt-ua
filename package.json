@@ -43,7 +43,8 @@
     "react-dom": "18.2.0",
     "react-i18next": "12.1.5",
     "react-markdown": "8.0.5",
-    "react-typist": "2.0.5"
+    "react-typist": "2.0.5",
+    "remark-gfm": "3.0.1"
   },
   "overrides": {
     "react-typist": {

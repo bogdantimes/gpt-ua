@@ -6,6 +6,7 @@ import {ContentCopy, Reply} from "@mui/icons-material";
 import {useState} from "react";
 import {ConversationElem, AnswerElem} from "./Types";
 import Typist from 'react-typist';
+import gfm from 'remark-gfm';
 
 interface AnswerProps {
   elem: AnswerElem;
@@ -41,12 +42,12 @@ const Answer: React.FC<AnswerProps> = ({elem}) => {
         </Stack>
       </Tooltip>
       {elem.isStatic() ?
-        <ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[gfm]}>
           {elem.getText()}
         </ReactMarkdown> :
         <Typist key={`${elem.getId()}_${elem.getText().length}`} avgTypingDelay={0} stdTypingDelay={40}
                 cursor={{show: false}}>
-          <ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[gfm]}>
             {elem.getText()}
           </ReactMarkdown>
         </Typist>}
