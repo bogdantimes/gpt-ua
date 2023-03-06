@@ -14,7 +14,7 @@
     "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
   },
   "budget": {
-    "increase": "Help keep the site working:"
+    "increase": "Help make the site better:"
   },
   "openai": {
     "slowResponse": "No response? Check the status:"
