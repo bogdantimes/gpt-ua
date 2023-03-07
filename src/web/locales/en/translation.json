@@ -14,7 +14,7 @@
     "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
   },
   "budget": {
-    "increase": "Help make the site better:"
+    "increase": "\uD83D\uDEA8 Help keep this hobby project alive! I've created and maintained this site in my free time. There's no advertising or paid subscriptions here. Please donate to keep the site running. Thank you! \uD83D\uDE4F"
   },
   "openai": {
     "slowResponse": "No response? Check the status:"
