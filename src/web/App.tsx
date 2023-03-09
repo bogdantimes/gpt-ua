@@ -6,14 +6,9 @@ import {
   Container,
   createTheme,
   CssBaseline,
-  FormControl,
   Grid,
-  InputLabel,
   LinearProgress,
   Link,
-  MenuItem,
-  Modal,
-  Select,
   Stack,
   ThemeProvider,
   useMediaQuery,
@@ -23,8 +18,6 @@ import {useTranslation} from "react-i18next";
 import Answer from "./Answer";
 import Prompt from "./Prompt";
 import {ConversationElem, PromptElem} from "./Types";
-// @ts-ignore
-import binanceQR from "./img/binanceQR.png"
 
 export default function App(): JSX.Element {
   const {t, i18n} = useTranslation("translation");
@@ -131,8 +124,6 @@ export default function App(): JSX.Element {
       .finally(() => setLoading(false));
   };
 
-  const [binancePayOpen, setBinancePayOpen] = useState(false)
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
@@ -168,9 +159,9 @@ export default function App(): JSX.Element {
             <Alert severity={moneyLeft <= 0.05 ? "warning" : "info"}>
               {t('budget.increase')}{" "}
               <Box display={"inline-block"}>
+                <Link href="https://paypal.me/bogdantimes" target="_blank">PayPal</Link>{" | "}
                 <Link href="https://patreon.com/bogdantimes" target="_blank">Patreon</Link>{" | "}
-                <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Monobank</Link>{" | "}
-                <Link onClick={() => setBinancePayOpen(true)}>Binance Pay</Link>
+                <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Mono</Link>
               </Box>
             </Alert>
           )}
@@ -200,19 +191,6 @@ export default function App(): JSX.Element {
           </Link>
           </Box>
         </Stack>
-        <Modal
-          open={!!binancePayOpen}
-          onClose={() => setBinancePayOpen(false)}
-        >
-          <Box sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)'
-          }}>
-            <img src={binanceQR} height={400} alt="Binance Pay QR Code"/>
-          </Box>
-        </Modal>
       </Container>
     </ThemeProvider>
   );
