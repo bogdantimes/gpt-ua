@@ -158,9 +158,13 @@ export default function App(): JSX.Element {
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
           {moneyLeft !== null && isFinite(moneyLeft) && (
-            <Alert severity={moneyLeft <= 0.5 ? "warning" : "info"}>
-              <Typography marginBottom={"10px"}>{t('budget.donate')}</Typography>
-              <Box id="donate-button-container" paddingRight={"30px"} display={"table"} marginLeft={"auto"} marginRight={"auto"}>
+            <Alert severity={moneyLeft <= 1 ? "warning" : "info"}>
+              <Typography>{t('budget.donate')}</Typography>
+              <Typography variant="h6" marginTop={"10px"}
+                          align={"center"}>{t('budget.remaining', {moneyLeft: moneyLeft <= 0 ? 0 : moneyLeft.toFixed(2)})}</Typography>
+              <Box id="donate-button-container" marginTop={"10px"} paddingRight={"30px"} display={"table"}
+                   marginLeft={"auto"}
+                   marginRight={"auto"}>
                 <DonateButton/>
               </Box>
             </Alert>
