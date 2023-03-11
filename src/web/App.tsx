@@ -160,7 +160,7 @@ export default function App(): JSX.Element {
           {moneyLeft !== null && isFinite(moneyLeft) && (
             <Alert severity={moneyLeft <= 0.5 ? "warning" : "info"}>
               <Typography marginBottom={"10px"}>{t('budget.donate')}</Typography>
-              <Box id="donate-button-container" style={{display: "table", marginLeft: "auto", marginRight: "auto"}}>
+              <Box id="donate-button-container" paddingRight={"30px"} display={"table"} marginLeft={"auto"} marginRight={"auto"}>
                 <DonateButton/>
               </Box>
             </Alert>
