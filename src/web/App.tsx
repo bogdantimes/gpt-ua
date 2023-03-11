@@ -11,6 +11,7 @@ import {
   Link,
   Stack,
   ThemeProvider,
+  Typography,
   useMediaQuery,
 } from "@mui/material";
 import {GitHub, Instagram, Twitter,} from "@mui/icons-material";
@@ -18,6 +19,7 @@ import {useTranslation} from "react-i18next";
 import Answer from "./Answer";
 import Prompt from "./Prompt";
 import {ConversationElem, PromptElem} from "./Types";
+import DonateButton from "./DonateButton";
 
 export default function App(): JSX.Element {
   const {t, i18n} = useTranslation("translation");
@@ -156,12 +158,10 @@ export default function App(): JSX.Element {
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
           {moneyLeft !== null && isFinite(moneyLeft) && (
-            <Alert severity={moneyLeft <= 0.05 ? "warning" : "info"}>
-              {t('budget.increase')}{" "}
-              <Box display={"inline-block"}>
-                <Link href="https://paypal.me/bogdantimes" target="_blank">PayPal</Link>{" | "}
-                <Link href="https://patreon.com/bogdantimes" target="_blank">Patreon</Link>{" | "}
-                <Link href="https://send.monobank.ua/jar/3Q3K3VdHuU" target="_blank">Mono</Link>
+            <Alert severity={moneyLeft <= 0.5 ? "warning" : "info"}>
+              <Typography marginBottom={"10px"}>{t('budget.donate')}</Typography>
+              <Box id="donate-button-container" style={{display: "table", marginLeft: "auto", marginRight: "auto"}}>
+                <DonateButton/>
               </Box>
             </Alert>
           )}
