@@ -32,6 +32,7 @@ export default function App(): JSX.Element {
   const [error, setError] = useState<null | string>("");
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState<number | null>(null);
+  const [donatedAmount, setDonatedAmount] = useState(0);
   const [lastRequestCost, setLastRequestCost] = useState(0);
   const [conversation, setConversation] = useState<ConversationElem[]>(conversationLoader);
   useEffect(() => {
@@ -75,9 +76,10 @@ export default function App(): JSX.Element {
     fetch(serviceURL, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({messages}),
+      body: JSON.stringify({messages, v: 1, da: donatedAmount || undefined}),
     })
       .then((response) => {
+        setDonatedAmount(0);
         return response.text().then((text) => {
           try {
             return JSON.parse(text);
@@ -159,7 +161,9 @@ export default function App(): JSX.Element {
           {error && <Alert severity="error">{error}</Alert>}
           {moneyLeft !== null && isFinite(moneyLeft) && (
             <Alert sx={{'& .MuiAlert-message': {width: '100%'}}} icon={false} severity={moneyLeft <= 1 ? "warning" : "info"}>
-              <FundingBar target={120} value={moneyLeft}></FundingBar>
+              <FundingBar target={120} value={moneyLeft} onDonated={(amount) => {
+                setDonatedAmount(amount)
+              }}></FundingBar>
             </Alert>
           )}
           <Grid container justifyContent="center" spacing={2} paddingRight={"30px"}>

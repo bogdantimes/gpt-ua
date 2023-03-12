@@ -10,9 +10,10 @@ import DonateButton from './DonateButton';
 export type FundraisingCounterProps = {
   value: number;
   target: number;
+  onDonated: (amount: number) => void;
 };
 
-export function FundingBar({value, target}: FundraisingCounterProps) {
+export function FundingBar({value, target, onDonated}: FundraisingCounterProps) {
   value = Math.min(target, value <= 0 ? 0 : +value.toFixed(2));
   const percentage = Math.round((value / target) * 100);
   const theme = useTheme();
@@ -34,7 +35,9 @@ export function FundingBar({value, target}: FundraisingCounterProps) {
       }}/>
       <Typography align={"center"}>{t('budget.donate')}</Typography>
       <Box sx={{mt: "10px", display: 'flex', justifyContent: 'center'}}>
-        <DonateButton/>
+`        <DonateButton onComplete={(params) => {
+          onDonated(+params.amt)
+        }}/>
       </Box>
     </Box>
   );

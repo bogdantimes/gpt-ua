@@ -6,7 +6,7 @@ const generateId = () => {
   return `ID-${++counter}`; // if it is necessary, use some better unique id generator
 };
 
-const DonateButton = () => {
+const DonateButton = ({onComplete}: {onComplete: (params: {amt}) => any}) => {
   const buttonRef = useRef<any>(null);
   const buttonId = useMemo(generateId, []);
   useEffect(() => {
@@ -18,7 +18,8 @@ const DonateButton = () => {
         src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
         alt: 'Donate with PayPal button',
         title: 'PayPal - The safer, easier way to pay online!'
-      }
+      },
+      onComplete,
     }).render(`#${buttonRef.current.id}`); // you can change the code and run it when DOM is ready
   }, []);
   return (
