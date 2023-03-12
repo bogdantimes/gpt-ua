@@ -14,8 +14,8 @@
     "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
   },
   "budget": {
-    "donate": "\uD83D\uDEA8 GPT-UA chat will not survive without your help. If you donate $1/month it will make a big difference. Thank you! \uD83D\uDE4F",
-    "remaining": "Site budget remaining: ${{moneyLeft}}"
+    "donate": "\uD83D\uDEA8 Each answer costs around $0.005. Help fund the budget by donating a small amount. \uD83D\uDE4F",
+    "remaining": "Site budget"
   },
   "openai": {
     "slowResponse": "No response? Check the status:"

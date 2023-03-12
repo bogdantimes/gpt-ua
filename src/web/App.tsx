@@ -19,7 +19,7 @@ import {useTranslation} from "react-i18next";
 import Answer from "./Answer";
 import Prompt from "./Prompt";
 import {ConversationElem, PromptElem} from "./Types";
-import DonateButton from "./DonateButton";
+import {FundingBar} from "./FundingBar";
 
 export default function App(): JSX.Element {
   const {t, i18n} = useTranslation("translation");
@@ -158,15 +158,8 @@ export default function App(): JSX.Element {
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
           {moneyLeft !== null && isFinite(moneyLeft) && (
-            <Alert severity={moneyLeft <= 1 ? "warning" : "info"}>
-              <Typography>{t('budget.donate')}</Typography>
-              <Typography variant="h6" marginTop={"10px"}
-                          align={"center"}>{t('budget.remaining', {moneyLeft: moneyLeft <= 0 ? 0 : moneyLeft.toFixed(2)})}</Typography>
-              <Box id="donate-button-container" marginTop={"10px"} paddingRight={"30px"} display={"table"}
-                   marginLeft={"auto"}
-                   marginRight={"auto"}>
-                <DonateButton/>
-              </Box>
+            <Alert sx={{'& .MuiAlert-message': {width: '100%'}}} icon={false} severity={moneyLeft <= 1 ? "warning" : "info"}>
+              <FundingBar target={120} value={moneyLeft}></FundingBar>
             </Alert>
           )}
           <Grid container justifyContent="center" spacing={2} paddingRight={"30px"}>
