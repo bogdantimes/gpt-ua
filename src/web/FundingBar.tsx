@@ -3,7 +3,7 @@ import LinearProgress, {linearProgressClasses, LinearProgressProps} from '@mui/m
 import {styled} from '@mui/material/styles';
 import {Box, Typography} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
-import { t } from 'i18next';
+import {t} from 'i18next';
 import DonateButton from './DonateButton';
 
 // Define the fundraising campaign counter component
@@ -35,7 +35,7 @@ export function FundingBar({value, target, onDonated}: FundraisingCounterProps) 
       }}/>
       <Typography align={"center"}>{t('budget.donate')}</Typography>
       <Box sx={{mt: "10px", display: 'flex', justifyContent: 'center'}}>
-`        <DonateButton onComplete={(params) => {
+        <DonateButton onComplete={(params) => {
           onDonated(+params.amt)
         }}/>
       </Box>
