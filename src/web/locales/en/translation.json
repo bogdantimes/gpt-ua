@@ -14,7 +14,7 @@
     "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
   },
   "budget": {
-    "donate": "\uD83D\uDEA8 Each answer costs around $0.005. Help fund the budget by donating a small amount. \uD83D\uDE4F",
+    "donate": "\uD83D\uDEA8 OpenAI charges around $0.005 per answer. Please, re-charge the budget before/after using it (Donate button \uD83D\uDC47). \uD83D\uDE4F",
     "remaining": "Site budget"
   },
   "openai": {
