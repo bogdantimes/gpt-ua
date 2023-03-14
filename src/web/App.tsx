@@ -72,60 +72,64 @@ export default function App(): JSX.Element {
     const messages = buildMessaages(conversation, lang);
 
     setLoading(true);
-    const serviceURL = "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws"
-    fetch(serviceURL, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({messages, v: 1, da: donatedAmount || undefined}),
-    })
-      .then((response) => {
-        setDonatedAmount(0);
-        return response.text().then((text) => {
-          try {
-            return JSON.parse(text);
-          } catch (e) {
-            throw new Error(text);
-          }
-        });
-      })
-      .then((gptReply) => {
-        console.log(gptReply);
-        if (gptReply?.error) {
-          setError(gptReply?.answer || gptReply?.error);
-        } else {
-          const answer = gptReply?.answer ?? "";
-          const originalAnswer = gptReply?.choices?.[0]?.message.content.trim() ?? "";
-          const lastPrompt = conversation.filter((elem) => elem.isUser).pop();
-          if (lastPrompt) {
-            lastPrompt.answered = true;
-          }
-          setConversation((conversation: ConversationElem[]) => {
 
-            const newConv = [
-              ...conversation,
-              ConversationElem.newAnswer(conversation.length, answer, originalAnswer),
-              ConversationElem.newPrompt(conversation.length + 1, ""),
-            ];
-            // Mark dropped messages
-            const lastDroppedMessageId = gptReply.lastDroppedMessageId ?? -1;
-            if (lastDroppedMessageId >= 0) {
-              newConv.forEach(el => {
-                el.dropped = el.id <= lastDroppedMessageId
-              })
+    // @ts-ignore
+    grecaptcha.enterprise.execute('6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom', {action: 'login'}).then(function (token) {
+      const serviceURL = "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws"
+      fetch(serviceURL, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({messages, v: 1, da: donatedAmount || undefined, token}),
+      })
+        .then((response) => {
+          setDonatedAmount(0);
+          return response.text().then((text) => {
+            try {
+              return JSON.parse(text);
+            } catch (e) {
+              throw new Error(text);
             }
-            return newConv
           });
-        }
-        if (isFinite(+(gptReply?.moneyLeft))) {
-          setMoneyLeft(+gptReply?.moneyLeft);
-          setLastRequestCost(+gptReply?.cost || 0);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setError(err?.message);
-      })
-      .finally(() => setLoading(false));
+        })
+        .then((gptReply) => {
+          console.log(gptReply);
+          if (gptReply?.error) {
+            setError(gptReply?.answer || gptReply?.error);
+          } else {
+            const answer = gptReply?.answer ?? "";
+            const originalAnswer = gptReply?.choices?.[0]?.message.content.trim() ?? "";
+            const lastPrompt = conversation.filter((elem) => elem.isUser).pop();
+            if (lastPrompt) {
+              lastPrompt.answered = true;
+            }
+            setConversation((conversation: ConversationElem[]) => {
+
+              const newConv = [
+                ...conversation,
+                ConversationElem.newAnswer(conversation.length, answer, originalAnswer),
+                ConversationElem.newPrompt(conversation.length + 1, ""),
+              ];
+              // Mark dropped messages
+              const lastDroppedMessageId = gptReply.lastDroppedMessageId ?? -1;
+              if (lastDroppedMessageId >= 0) {
+                newConv.forEach(el => {
+                  el.dropped = el.id <= lastDroppedMessageId
+                })
+              }
+              return newConv
+            });
+          }
+          if (isFinite(+(gptReply?.moneyLeft))) {
+            setMoneyLeft(+gptReply?.moneyLeft);
+            setLastRequestCost(+gptReply?.cost || 0);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setError(err?.message);
+        })
+        .finally(() => setLoading(false));
+    });
   };
 
   return (
@@ -160,7 +164,8 @@ export default function App(): JSX.Element {
           {loading && <LinearProgress/>}
           {error && <Alert severity="error">{error}</Alert>}
           {moneyLeft !== null && isFinite(moneyLeft) && (
-            <Alert sx={{'& .MuiAlert-message': {width: '100%'}}} icon={false} severity={moneyLeft <= 1 ? "warning" : "info"}>
+            <Alert sx={{'& .MuiAlert-message': {width: '100%'}}} icon={false}
+                   severity={moneyLeft <= 1 ? "warning" : "info"}>
               <FundingBar target={120} value={moneyLeft} onDonated={(amount) => {
                 setDonatedAmount(amount)
               }}></FundingBar>
