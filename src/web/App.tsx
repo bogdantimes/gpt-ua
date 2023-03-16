@@ -3,10 +3,12 @@ import {useEffect, useState} from "react";
 import {
   Alert,
   Box,
+  Collapse,
   Container,
   createTheme,
   CssBaseline,
   Grid,
+  IconButton,
   LinearProgress,
   Link,
   Stack,
@@ -14,7 +16,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import {GitHub, Instagram, Twitter,} from "@mui/icons-material";
+import {ExpandMore, GitHub, Instagram, Twitter,} from "@mui/icons-material";
 import {useTranslation} from "react-i18next";
 import Answer from "./Answer";
 import Prompt from "./Prompt";
@@ -132,6 +134,12 @@ export default function App(): JSX.Element {
     });
   };
 
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
@@ -195,6 +203,30 @@ export default function App(): JSX.Element {
                                                                                      style={{fontSize: "12px"}}>
             OpenAI status
           </Link>
+            <Box sx={{display: "block", marginLeft: "auto", marginRight: "auto"}}>
+              <span style={{fontSize: "12px"}}>Dashboard</span>
+              <IconButton size={"small"} onClick={handleExpandClick}>
+                <ExpandMore sx={{
+                  transform: expanded ? "rotate(180deg)" : "none",
+                  transition: theme.transitions.create("transform", {
+                    duration: theme.transitions.duration.shortest,
+                  })
+                }}/>
+              </IconButton>
+            </Box>
+            <Box sx={{position: "relative", pb: "130%", scale: "0.5"}}>
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <iframe
+                  style={{
+                    position: "absolute",
+                    top: "-50%",
+                    width: "200%",
+                    height: "100%",
+                    left: "-50%"
+                  }}
+                  src="https://cloudwatch.amazonaws.com/dashboard.html?theme=light&dashboard=GPT-UA_Dashboard&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTIwNjgxMTU4MDM2NSIsIlUiOiJ1cy1lYXN0LTFfSUlPV3l6WGc0IiwiQyI6IjRldGQ2cTZtNHZqYzZidGRldGprYjdnNXBjIiwiSSI6InVzLWVhc3QtMTpjMDVkYTA4ZS0yMDdjLTQ0YTAtOWY0OC00Yzk1MWM5OTk5YTIiLCJNIjoiUHVibGljIn0="></iframe>
+              </Collapse>
+            </Box>
           </Box>
         </Stack>
       </Container>
