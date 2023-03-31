@@ -5,6 +5,7 @@ import Backend from 'i18next-http-backend';
 import translationEN from './locales/en/translation.json';
 import translationUK from './locales/uk/translation.json';
 import translationRU from './locales/ru/translation.json';
+import translationIT from './locales/it/translation.json';
 
 const resources = {
 	en: {
@@ -15,6 +16,9 @@ const resources = {
 	},
 	ru: {
 		translation: translationRU,
+	},
+	it: {
+		translation: translationIT,
 	},
 };
 
