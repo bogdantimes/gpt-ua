@@ -1,0 +1,23 @@
+{
+  "conversation": {
+    "start": "Inizia il dialogo (in qualsiasi lingua)",
+    "you": "La tua risposta"
+  },
+  "input": {
+    "placeholder": "Chiedimi qualsiasi cosa"
+  },
+  "clipboard": {
+    "tooltip": "Copiato negli appunti"
+  },
+  "errors": {
+    "notEnoughDetails": "Per favore, fornisci più dettagli per la tua richiesta",
+    "insecureContext": "Questa funzione è disponibile solo in un contesto sicuro (HTTPS) in alcuni o tutti i browser supportati."
+  },
+  "budget": {
+    "donate": "\uD83D\uDEA8 OpenAI addebita circa $0,005 per risposta. Per favore, ricarica il budget prima/dopo averlo utilizzato (pulsante Dona \uD83D\uDC47). \uD83D\uDE4F",
+    "remaining": "Budget del sito"
+  },
+  "openai": {
+    "slowResponse": "Nessuna risposta? Controlla lo stato:"
+  }
+}
