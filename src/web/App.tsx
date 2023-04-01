@@ -81,7 +81,7 @@ export default function App(): JSX.Element {
       fetch(serviceURL, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({messages, v: 1, da: donatedAmount || undefined, token}),
+        body: JSON.stringify({messages, v: 2, da: donatedAmount || undefined, token}),
       })
         .then((response) => {
           setDonatedAmount(0);
