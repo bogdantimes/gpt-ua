@@ -1,3 +1,4 @@
+import './styles.css';
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {
@@ -182,17 +183,17 @@ export default function App(): JSX.Element {
           <Grid container justifyContent="center" spacing={2} paddingRight={"30px"}>
             <Grid item>
               <Link href="https://github.com/bogdantimes" target="_blank">
-                <GitHub/>
+                <GitHub className="github-icon" />
               </Link>
             </Grid>
             <Grid item>
               <Link href="https://twitter.com/bogdantimes" target="_blank">
-                <Twitter/>
+                <Twitter className="twitter-icon" />
               </Link>
             </Grid>
             <Grid item>
               <Link href="https://www.instagram.com/bogdantimes" target="_blank">
-                <Instagram/>
+                <Instagram className="instagram-icon" />
               </Link>
             </Grid>
           </Grid>
