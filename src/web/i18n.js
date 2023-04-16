@@ -1,11 +1,12 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import Backend from 'i18next-http-backend';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import Backend from "i18next-http-backend";
 
-import translationEN from './locales/en/translation.json';
-import translationUK from './locales/uk/translation.json';
-import translationRU from './locales/ru/translation.json';
-import translationIT from './locales/it/translation.json';
+import translationEN from "./locales/en/translation.json";
+import translationUK from "./locales/uk/translation.json";
+import translationRU from "./locales/ru/translation.json";
+import translationIT from "./locales/it/translation.json";
+import translationDE from "./locales/de/translation.json";
 
 const resources = {
 	en: {
@@ -20,6 +21,9 @@ const resources = {
 	it: {
 		translation: translationIT,
 	},
+	de: {
+		translation: translationDE,
+	}
 };
 
 i18n
