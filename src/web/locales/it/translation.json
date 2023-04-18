@@ -14,8 +14,10 @@
     "insecureContext": "Questa funzione è disponibile solo in un contesto sicuro (HTTPS) in alcuni o tutti i browser supportati."
   },
   "budget": {
-    "donate": "\uD83D\uDEA8 OpenAI addebita circa $0,005 per risposta. Per favore, ricarica il budget prima/dopo averlo utilizzato (pulsante Dona \uD83D\uDC47). \uD83D\uDE4F",
-    "remaining": "Budget del sito"
+    "mono": "Ricarica",
+    "donate": "\uD83D\uDEA8 OpenAI addebita circa $0.005 per risposta. Si prega di ricaricare il budget prima/dopo averlo utilizzato. \uD83D\uDE4F",
+    "remaining": "Budget del sito",
+    "swagbucks": "Abbiamo anche un'opzione alternativa: puoi registrarti su Swagbucks utilizzando il nostro link di riferimento. Guadagnando premi su Swagbucks, contribuirai a ricaricare il budget del nostro sito senza costi aggiuntivi per te."
   },
   "openai": {
     "slowResponse": "Nessuna risposta? Controlla lo stato:"

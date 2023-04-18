@@ -15,6 +15,7 @@ import {
   Link,
   Stack,
   ThemeProvider,
+  Typography,
   useMediaQuery,
 } from "@mui/material";
 import { ExpandMore, GitHub, Instagram, Twitter } from "@mui/icons-material";
@@ -23,6 +24,7 @@ import Answer from "./Answer";
 import Prompt from "./Prompt";
 import { ConversationElem, type PromptElem } from "./Types";
 import { FundingBar } from "./FundingBar";
+import DonateButton from "./DonateButton";
 
 export default function App(): JSX.Element {
   const { t, i18n } = useTranslation("translation");
@@ -73,7 +75,7 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages,
-            v: 3,
+            v: 4,
             da: donatedAmount || undefined,
             token,
           }),
@@ -201,30 +203,78 @@ export default function App(): JSX.Element {
           {error && <Alert severity="error">{error}</Alert>}
           {moneyLeft !== null && isFinite(moneyLeft) && (
             <Alert
-              sx={{ "& .MuiAlert-message": { width: "100%" } }}
+              sx={{
+                textAlign: "center",
+                "& .MuiAlert-message": { width: "100%" },
+              }}
               icon={false}
               severity={moneyLeft <= 1 ? "warning" : "info"}
             >
-              <FundingBar
-                target={120}
-                value={moneyLeft}
-                onDonated={(amount) => {
-                  setDonatedAmount(amount);
-                  sendConversation();
-                }}
-              ></FundingBar>
+              <FundingBar target={120} value={moneyLeft}>
+                {lang !== "uk" && lang !== "ru" && (
+                  <Box
+                    sx={{
+                      mt: "10px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <DonateButton
+                      onComplete={(params) => {
+                        setDonatedAmount(+params.amt);
+                        sendConversation();
+                      }}
+                    />
+                  </Box>
+                )}
+                {(lang === "uk" || lang === "ru") && (
+                  <>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size={"small"}
+                      onClick={() =>
+                        window.open(
+                          `https://send.monobank.ua/jar/3Q3K3VdHuU`,
+                          "_blank"
+                        )
+                      }
+                      sx={{
+                        backgroundColor: "black",
+                        borderRadius: `8px`,
+                        mt: "16px",
+                        display: `flex`,
+                        mr: `auto`,
+                        ml: `auto`,
+                      }}
+                    >
+                      {t(`budget.mono`)} (Google Pay / Visa / Mastercard)
+                    </Button>
+                    <Typography ml={"auto"} mr={"auto"} variant={"caption"}>
+                      100₴ = $2.7
+                    </Typography>
+                  </>
+                )}
+              </FundingBar>
+              <Typography
+                align={"center"}
+                variant="body1"
+                sx={{ mt: 1, mb: 1 }}
+              >
+                {t("budget.swagbucks")}
+              </Typography>
               <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 size={"small"}
                 onClick={() =>
                   window.open(
-                    `https://send.monobank.ua/jar/3Q3K3VdHuU`,
+                    `https://www.swagbucks.com/p/register?rb=140904032`,
                     "_blank"
                   )
                 }
                 sx={{
-                  backgroundColor: "black",
+                  backgroundColor: "#f50057",
                   borderRadius: `8px`,
                   mt: "16px",
                   display: `flex`,
@@ -232,7 +282,7 @@ export default function App(): JSX.Element {
                   ml: `auto`,
                 }}
               >
-                Donate with Monobank
+                Register with Swagbucks
               </Button>
             </Alert>
           )}
