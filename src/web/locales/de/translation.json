@@ -17,7 +17,8 @@
     "mono": "Aufladen",
     "donate": "\uD83D\uDEA8 OpenAI berechnet etwa $0.005 pro Antwort. Bitte laden Sie das Budget vor/nach der Nutzung auf. \uD83D\uDE4F",
     "remaining": "Website-Budget",
-    "swagbucks": "Wir haben auch eine alternative Option: Sie können sich über unseren Empfehlungslink bei Swagbucks anmelden. Indem Sie Belohnungen auf Swagbucks verdienen, füllen Sie das Budget unserer Website ohne zusätzliche Kosten für Sie auf."
+    "rewards": "Wir haben auch eine alternative Option: Sie können sich über unseren Empfehlungslink auf der SCOIN-Plattform anmelden. Indem Sie Belohnungen auf SCOIN verdienen, füllen Sie das Budget unserer Website ohne zusätzliche Kosten für Sie auf.",
+    "rewardsBtn": "Für Belohnungen auf SCOIN"
   },
   "openai": {
     "slowResponse": "Keine Antwort? Überprüfen Sie den Status:"

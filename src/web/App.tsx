@@ -75,7 +75,7 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages,
-            v: 4,
+            v: 5,
             da: donatedAmount || undefined,
             token,
           }),
@@ -261,17 +261,14 @@ export default function App(): JSX.Element {
                 variant="body1"
                 sx={{ mt: 1, mb: 1 }}
               >
-                {t("budget.swagbucks")}
+                {t("budget.rewards")}
               </Typography>
               <Button
                 variant="contained"
                 color="secondary"
                 size={"small"}
                 onClick={() =>
-                  window.open(
-                    `https://www.swagbucks.com/p/register?rb=140904032`,
-                    "_blank"
-                  )
+                  window.open(`https://scoin.click/r/151527`, "_blank")
                 }
                 sx={{
                   backgroundColor: "#f50057",
@@ -282,7 +279,7 @@ export default function App(): JSX.Element {
                   ml: `auto`,
                 }}
               >
-                Register with Swagbucks
+                {t("budget.rewardsBtn")}
               </Button>
             </Alert>
           )}

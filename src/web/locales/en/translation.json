@@ -17,7 +17,8 @@
     "mono": "Top-up",
     "donate": "\uD83D\uDEA8 OpenAI charges around $0.005 per answer. Please, re-charge the budget before/after using it. \uD83D\uDE4F",
     "remaining": "Site budget",
-    "swagbucks": "Also we have an alternative option - you can register on Swagbucks using our referral link. By signing up and earning rewards on Swagbucks, you'll top-up our website's budget at no extra cost to you."
+    "rewards": "Also we have an alternative option - you can register on SCOIN platform using our referral link. By signing up and earning rewards on SCOIN, you'll top-up our website's budget at no extra cost to you.",
+    "rewardsBtn": "For rewards on SCOIN"
   },
   "openai": {
     "slowResponse": "No response? Check the status:"
