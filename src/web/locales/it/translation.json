@@ -16,9 +16,7 @@
   "budget": {
     "mono": "Ricarica",
     "donate": "\uD83D\uDEA8 OpenAI addebita circa $0.005 per risposta. Si prega di ricaricare il budget prima/dopo averlo utilizzato. \uD83D\uDE4F",
-    "remaining": "Budget del sito",
-    "rewards": "Inoltre, abbiamo un'opzione alternativa: puoi registrarti sulla piattaforma di premi SCOIN utilizzando il nostro link di referenza, e ciò finanzierà indirettamente il budget nel tempo.",
-    "rewardsBtn": "Per premi su SCOIN"
+    "remaining": "Budget del sito"
   },
   "openai": {
     "slowResponse": "Nessuna risposta? Controlla lo stato:"

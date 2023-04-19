@@ -256,31 +256,6 @@ export default function App(): JSX.Element {
                   </>
                 )}
               </FundingBar>
-              <Typography
-                align={"center"}
-                variant="body1"
-                sx={{ mt: 1, mb: 1 }}
-              >
-                {t("budget.rewards")}
-              </Typography>
-              <Button
-                variant="contained"
-                color="secondary"
-                size={"small"}
-                onClick={() =>
-                  window.open(`https://scoin.click/r/151527`, "_blank")
-                }
-                sx={{
-                  backgroundColor: "#f50057",
-                  borderRadius: `8px`,
-                  mt: "16px",
-                  display: `flex`,
-                  mr: `auto`,
-                  ml: `auto`,
-                }}
-              >
-                {t("budget.rewardsBtn")}
-              </Button>
             </Alert>
           )}
           <Grid
