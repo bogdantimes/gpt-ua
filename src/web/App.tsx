@@ -24,7 +24,6 @@ import Answer from "./Answer";
 import Prompt from "./Prompt";
 import { ConversationElem, type PromptElem } from "./Types";
 import { FundingBar } from "./FundingBar";
-import DonateButton from "./DonateButton";
 
 export default function App(): JSX.Element {
   const { t, i18n } = useTranslation("translation");
@@ -211,50 +210,32 @@ export default function App(): JSX.Element {
               severity={moneyLeft <= 1 ? "warning" : "info"}
             >
               <FundingBar target={120} value={moneyLeft}>
-                {lang !== "uk" && lang !== "ru" && (
-                  <Box
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size={"small"}
+                    onClick={() =>
+                      window.open(
+                        `https://send.monobank.ua/jar/3Q3K3VdHuU`,
+                        "_blank"
+                      )
+                    }
                     sx={{
-                      mt: "10px",
-                      display: "flex",
-                      justifyContent: "center",
+                      backgroundColor: "black",
+                      borderRadius: `8px`,
+                      mt: "16px",
+                      display: `flex`,
+                      mr: `auto`,
+                      ml: `auto`,
                     }}
                   >
-                    <DonateButton
-                      onComplete={(params) => {
-                        setDonatedAmount(+params.amt);
-                        sendConversation();
-                      }}
-                    />
-                  </Box>
-                )}
-                {(lang === "uk" || lang === "ru") && (
-                  <>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size={"small"}
-                      onClick={() =>
-                        window.open(
-                          `https://send.monobank.ua/jar/3Q3K3VdHuU`,
-                          "_blank"
-                        )
-                      }
-                      sx={{
-                        backgroundColor: "black",
-                        borderRadius: `8px`,
-                        mt: "16px",
-                        display: `flex`,
-                        mr: `auto`,
-                        ml: `auto`,
-                      }}
-                    >
-                      {t(`budget.mono`)} (Google Pay / Visa / Mastercard)
-                    </Button>
-                    <Typography ml={"auto"} mr={"auto"} variant={"caption"}>
-                      100₴ = $2.7
-                    </Typography>
-                  </>
-                )}
+                    {t(`budget.mono`)} (Google Pay / Visa / Mastercard)
+                  </Button>
+                  <Typography ml={"auto"} mr={"auto"} variant={"caption"}>
+                    100₴ = $2.7
+                  </Typography>
+                </>
               </FundingBar>
             </Alert>
           )}
