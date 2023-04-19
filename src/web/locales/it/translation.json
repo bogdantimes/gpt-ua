@@ -15,7 +15,7 @@
   },
   "budget": {
     "mono": "Ricarica",
-    "donate": "\uD83D\uDEA8 OpenAI addebita circa $0.005 per risposta. Si prega di ricaricare il budget prima/dopo averlo utilizzato. \uD83D\uDE4F",
+    "donate": "\uD83D\uDEA8 OpenAI addebita circa $0.005 per risposta. Il proprietario del sito a volte ricarica dal proprio portafoglio, ma non è sufficiente (attualmente circa 15 mila utenti al mese). Quindi per favore, ricaricate da soli - il processo è stato automatizzato. \uD83D\uDE4F",
     "remaining": "Budget del sito"
   },
   "openai": {

@@ -75,7 +75,7 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages,
-            v: 5,
+            v: 6,
             da: donatedAmount || undefined,
             token,
           }),
