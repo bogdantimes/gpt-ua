@@ -221,7 +221,8 @@ export default function App(): JSX.Element {
                       )
                     }
                     sx={{
-                      backgroundColor: "black",
+                      backgroundColor:
+                        theme.palette.mode === "light" ? "black" : "darkgrey",
                       color: "white",
                       borderRadius: `8px`,
                       mt: "16px",
