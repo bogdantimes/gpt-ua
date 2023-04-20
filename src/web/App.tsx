@@ -74,7 +74,7 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages,
-            v: 6,
+            v: 7,
             da: donatedAmount || undefined,
             token,
           }),
@@ -213,7 +213,6 @@ export default function App(): JSX.Element {
                 <>
                   <Button
                     variant="contained"
-                    color="primary"
                     size={"small"}
                     onClick={() =>
                       window.open(
@@ -223,6 +222,7 @@ export default function App(): JSX.Element {
                     }
                     sx={{
                       backgroundColor: "black",
+                      color: "white",
                       borderRadius: `8px`,
                       mt: "16px",
                       display: `flex`,
