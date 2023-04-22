@@ -18,7 +18,13 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { ExpandMore, GitHub, Instagram, Twitter } from "@mui/icons-material";
+import {
+  ExpandMore,
+  Instagram,
+  LinkedIn,
+  Telegram,
+  Twitter,
+} from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import Answer from "./Answer";
 import Prompt from "./Prompt";
@@ -247,13 +253,16 @@ export default function App(): JSX.Element {
             paddingRight={"30px"}
           >
             <Grid item>
-              <Link href="https://github.com/bogdantimes" target="_blank">
-                <GitHub className="github-icon" />
+              <Link
+                href="https://www.linkedin.com/in/bohdan-kovalov"
+                target="_blank"
+              >
+                <LinkedIn className="pulsating-icon" />
               </Link>
             </Grid>
             <Grid item>
               <Link href="https://twitter.com/bogdantimes" target="_blank">
-                <Twitter className="twitter-icon" />
+                <Twitter className="pulsating-icon" />
               </Link>
             </Grid>
             <Grid item>
@@ -261,7 +270,12 @@ export default function App(): JSX.Element {
                 href="https://www.instagram.com/bogdantimes"
                 target="_blank"
               >
-                <Instagram className="instagram-icon" />
+                <Instagram className="pulsating-icon" />
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="https://t.me/gpt_ua_chat" target="_blank">
+                <Telegram className="pulsating-icon" />
               </Link>
             </Grid>
           </Grid>

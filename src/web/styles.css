@@ -1,26 +1,16 @@
 @keyframes pulsate {
     0% {
-        transform: scale(1);
+        color: rgba(0, 0, 0, 0.3);
     }
     50% {
-        transform: scale(1.1);
+        color: rgba(0, 0, 0, 1);
     }
     100% {
-        transform: scale(1);
+        color: rgba(0, 0, 0, 0.3);
     }
 }
 
-.github-icon {
+.pulsating-icon {
     animation: pulsate 2s infinite;
-    color: #6e5494;
-}
-
-.twitter-icon {
-    animation: pulsate 2s infinite 0.5s;
-    color: #1da1f2;
-}
-
-.instagram-icon {
-    animation: pulsate 2s infinite 1s;
-    color: #e4405f;
+    filter: brightness(1);
 }
