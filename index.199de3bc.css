@@ -1,0 +1,2 @@
+@keyframes pulsate-light{0%{color:#0000004d}50%{color:#000}to{color:#0000004d}}.pulsating-icon-light{filter:brightness();animation:2s infinite pulsate-light}@keyframes pulsate-dark{0%{color:#ffffff4d}50%{color:#fff}to{color:#ffffff4d}}.pulsating-icon-dark{filter:brightness();animation:2s infinite pulsate-dark}
+/*# sourceMappingURL=index.199de3bc.css.map */

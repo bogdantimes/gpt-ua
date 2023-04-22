@@ -1,4 +1,4 @@
-@keyframes pulsate {
+@keyframes pulsate-light {
   0% {
     color: #0000004d;
   }
@@ -12,9 +12,28 @@
   }
 }
 
-.pulsating-icon {
+.pulsating-icon-light {
   filter: brightness();
-  animation: 2s infinite pulsate;
+  animation: 2s infinite pulsate-light;
+}
+
+@keyframes pulsate-dark {
+  0% {
+    color: #ffffff4d;
+  }
+
+  50% {
+    color: #fff;
+  }
+
+  100% {
+    color: #ffffff4d;
+  }
+}
+
+.pulsating-icon-dark {
+  filter: brightness();
+  animation: 2s infinite pulsate-dark;
 }
 
 /*# sourceMappingURL=index.1d5f3256.css.map */
