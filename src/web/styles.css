@@ -1,4 +1,4 @@
-@keyframes pulsate {
+@keyframes pulsate-light {
     0% {
         color: rgba(0, 0, 0, 0.3);
     }
@@ -10,7 +10,24 @@
     }
 }
 
-.pulsating-icon {
-    animation: pulsate 2s infinite;
+.pulsating-icon-light {
+    animation: pulsate-light 2s infinite;
+    filter: brightness(1);
+}
+
+@keyframes pulsate-dark {
+    0% {
+        color: rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        color: rgba(255, 255, 255, 1);
+    }
+    100% {
+        color: rgba(255, 255, 255, 0.3);
+    }
+}
+
+.pulsating-icon-dark {
+    animation: pulsate-dark 2s infinite;
     filter: brightness(1);
 }

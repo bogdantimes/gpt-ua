@@ -257,12 +257,12 @@ export default function App(): JSX.Element {
                 href="https://www.linkedin.com/in/bohdan-kovalov"
                 target="_blank"
               >
-                <LinkedIn className="pulsating-icon" />
+                <LinkedIn className={`pulsating-icon-${theme.palette.mode}`} />
               </Link>
             </Grid>
             <Grid item>
               <Link href="https://twitter.com/bogdantimes" target="_blank">
-                <Twitter className="pulsating-icon" />
+                <Twitter className={`pulsating-icon-${theme.palette.mode}`} />
               </Link>
             </Grid>
             <Grid item>
@@ -270,12 +270,12 @@ export default function App(): JSX.Element {
                 href="https://www.instagram.com/bogdantimes"
                 target="_blank"
               >
-                <Instagram className="pulsating-icon" />
+                <Instagram className={`pulsating-icon-${theme.palette.mode}`} />
               </Link>
             </Grid>
             <Grid item>
               <Link href="https://t.me/gpt_ua_chat" target="_blank">
-                <Telegram className="pulsating-icon" />
+                <Telegram className={`pulsating-icon-${theme.palette.mode}`} />
               </Link>
             </Grid>
           </Grid>
