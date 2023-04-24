@@ -240,7 +240,7 @@ export default function App(): JSX.Element {
                     {t(`budget.mono`)} (Google Pay / Visa / Mastercard)
                   </Button>
                   <Typography ml={"auto"} mr={"auto"} variant={"caption"}>
-                    10₴ ≈ $0.26
+                    10₴ ≈ $0.25
                   </Typography>
                 </>
               </FundingBar>
