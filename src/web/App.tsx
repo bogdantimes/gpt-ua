@@ -42,8 +42,6 @@ export default function App(): JSX.Element {
   const [error, setError] = useState<null | string>("");
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState<number | null>(null);
-  const [donatedAmount, setDonatedAmount] = useState(0);
-  const [lastRequestCost, setLastRequestCost] = useState(0);
   const [conversation, setConversation] =
     useState<ConversationElem[]>(conversationLoader);
   useEffect(() => {
@@ -66,9 +64,6 @@ export default function App(): JSX.Element {
 
   function sendConversation() {
     const messages = buildMessaages(conversation, lang);
-
-    setLoading(true);
-
     // @ts-expect-error
     grecaptcha.enterprise
       .execute("6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom", { action: "login" })
@@ -80,13 +75,11 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages,
-            v: 7,
-            da: donatedAmount || undefined,
+            v: 8,
             token,
           }),
         })
           .then(async (response) => {
-            setDonatedAmount(0);
             return await response.text().then((text) => {
               try {
                 return JSON.parse(text);
@@ -132,7 +125,6 @@ export default function App(): JSX.Element {
             }
             if (isFinite(+gptReply?.moneyLeft)) {
               setMoneyLeft(+gptReply?.moneyLeft);
-              setLastRequestCost(+gptReply?.cost || 0);
             }
           })
           .catch((err) => {
@@ -160,7 +152,10 @@ export default function App(): JSX.Element {
       setConversation(conversation);
     }
 
-    sendConversation();
+    setLoading(true);
+    setTimeout(() => {
+      sendConversation();
+    }, new Date().getMilliseconds() * 3);
   };
 
   const [expanded, setExpanded] = useState(false);
