@@ -15,7 +15,7 @@
   },
   "budget": {
     "mono": "Top-up",
-    "donate": "\uD83D\uDEA8 OpenAI charges about $0.005 per answer. The website owner sometimes tops up from their own pocket, but it is not enough (currently about 15 thousand users per month). So please top up on your own - the process has been automated. \uD83D\uDE4F",
+    "donate": "\uD83D\uDEA8 OpenAI charges about $0.005 per answer. The website owner sometimes tops up from their own pocket, but it is not enough (currently about 30,000 users/month). So please top up on your own - the process has been automated. \uD83D\uDE4F",
     "remaining": "Site budget"
   },
   "openai": {
