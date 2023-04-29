@@ -180,7 +180,7 @@ export default function App(): JSX.Element {
     setLoading(true);
     setTimeout(() => {
       sendConversation();
-    }, new Date().getMilliseconds() * 3);
+    }, new Date().getMilliseconds());
   };
 
   const [expanded, setExpanded] = useState(false);
