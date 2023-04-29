@@ -10,7 +10,7 @@ const cyberpunkTheme = createTheme({
       main: "#ff00ff",
     },
     background: {
-      default: "#222",
+      default: "#2a2a2a", // Adjust this value for a slightly lighter background
       paper: "#333",
     },
     text: {
@@ -24,7 +24,12 @@ const cyberpunkTheme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: `
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap');
+        body {
+          background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("https://wallpaperaccess.com/download/cyberpunk-style-5127290");
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center;
+        }
       `,
     },
   },

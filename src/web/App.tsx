@@ -299,6 +299,16 @@ export default function App(): JSX.Element {
               </Link>
             </Grid>
           </Grid>
+          {theme !== cyberpunkTheme && (
+            <Box sx={{ textAlign: "center", pt: 1 }}>
+              <Link
+                href="https://gpt-ua.click/#theme=cyber"
+                className="cyber-link"
+              >
+                Try the Cyber theme
+              </Link>
+            </Box>
+          )}
           {/*  Link to check OpenAI service status */}
           <Box sx={{ textAlign: "center" }}>
             <span style={{ fontSize: "12px" }}>{t(`openai.slowResponse`)}</span>{" "}
