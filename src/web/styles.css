@@ -1,3 +1,10 @@
+/* Add this to your existing CSS or create a new CSS file and import it */
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap");
+
+body {
+    font-family: "Orbitron", sans-serif;
+}
+
 @keyframes pulsate-light {
     0% {
         color: rgba(0, 0, 0, 0.3);
@@ -31,3 +38,24 @@
     animation: pulsate-dark 2s infinite;
     filter: brightness(1);
 }
+
+@keyframes pulsate-cyber {
+    0% {
+        color: rgba(0, 255, 255, 0.3);
+        text-shadow: none;
+    }
+    50% {
+        color: rgba(0, 255, 255, 1);
+        text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+    }
+    100% {
+        color: rgba(0, 255, 255, 0.3);
+        text-shadow: none;
+    }
+}
+
+.pulsating-icon-cyber {
+    animation: pulsate-cyber 2s infinite;
+    filter: brightness(1);
+}
+

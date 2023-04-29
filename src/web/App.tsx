@@ -30,14 +30,29 @@ import Answer from "./Answer";
 import Prompt from "./Prompt";
 import { ConversationElem, type PromptElem } from "./Types";
 import { FundingBar } from "./FundingBar";
+import cyberpunkTheme from "./theme";
 
 export default function App(): JSX.Element {
   const { t, i18n } = useTranslation("translation");
   const mode = useMediaQuery(`(prefers-color-scheme: dark)`);
-  const theme = React.useMemo(
-    () => createTheme({ palette: { mode: mode ? `dark` : `light` } }),
-    [mode]
-  );
+
+  const checkForCyberTheme = () => {
+    return window.location.hash.includes("theme=cyber");
+  };
+
+  const getTheme = () => {
+    if (checkForCyberTheme()) {
+      return cyberpunkTheme;
+    } else {
+      return createTheme({ palette: { mode: mode ? `dark` : `light` } });
+    }
+  };
+
+  const [theme, setTheme] = useState(getTheme());
+
+  useEffect(() => {
+    setTheme(getTheme());
+  }, [mode]);
 
   const [error, setError] = useState<null | string>("");
   const [loading, setLoading] = useState(false);

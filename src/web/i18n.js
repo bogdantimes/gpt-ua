@@ -5,25 +5,21 @@ import Backend from "i18next-http-backend";
 import translationEN from "./locales/en/translation.json";
 import translationUK from "./locales/uk/translation.json";
 import translationRU from "./locales/ru/translation.json";
-import translationIT from "./locales/it/translation.json";
 import translationDE from "./locales/de/translation.json";
 
 const resources = {
-	en: {
-		translation: translationEN,
-	},
-	uk: {
-		translation: translationUK,
-	},
-	ru: {
-		translation: translationRU,
-	},
-	it: {
-		translation: translationIT,
-	},
-	de: {
-		translation: translationDE,
-	}
+  en: {
+    translation: translationEN,
+  },
+  uk: {
+    translation: translationUK,
+  },
+  ru: {
+    translation: translationRU,
+  },
+  de: {
+    translation: translationDE,
+  },
 };
 
 i18n
