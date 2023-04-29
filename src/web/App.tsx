@@ -62,6 +62,15 @@ export default function App(): JSX.Element {
     changeLanguage(browserLang);
   }, []);
 
+  useEffect(() => {
+    const hash = window.location.hash;
+    const promptMatch = /#prompt=([^&]*)/.exec(hash);
+    if (promptMatch) {
+      const prompt = decodeURIComponent(promptMatch[1]);
+      handleSend(ConversationElem.newPrompt(0, prompt));
+    }
+  }, []);
+
   function sendConversation() {
     const messages = buildMessaages(conversation, lang);
     // @ts-expect-error
