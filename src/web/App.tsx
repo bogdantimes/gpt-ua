@@ -66,6 +66,7 @@ export default function App(): JSX.Element {
     const hash = window.location.hash;
     const promptMatch = /#prompt=([^&]*)/.exec(hash);
     if (promptMatch) {
+      window.location.hash = "";
       const prompt = decodeURIComponent(promptMatch[1]);
       handleSend(ConversationElem.newPrompt(0, prompt));
     }
