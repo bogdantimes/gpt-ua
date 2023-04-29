@@ -25,12 +25,19 @@ const cyberpunkTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: `
         body {
-          background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("https://wallpaperaccess.com/download/cyberpunk-style-5127290");
+          background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("https://wallpaperaccess.com/download/cyberpunk-style-5127290");
           background-repeat: no-repeat;
           background-size: cover;
           background-position: center;
         }
       `,
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "transparent",
+        },
+      },
     },
   },
 });
