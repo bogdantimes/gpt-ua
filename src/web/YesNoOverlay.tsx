@@ -71,7 +71,7 @@ export function YesNoOverlay({
               top: "-5px",
             }}
           >
-            Yes
+            {t("yes")}
           </Typography>
           <Button
             className={"pulsate"}
@@ -115,7 +115,7 @@ export function YesNoOverlay({
               top: "-4px",
             }}
           >
-            No
+            {t("no")}
           </Typography>
           <Button
             className={"pulsate"}

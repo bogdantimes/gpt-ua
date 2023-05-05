@@ -22,5 +22,7 @@
     "slowResponse": "Keine Antwort? Überprüfen Sie den Status:"
   },
   "requestSummary": "Bisher haben Sie {{requestsNum}} Anfrage(n) gestellt, die etwa ${{costUSD}} (≈ {{costUAH}}₴) kosten.",
-  "topUpQuestion": "Haben Sie das Budget der Website aufgefüllt?"
+  "topUpQuestion": "Haben Sie das Budget der Website aufgefüllt?",
+  "yes": "Ja",
+  "no": "Nein"
 }

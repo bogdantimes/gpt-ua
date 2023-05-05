@@ -22,5 +22,7 @@
     "slowResponse": "No response? Check the status:"
   },
   "requestSummary": "So far you've made {{requestsNum}} request(s), which costs around ${{costUSD}} (≈ {{costUAH}}₴).",
-  "topUpQuestion": "Did you replenish the site budget?"
+  "topUpQuestion": "Did you replenish the site budget?",
+  "yes": "Yes",
+  "no": "No"
 }

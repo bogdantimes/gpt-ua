@@ -19,5 +19,7 @@
     "remaining": "Бюджет сайту"
   },
   "requestSummary": "Досі ви зробили {{requestsNum}} запит(ів), на суму приблизно ${{costUSD}} (≈ {{costUAH}}₴).",
-  "topUpQuestion": "Чи поповнили ви бюджет сайту?"
+  "topUpQuestion": "Чи поповнили ви бюджет сайту?",
+  "yes": "Так",
+  "no": "Ні"
 }
