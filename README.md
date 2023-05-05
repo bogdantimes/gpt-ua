@@ -3,9 +3,9 @@ Simple and free website where you can use #OpenAI #ChatGPT service without need 
 
 https://gpt-ua.click
 
-People are already using the site every day. The number of requests varies, but in general it is hundreds per day. For those who are worried: there is no registration, so there is complete anonymity.
+People are already using the site every day. For those who are worried: there is no registration, so there is complete anonymity.
 
-![image](https://user-images.githubusercontent.com/7527778/219765402-5af78556-4620-4313-85f3-42144a21324e.png)
+![Снимок экрана 2023-05-04 100857](https://user-images.githubusercontent.com/7527778/236567841-457d592c-7a13-4d8b-92e0-0ae5f9708e8a.png)
 
 The site is not a commercial or profitable idea, no advertising is used. The entire budget is made up of donations, the budget is general and all funds are used exclusively to pay for OpenAI services.
 
