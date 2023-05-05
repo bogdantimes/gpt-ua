@@ -1,12 +1,12 @@
 import * as React from "react";
-import {Box, Button, Card, CircularProgress, Fade, IconButton, Link, Stack, Tooltip, Typography} from "@mui/material";
-import {t} from "i18next";
+import { useState } from "react";
+import { Card, Fade, IconButton, Stack, Tooltip } from "@mui/material";
+import { t } from "i18next";
 import ReactMarkdown from "react-markdown";
-import {ContentCopy, Reply} from "@mui/icons-material";
-import {useState} from "react";
-import {ConversationElem, AnswerElem} from "./Types";
-import Typist from 'react-typist';
-import gfm from 'remark-gfm';
+import { ContentCopy } from "@mui/icons-material";
+import { AnswerElem } from "./Types";
+import Typist from "react-typist";
+import gfm from "remark-gfm";
 
 interface AnswerProps {
   elem: AnswerElem;

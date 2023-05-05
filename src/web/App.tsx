@@ -31,6 +31,13 @@ import Prompt from "./Prompt";
 import { ConversationElem, type PromptElem } from "./Types";
 import { FundingBar } from "./FundingBar";
 import cyberpunkTheme from "./theme";
+import { YesNoOverlay } from "./YesNoOverlay";
+
+const YES_KEY = "yesAnswer";
+const NO_KEY = "noAnswer";
+const SESSION_COST_KEY = "sessionCost";
+const REQUESTS_NUM_KEY = "requestsNum";
+const USD_UAH_RATE = 37;
 
 export default function App(): JSX.Element {
   const { t, i18n } = useTranslation("translation");
@@ -89,7 +96,7 @@ export default function App(): JSX.Element {
 
   function sendConversation() {
     const messages = buildMessaages(conversation, lang);
-    // @ts-expect-error
+    // @ts-expect-error external grecaptcha.enterprise
     grecaptcha.enterprise
       .execute("6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom", { action: "login" })
       .then(function (token) {
@@ -100,7 +107,7 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages,
-            v: 8,
+            v: 9,
             token,
           }),
         })
@@ -119,6 +126,9 @@ export default function App(): JSX.Element {
               setError(gptReply?.answer || gptReply?.error);
             } else {
               const answer = gptReply?.answer ?? "";
+              const cost = gptReply?.cost || 0;
+              setSessionCost(sessionCost + +cost);
+              setRequestsNum(requestsNum + 1);
               const originalAnswer =
                 gptReply?.choices?.[0]?.message.content.trim() ?? "";
               const lastPrompt = conversation
@@ -189,6 +199,66 @@ export default function App(): JSX.Element {
     setExpanded(!expanded);
   };
 
+  const [askQuestion, setAskQuestion] = useState(false);
+  const [yesAnswer, setYesAnswer] = useState(localStorage.getItem(YES_KEY));
+  const [noAnswer, setNoAnswer] = useState(localStorage.getItem(NO_KEY));
+  const [sessionCost, setSessionCost] = useState<number>(() => {
+    const savedSessionCost = localStorage.getItem(SESSION_COST_KEY);
+    return savedSessionCost ? parseFloat(savedSessionCost) : 0;
+  });
+  const [requestsNum, setRequestsNum] = useState(() => {
+    const reqNum = localStorage.getItem(REQUESTS_NUM_KEY);
+    return reqNum ? +reqNum : 0;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(SESSION_COST_KEY, sessionCost.toString());
+  }, [sessionCost]);
+
+  useEffect(() => {
+    localStorage.setItem(REQUESTS_NUM_KEY, requestsNum.toString());
+  }, [requestsNum]);
+
+  useEffect(() => {
+    localStorage.setItem(YES_KEY, yesAnswer || "");
+  }, [yesAnswer]);
+
+  useEffect(() => {
+    localStorage.setItem(NO_KEY, noAnswer || "");
+  }, [noAnswer]);
+
+  useEffect(() => {
+    const checkAnswerDate = (answer, timeFrame) => {
+      if (answer) {
+        const answerDate = new Date(answer);
+        const timeDifference = +new Date() - +answerDate;
+        return timeDifference >= timeFrame;
+      }
+      return true;
+    };
+
+    const oneDay = 24 * 60 * 60 * 1000;
+    const oneWeek = 7 * oneDay;
+    const showQuestionForNoAnswer =
+      noAnswer && checkAnswerDate(noAnswer, oneDay);
+    const showQuestionForYesAnswer =
+      !noAnswer && checkAnswerDate(yesAnswer, oneWeek);
+
+    setAskQuestion(showQuestionForNoAnswer || showQuestionForYesAnswer);
+  }, [sessionCost, yesAnswer, noAnswer]);
+
+  const handleClickYes = () => {
+    setAskQuestion(false);
+    setNoAnswer("");
+    setYesAnswer(new Date().toISOString());
+  };
+
+  const handleClickNo = () => {
+    setAskQuestion(false);
+    setYesAnswer("");
+    setNoAnswer(new Date().toISOString());
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -240,12 +310,16 @@ export default function App(): JSX.Element {
                   <Button
                     variant="contained"
                     size={"small"}
-                    onClick={() =>
+                    onClick={() => {
+                      // @ts-expect-error external gtag
+                      gtag("event", "click", {
+                        budget_top_up: "open",
+                      });
                       window.open(
                         `https://send.monobank.ua/jar/3Q3K3VdHuU`,
                         "_blank"
-                      )
-                    }
+                      );
+                    }}
                     sx={{
                       backgroundColor:
                         theme.palette.mode === "light" ? "black" : "darkgrey",
@@ -305,7 +379,7 @@ export default function App(): JSX.Element {
                 href="https://gpt-ua.click/#theme=cyber"
                 className="cyber-link"
               >
-                Try the Cyber theme
+                Cyberpunk 2077 style
               </Link>
             </Box>
           )}
@@ -351,6 +425,15 @@ export default function App(): JSX.Element {
           </Box>
         </Stack>
       </Container>
+      {sessionCost * USD_UAH_RATE >= 1 && askQuestion && (
+        <YesNoOverlay
+          requestsNum={requestsNum}
+          costUAH={sessionCost * USD_UAH_RATE}
+          costUSD={sessionCost}
+          onClickYes={handleClickYes}
+          onClickNo={handleClickNo}
+        />
+      )}
     </ThemeProvider>
   );
 }
