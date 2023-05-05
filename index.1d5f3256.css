@@ -70,7 +70,6 @@ body {
   padding: 2px 6px;
   font-size: 12px;
   text-decoration: none;
-  transition: all .3s;
   display: inline-block;
   position: relative;
   overflow: hidden;
@@ -87,15 +86,38 @@ body {
   height: 100%;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   background: linear-gradient(45deg, #0effef66, #f0f6, #0effef66);
-  transition: all .3s;
+  animation: 5s linear infinite slide;
   position: absolute;
   top: 0;
   left: 0;
-  transform: translateX(-100%);
 }
 
-.cyber-link:hover:before {
-  transform: translateX(100%);
+@keyframes slide {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.pulsate {
+  animation: 2s ease-in-out infinite pulsate;
+}
+
+@keyframes pulsate {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: .3;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 /*# sourceMappingURL=index.1d5f3256.css.map */
