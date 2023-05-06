@@ -88,11 +88,7 @@ export function YesNoOverlay({
             }}
             onClick={() => {
               // @ts-expect-error external gtag
-              gtag("event", "click", {
-                event_category: "yes_no_overlay",
-                event_action: "Click",
-                event_label: "Yes",
-              });
+              gtag("event", "overlay_answer_yes");
               onClickYes();
             }}
           ></Button>
@@ -134,12 +130,7 @@ export function YesNoOverlay({
             }}
             onClick={() => {
               // @ts-expect-error external gtag
-              gtag("event", "click", {
-                event_category: "yes_no_overlay",
-                event_action: "Click",
-                event_label: "No",
-              });
-
+              gtag("event", "overlay_answer_no");
               onClickNo();
             }}
           ></Button>

@@ -312,10 +312,7 @@ export default function App(): JSX.Element {
                     size={"small"}
                     onClick={() => {
                       // @ts-expect-error external gtag
-                      gtag("event", "click", {
-                        event_category: "budget_top_up",
-                        event_action: "Click",
-                      });
+                      gtag("event", "budget_top_up_open");
                       window.open(
                         `https://send.monobank.ua/jar/3Q3K3VdHuU`,
                         "_blank"
