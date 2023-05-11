@@ -15,7 +15,7 @@
   },
   "budget": {
     "mono": "Aufladen",
-    "donate": "\uD83D\uDEA8 OpenAI berechnet etwa $0,005 pro Antwort. Der Website-Besitzer füllt manchmal aus eigener Tasche auf, aber das reicht nicht aus (derzeit etwa 30,000 Nutzer/Monat). Bitte füllen Sie also selbst auf - der Prozess wurde automatisiert. \uD83D\uDE4F",
+    "donate": "\uD83D\uDEA8 OpenAI verlangt etwa $0.005 pro Antwort. Der Website-Autor unterstützt dies, aber bei hohem Nutzeraufkommen reicht es oft nicht aus. Bitte erwägen Sie, selbst beizutragen - es ist automatisiert und einfach. \uD83D\uDE4F",
     "remaining": "Website-Budget"
   },
   "openai": {
@@ -24,5 +24,7 @@
   "requestSummary": "Bisher haben Sie {{requestsNum}} Anfrage(n) gestellt, die etwa ${{costUSD}} (≈ {{costUAH}}₴) kosten.",
   "topUpQuestion": "Haben Sie das Budget der Website aufgefüllt?",
   "yes": "Ja",
-  "no": "Nein"
+  "no": "Nein",
+  "spentChip": "Ihre Gesamtausgaben: ${{costUSD}} (≈ {{costUAH}}₴)",
+  "chipTooltip": "Dies ist der Gesamtbetrag des gemeinsamen Website-Budgets, den Sie ausgegeben haben."
 }

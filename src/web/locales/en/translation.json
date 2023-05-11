@@ -15,7 +15,7 @@
   },
   "budget": {
     "mono": "Top-up",
-    "donate": "\uD83D\uDEA8 OpenAI charges about $0.005 per answer. The website owner sometimes tops up from their own pocket, but it is not enough (currently about 30,000 users/month). So please top up on your own - the process has been automated. \uD83D\uDE4F",
+    "donate": "\uD83D\uDEA8 OpenAI charges around $0.005 per answer. The site author helps fund this, but due to the high user volume, it's often insufficient. Please consider contributing - it's automated and easy.  \uD83D\uDE4F",
     "remaining": "Site budget"
   },
   "openai": {
@@ -24,5 +24,7 @@
   "requestSummary": "So far you've made {{requestsNum}} request(s), which costs around ${{costUSD}} (≈ {{costUAH}}₴).",
   "topUpQuestion": "Did you replenish the site budget?",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "spentChip": "Your total spending: ${{costUSD}} (≈ {{costUAH}}₴)",
+  "chipTooltip": "This is the amount of shared site budget money that you have spent in total."
 }

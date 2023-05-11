@@ -15,6 +15,7 @@ import {
   Link,
   Stack,
   ThemeProvider,
+  Tooltip,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -32,12 +33,23 @@ import { ConversationElem, type PromptElem } from "./Types";
 import { FundingBar } from "./FundingBar";
 import cyberpunkTheme from "./theme";
 import { YesNoOverlay } from "./YesNoOverlay";
+import Chip from "@mui/material/Chip";
+import { styled } from "@mui/system";
+import InfoIcon from "@mui/icons-material/Info";
+
+// Define a styled Chip for better visuals
+const StyledChip = styled(Chip)(({ theme }) => ({
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.common.white,
+  fontWeight: "bold",
+  fontSize: "0.7rem",
+}));
 
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
 const REQUESTS_NUM_KEY = "requestsNum";
-const USD_UAH_RATE = 37;
+const USD_UAH_RATE = 40;
 
 export default function App(): JSX.Element {
   const { t, i18n } = useTranslation("translation");
@@ -107,7 +119,7 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages,
-            v: 9,
+            v: 10,
             token,
           }),
         })
@@ -296,6 +308,26 @@ export default function App(): JSX.Element {
           })}
           {loading && <LinearProgress />}
           {error && <Alert severity="error">{error}</Alert>}
+          {!!sessionCost && (
+            <Box sx={{ textAlign: "center" }}>
+              <Tooltip
+                enterTouchDelay={1}
+                leaveTouchDelay={2000}
+                title="This is the amount of shared site budget money that you have spent in total."
+                placement="top"
+              >
+                <StyledChip
+                  icon={<InfoIcon color={"inherit"} />}
+                  label={t(`spentChip`, {
+                    costUSD: +sessionCost.toFixed(
+                      sessionCost > 0.01 ? 2 : sessionCost > 0.001 ? 3 : 4
+                    ),
+                    costUAH: +(sessionCost * USD_UAH_RATE).toFixed(1),
+                  })}
+                />
+              </Tooltip>
+            </Box>
+          )}
           {moneyLeft !== null && isFinite(moneyLeft) && (
             <Alert
               sx={{
