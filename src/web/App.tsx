@@ -91,10 +91,14 @@ export default function App(): JSX.Element {
   };
 
   // initiate lang using the browser's language
-  React.useEffect(() => {
+  useEffect(() => {
     const browserLang = navigator?.language?.split("-")[0] || "en";
     changeLanguage(browserLang);
   }, []);
+
+  useEffect(() => {
+    document.title = t("title");
+  }, [lang]);
 
   useEffect(() => {
     const hash = window.location.hash;

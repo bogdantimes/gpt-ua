@@ -1,4 +1,5 @@
 {
+  "title": "GPT-UA - free ChatGPT assistant",
   "conversation": {
     "start": "Start the dialog (in any language)",
     "you": "Your response"
