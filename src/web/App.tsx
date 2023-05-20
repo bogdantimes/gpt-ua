@@ -23,6 +23,7 @@ import {
   ExpandMore,
   Instagram,
   LinkedIn,
+  Replay,
   Telegram,
   Twitter,
 } from "@mui/icons-material";
@@ -36,6 +37,7 @@ import { YesNoOverlay } from "./YesNoOverlay";
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/system";
 import InfoIcon from "@mui/icons-material/Info";
+import { searchGoogle } from "./searchGoogle";
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -110,7 +112,75 @@ export default function App(): JSX.Element {
     }
   }, []);
 
-  function sendConversation() {
+  function handleAnswer(gptReply: any, answer: string) {
+    conversation.push(ConversationElem.newAnswer(conversation.length, answer));
+    conversation.push(ConversationElem.newPrompt(conversation.length, ""));
+
+    // Mark dropped messages
+    const lastDroppedMessageId = gptReply.lastDroppedMessageId ?? -1;
+    if (lastDroppedMessageId >= 0) {
+      conversation.forEach((el) => {
+        el.dropped = el.id <= lastDroppedMessageId;
+      });
+    }
+    setConversation([...conversation]);
+  }
+
+  const handleSearchRequest = (searchParams: {
+    search: string;
+    time_frame: string;
+    limit: number;
+  }) => {
+    const searchHidden = ConversationElem.newAnswer(
+      conversation.length,
+      `/google ${JSON.stringify(searchParams)}`
+    );
+    searchHidden.hidden = true;
+    searchHidden.dropAfterAnswer = true;
+    conversation.push(searchHidden);
+
+    const searchDisplayed = ConversationElem.newAnswer(
+      conversation.length,
+      t("browsing", { query: searchParams.search })
+    );
+    searchDisplayed.staticMode = true; // No animation
+    searchDisplayed.dropAfterAnswer = true;
+
+    conversation.push(searchDisplayed);
+    setConversation([...conversation]);
+
+    searchGoogle({
+      query: searchParams.search,
+      limit: searchParams.limit || 3,
+      timeFrame: searchParams.time_frame,
+    })
+      .then((results) => {
+        const resultsMarkdown = results
+          .map((r) => `- [${r.title}](${r.link})\n\t${r.snippet}`)
+          .join(`\n`);
+
+        searchDisplayed.spoiler = `${resultsMarkdown}`;
+
+        setConversation([...conversation]);
+      })
+      .catch((e) => {
+        searchDisplayed.text += `\n\n❌ ${e.message}`;
+        setConversation([...conversation]);
+      })
+      .finally(() => {
+        setLoading(true);
+        sendConversation(() => {
+          // On answer - we can mark all previous searches as dropped to save budget next time
+          conversation.forEach((el) => {
+            if (el.dropAfterAnswer) {
+              el.dropped = true;
+            }
+          });
+        });
+      });
+  };
+
+  function sendConversation(onAnswer = () => {}) {
     const messages = buildMessaages(conversation, lang);
     // @ts-expect-error external grecaptcha.enterprise
     grecaptcha.enterprise
@@ -123,7 +193,7 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages,
-            v: 10,
+            v: 11,
             token,
           }),
         })
@@ -141,38 +211,25 @@ export default function App(): JSX.Element {
             if (gptReply?.error) {
               setError(gptReply?.answer || gptReply?.error);
             } else {
-              const answer = gptReply?.answer ?? "";
+              setError("");
               const cost = gptReply?.cost || 0;
               setSessionCost(sessionCost + +cost);
               setRequestsNum(requestsNum + 1);
-              const originalAnswer =
-                gptReply?.choices?.[0]?.message.content.trim() ?? "";
               const lastPrompt = conversation
                 .filter((elem) => elem.isUser)
                 .pop();
               if (lastPrompt) {
                 lastPrompt.answered = true;
               }
-              setConversation((conversation: ConversationElem[]) => {
-                const newConv = [
-                  ...conversation,
-                  ConversationElem.newAnswer(
-                    conversation.length,
-                    answer,
-                    originalAnswer
-                  ),
-                  ConversationElem.newPrompt(conversation.length + 1, ""),
-                ];
-                // Mark dropped messages
-                const lastDroppedMessageId =
-                  gptReply.lastDroppedMessageId ?? -1;
-                if (lastDroppedMessageId >= 0) {
-                  newConv.forEach((el) => {
-                    el.dropped = el.id <= lastDroppedMessageId;
-                  });
-                }
-                return newConv;
-              });
+              const answer = gptReply?.answer ?? "";
+              if (answer) {
+                onAnswer();
+                handleAnswer(gptReply, answer);
+              }
+              const searchParams = gptReply?.searchParams;
+              if (searchParams) {
+                handleSearchRequest(searchParams);
+              }
             }
             if (isFinite(+gptReply?.moneyLeft)) {
               setMoneyLeft(+gptReply?.moneyLeft);
@@ -282,7 +339,7 @@ export default function App(): JSX.Element {
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}
           <Box sx={{ padding: 2, textAlign: "center", position: "relative" }}>
-            <h1>GPT-UA</h1>
+            <h1>ChatGPT</h1>
             <p
               style={{
                 marginLeft: "105px",
@@ -291,27 +348,49 @@ export default function App(): JSX.Element {
                 padding: 0,
               }}
             >
-              chat
+              lite🔎🌐
             </p>
           </Box>
-          {conversation.map((elem, i) => {
-            return elem.isUser ? (
-              <Prompt
-                key={`${i}_${elem.text.length}`}
-                elem={elem}
-                onClickSend={handleSend}
-                onClear={() => {
-                  setConversation([ConversationElem.newPrompt(0, "")]);
-                }}
-                showClear={conversation.length > 1}
-                sendDisabled={loading}
-              />
-            ) : (
-              <Answer key={i} elem={elem} />
-            );
-          })}
+          {conversation
+            .filter((el) => !el.hidden)
+            .map((elem, i) => {
+              return elem.isUser ? (
+                <Prompt
+                  key={`${i}_${elem.text.length}`}
+                  elem={elem}
+                  onClickSend={handleSend}
+                  onClear={() => {
+                    setConversation([ConversationElem.newPrompt(0, "")]);
+                  }}
+                  showClear={conversation.length > 1}
+                  sendDisabled={loading}
+                />
+              ) : (
+                <Answer key={i} elem={elem} />
+              );
+            })}
           {loading && <LinearProgress />}
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <Alert
+              severity="error"
+              action={
+                <IconButton
+                  aria-label="retry"
+                  disabled={loading}
+                  onClick={() => {
+                    setLoading(true);
+                    setTimeout(() => {
+                      sendConversation();
+                    }, new Date().getMilliseconds());
+                  }}
+                >
+                  <Replay />
+                </IconButton>
+              }
+            >
+              {error}
+            </Alert>
+          )}
           {!!sessionCost && (
             <Box sx={{ textAlign: "center" }}>
               <Tooltip
@@ -489,7 +568,7 @@ function buildMessaages(
     messages.push({
       lang,
       id: elem.getId(),
-      original: elem.getText(),
+      original: `${elem.getAllText()}`,
       isUser: elem.isUser,
     });
   }

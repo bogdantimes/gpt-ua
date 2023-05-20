@@ -27,5 +27,6 @@
   "yes": "Ja",
   "no": "Nein",
   "spentChip": "Ihre Gesamtausgaben: ${{costUSD}} (≈ {{costUAH}}₴)",
-  "chipTooltip": "Dies ist der Gesamtbetrag des gemeinsamen Website-Budgets, den Sie ausgegeben haben."
+  "chipTooltip": "Dies ist der Gesamtbetrag des gemeinsamen Website-Budgets, den Sie ausgegeben haben.",
+  "browsing": "🔎🌐 \"**{{query}}**\"..."
 }

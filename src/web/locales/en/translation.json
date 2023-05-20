@@ -27,5 +27,6 @@
   "yes": "Yes",
   "no": "No",
   "spentChip": "Your total spending: ${{costUSD}} (≈ {{costUAH}}₴)",
-  "chipTooltip": "This is the amount of shared site budget money that you have spent in total."
+  "chipTooltip": "This is the amount of shared site budget money that you have spent in total.",
+  "browsing": "🔎🌐 \"**{{query}}**\"..."
 }
