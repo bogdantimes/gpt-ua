@@ -339,7 +339,7 @@ export default function App(): JSX.Element {
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}
           <Box sx={{ padding: 2, textAlign: "center", position: "relative" }}>
-            <h1>ChatGPT</h1>
+            <h1>GPT-UA</h1>
             <p
               style={{
                 marginLeft: "105px",
@@ -348,7 +348,7 @@ export default function App(): JSX.Element {
                 padding: 0,
               }}
             >
-              lite🔎🌐
+              ChatGPT🔎🌐
             </p>
           </Box>
           {conversation
