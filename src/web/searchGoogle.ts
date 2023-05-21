@@ -23,7 +23,7 @@ export async function searchGoogle({
         `Failed to search Google for query "${query}"`,
         response.status
       );
-      throw new Error("HTTP error 429");
+      throw new Error("HTTP 429");
     }
 
     const json = await response.json();
