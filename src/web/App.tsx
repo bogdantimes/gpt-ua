@@ -75,9 +75,9 @@ export default function App(): JSX.Element {
     setTheme(getTheme());
   }, [mode]);
 
-  let searchDisabled = false;
   const [error, setError] = useState<null | string>("");
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState({ disabled: false });
   const [moneyLeft, setMoneyLeft] = useState<number | null>(null);
   const [conversation, setConversation] =
     useState<ConversationElem[]>(conversationLoader);
@@ -132,29 +132,30 @@ export default function App(): JSX.Element {
     time_frame: string;
     limit: number;
   }) => {
+    const searchHidden = ConversationElem.newAnswer(
+      conversation.length,
+      `/google ${JSON.stringify(searchParams)}`
+    );
+    searchHidden.hidden = true;
+    searchHidden.dropAfterAnswer = true;
+    conversation.push(searchHidden);
+
+    const searchDisplayed = ConversationElem.newAnswer(
+      conversation.length,
+      t("browsing", { query: searchParams.search })
+    );
+    searchDisplayed.staticMode = true; // No animation
+    searchDisplayed.dropAfterAnswer = true;
+
+    conversation.push(searchDisplayed);
+    setConversation([...conversation]);
+
     searchGoogle({
       query: searchParams.search,
       limit: searchParams.limit || 3,
       timeFrame: searchParams.time_frame,
     })
       .then((results) => {
-        const searchHidden = ConversationElem.newAnswer(
-          conversation.length,
-          `/google ${JSON.stringify(searchParams)}`
-        );
-        searchHidden.hidden = true;
-        searchHidden.dropAfterAnswer = true;
-        conversation.push(searchHidden);
-
-        const searchDisplayed = ConversationElem.newAnswer(
-          conversation.length,
-          t("browsing", { query: searchParams.search })
-        );
-        searchDisplayed.staticMode = true; // No animation
-        searchDisplayed.dropAfterAnswer = true;
-
-        conversation.push(searchDisplayed);
-
         const resultsMarkdown = results
           .map((r) => `- [${r.title}](${r.link})\n\t${r.snippet}`)
           .join(`\n`);
@@ -164,8 +165,10 @@ export default function App(): JSX.Element {
         setConversation([...conversation]);
       })
       .catch((e) => {
-        console.log("Search failed:", e);
-        searchDisabled = true;
+        search.disabled = true;
+        setSearch(search);
+        searchDisplayed.text += `\n\n❌ ${e.message}`;
+        setConversation([...conversation]);
       })
       .finally(() => {
         setLoading(true);
@@ -176,7 +179,6 @@ export default function App(): JSX.Element {
               el.dropped = true;
             }
           });
-          searchDisabled = false;
         });
       });
   };
@@ -196,7 +198,7 @@ export default function App(): JSX.Element {
             messages,
             v: 11,
             token,
-            searchDisabled,
+            searchDisabled: search.disabled,
           }),
         })
           .then(async (response) => {
