@@ -196,7 +196,7 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages,
-            v: 12,
+            v: 13,
             token,
             searchDisabled: search.disabled,
           }),
