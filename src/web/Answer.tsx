@@ -96,7 +96,7 @@ const Answer: React.FC<AnswerProps> = ({ elem }) => {
       <Box
         onClick={toggleSpoiler}
         sx={{
-          display: "flex",
+          display: spoilerText ? "flex" : "block",
           alignItems: "center",
           cursor: spoilerText ? "pointer" : "default",
         }}
