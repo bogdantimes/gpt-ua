@@ -1,18 +1,18 @@
 export async function searchGoogle({
-  query = ``,
-  limit = 10,
-  timeFrame = "",
+  q = ``,
+  num = 10,
+  dateRestrict = "",
 }: {
-  query: string;
-  limit: number;
-  timeFrame: string;
+  q: string;
+  num: number;
+  dateRestrict: string;
 }): Promise<Array<{ snippet: string; link: string; title: string }>> {
   const URL = `https://www.googleapis.com/customsearch/v1`;
-  const _query = encodeURIComponent(query);
+  const _query = encodeURIComponent(q);
   const { key, cx } = getRandomKeyAndCx();
-  let url: string = `${URL}?key=${key}&cx=${cx}&q=${_query}&num=${limit}`;
-  if (timeFrame) {
-    url += `&dateRestrict=${timeFrame}`;
+  let url: string = `${URL}?key=${key}&cx=${cx}&q=${_query}&num=${num}`;
+  if (dateRestrict) {
+    url += `&dateRestrict=${dateRestrict}`;
   }
 
   try {
@@ -20,7 +20,7 @@ export async function searchGoogle({
 
     if (response.status !== 200) {
       console.error(
-        `Failed to search Google for query "${query}"`,
+        `Failed to search Google for query "${q}"`,
         response.status
       );
       throw new Error("HTTP 429");
@@ -35,7 +35,7 @@ export async function searchGoogle({
       title: item.title || "",
     }));
   } catch (error) {
-    console.error(`Failed to search Google for query "${query}"`, error);
+    console.error(`Failed to search Google for query "${q}"`, error);
     throw error;
   }
 }

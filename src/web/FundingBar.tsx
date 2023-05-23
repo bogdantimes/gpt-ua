@@ -51,7 +51,9 @@ export function FundingBar({
         }}
       />
       {value <= 2 && (
-        <Typography align={"center"}>{t("budget.donate")}</Typography>
+        <Typography variant={"body2"} align={"center"}>
+          {t("budget.donate")}
+        </Typography>
       )}
       {children}
     </Box>

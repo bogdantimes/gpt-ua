@@ -128,9 +128,9 @@ export default function App(): JSX.Element {
   }
 
   const handleSearchRequest = (searchParams: {
-    search: string;
-    time_frame: string;
-    limit: number;
+    q: string;
+    dateRestrict: string;
+    num: number;
   }) => {
     const searchHidden = ConversationElem.newAnswer(
       conversation.length,
@@ -142,7 +142,7 @@ export default function App(): JSX.Element {
 
     const searchDisplayed = ConversationElem.newAnswer(
       conversation.length,
-      t("browsing", { query: searchParams.search })
+      t("browsing", { query: searchParams.q })
     );
     searchDisplayed.staticMode = true; // No animation
     searchDisplayed.dropAfterAnswer = true;
@@ -151,9 +151,9 @@ export default function App(): JSX.Element {
     setConversation([...conversation]);
 
     searchGoogle({
-      query: searchParams.search,
-      limit: searchParams.limit || 3,
-      timeFrame: searchParams.time_frame,
+      q: searchParams.q,
+      num: searchParams.num || 3,
+      dateRestrict: searchParams.dateRestrict,
     })
       .then((results) => {
         const resultsMarkdown = results
@@ -184,7 +184,7 @@ export default function App(): JSX.Element {
   };
 
   function sendConversation(onAnswer = () => {}) {
-    const messages = buildMessaages(conversation, lang);
+    const messages = buildMessages(conversation, lang);
     // @ts-expect-error external grecaptcha.enterprise
     grecaptcha.enterprise
       .execute("6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom", { action: "login" })
@@ -195,9 +195,9 @@ export default function App(): JSX.Element {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            messages,
-            v: 13,
+            v: 14,
             token,
+            messages,
             searchDisabled: search.disabled,
           }),
         })
@@ -235,7 +235,7 @@ export default function App(): JSX.Element {
                 handleSearchRequest(searchParams);
               }
             }
-            if (isFinite(+gptReply?.moneyLeft)) {
+            if (Number.isFinite(+gptReply?.moneyLeft)) {
               setMoneyLeft(+gptReply?.moneyLeft);
             }
           })
@@ -415,16 +415,16 @@ export default function App(): JSX.Element {
               </Tooltip>
             </Box>
           )}
-          {moneyLeft !== null && isFinite(moneyLeft) && (
+          {Number.isFinite(moneyLeft) && (
             <Alert
               sx={{
                 textAlign: "center",
                 "& .MuiAlert-message": { width: "100%" },
               }}
               icon={false}
-              severity={moneyLeft <= 1 ? "warning" : "info"}
+              severity={moneyLeft! <= 1 ? "warning" : "info"}
             >
-              <FundingBar target={120} value={moneyLeft}>
+              <FundingBar target={120} value={moneyLeft!}>
                 <>
                   <Button
                     variant="contained"
@@ -562,7 +562,7 @@ interface Message {
   isUser: boolean;
 }
 
-function buildMessaages(
+function buildMessages(
   conversation: ConversationElem[],
   lang: string
 ): Message[] {
