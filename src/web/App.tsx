@@ -90,7 +90,7 @@ export default function App(): JSX.Element {
   const lang = i18n.language;
 
   const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
+    void i18n.changeLanguage(lng);
   };
 
   // initiate lang using the browser's language
@@ -336,6 +336,24 @@ export default function App(): JSX.Element {
     setNoAnswer(new Date().toISOString());
   };
 
+  const limitedFunctionsBox = (
+    <Box
+      sx={{
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        backgroundColor: "rgba(255, 215, 0, 0.5)",
+      }}
+    >
+      <Box
+        sx={{
+          display: "inline-block",
+          animation: "marquee 15s linear infinite",
+        }}
+      >
+        <Typography variant={"body2"}>{t("lowBudget")}</Typography>
+      </Box>
+    </Box>
+  );
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -343,7 +361,7 @@ export default function App(): JSX.Element {
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}
           <Box sx={{ padding: 2, textAlign: "center", position: "relative" }}>
-            <h1>GPT-UA</h1>
+            <h1>{t("name")}</h1>
             <p
               style={{
                 marginLeft: "105px",
@@ -395,6 +413,7 @@ export default function App(): JSX.Element {
               {error}
             </Alert>
           )}
+          {Number.isFinite(moneyLeft) && moneyLeft! <= 1 && limitedFunctionsBox}
           {!!sessionCost && (
             <Box sx={{ textAlign: "center" }}>
               <Tooltip

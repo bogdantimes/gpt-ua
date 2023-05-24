@@ -1,4 +1,5 @@
 {
+  "name": "GPT-UA",
   "title": "GPT-UA - kostenloser ChatGPT-Assistent",
   "conversation": {
     "start": "Beginnen Sie den Dialog (in jeder Sprache)",
@@ -28,5 +29,6 @@
   "no": "Nein",
   "spentChip": "Ihre Gesamtausgaben: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "Dies ist der Gesamtbetrag des gemeinsamen Website-Budgets, den Sie ausgegeben haben.",
-  "browsing": "🔎🌐 \"**{{query}}**\"..."
+  "browsing": "🔎🌐 \"**{{query}}**\"...",
+  "lowBudget": "Das Budget der Website hat ein kritisches Niveau erreicht, und Funktionen wie Online-Suche und längere Unterhaltungen wurden eingeschränkt, um Geld zu sparen."
 }

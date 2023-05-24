@@ -1,0 +1,34 @@
+{
+  "name": "GPT-UA",
+  "title": "GPT-UA - bezpłatny asystent ChatGPT",
+  "conversation": {
+    "start": "Rozpocznij dialog (w dowolnym języku)",
+    "you": "Twoja odpowiedź"
+  },
+  "input": {
+    "placeholder": "Zapytaj mnie o cokolwiek"
+  },
+  "clipboard": {
+    "tooltip": "Skopiowane do schowka"
+  },
+  "errors": {
+    "notEnoughDetails": "Proszę podać więcej szczegółów dotyczących twojego żądania",
+    "insecureContext": "Ta funkcja jest dostępna tylko w bezpiecznym kontekście (HTTPS) w niektórych lub we wszystkich obsługiwanych przeglądarkach."
+  },
+  "budget": {
+    "mono": "Doładuj",
+    "donate": "\uD83D\uDEA8 OpenAI pobiera około $0.005 za odpowiedź. Autor strony pomaga w finansowaniu, ale ze względu na dużą liczbę użytkowników, często jest to niewystarczające. Prosimy o rozważenie wsparcia - jest to zautomatyzowane i łatwe.  \uD83D\uDE4F",
+    "remaining": "Budżet strony"
+  },
+  "openai": {
+    "slowResponse": "Brak odpowiedzi? Sprawdź status:"
+  },
+  "requestSummary": "Do tej pory złożyłeś {{requestsNum}} żądanie(ń), co kosztuje około ${{costUSD}} (≈ {{costUAH}}₴).",
+  "topUpQuestion": "Czy doładowałeś budżet strony?",
+  "yes": "Tak",
+  "no": "Nie",
+  "spentChip": "Twoje łączne wydatki: ${{costUSD}} (≈ {{costUAH}}₴)",
+  "chipTooltip": "To jest łączna kwota wspólnego budżetu strony, którą do tej pory wydałeś.",
+  "browsing": "🔎🌐 \"**{{query}}**\"...",
+  "lowBudget": "Budżet strony osiągnął krytyczny poziom, a funkcje takie jak wyszukiwanie online i długie rozmowy zostały ograniczone w celu oszczędności."
+}
