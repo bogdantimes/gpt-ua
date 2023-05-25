@@ -38,6 +38,7 @@ import Chip from "@mui/material/Chip";
 import { styled } from "@mui/system";
 import InfoIcon from "@mui/icons-material/Info";
 import { searchGoogle } from "./searchGoogle";
+import ExtensionIcon from "@mui/icons-material/Extension";
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -342,6 +343,12 @@ export default function App(): JSX.Element {
         overflow: "hidden",
         whiteSpace: "nowrap",
         backgroundColor: "rgba(255, 215, 0, 0.5)",
+        position: "fixed",
+        width: "100%",
+        top: 0,
+        left: 0,
+        mt: 0,
+        zIndex: 10,
       }}
     >
       <Box
@@ -358,6 +365,7 @@ export default function App(): JSX.Element {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Container maxWidth="sm" sx={{ padding: 2 }}>
+        {Number.isFinite(moneyLeft) && moneyLeft! <= 1 && limitedFunctionsBox}
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}
           <Box sx={{ padding: 2, textAlign: "center", position: "relative" }}>
@@ -413,7 +421,6 @@ export default function App(): JSX.Element {
               {error}
             </Alert>
           )}
-          {Number.isFinite(moneyLeft) && moneyLeft! <= 1 && limitedFunctionsBox}
           {!!sessionCost && (
             <Box sx={{ textAlign: "center" }}>
               <Tooltip
@@ -443,7 +450,7 @@ export default function App(): JSX.Element {
               icon={false}
               severity={moneyLeft! <= 1 ? "warning" : "info"}
             >
-              <FundingBar target={120} value={moneyLeft!}>
+              <FundingBar target={20} value={moneyLeft!}>
                 <>
                   <Button
                     variant="contained"
@@ -506,6 +513,16 @@ export default function App(): JSX.Element {
             <Grid item>
               <Link href="https://t.me/gpt_ua_chat" target="_blank">
                 <Telegram className={`pulsating-icon-${theme.palette.mode}`} />
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link
+                href="https://chrome.google.com/webstore/detail/gpt-uaclick-chrome/fbbjiglnminppnhbddnihgeoipoamhnm"
+                target="_blank"
+              >
+                <ExtensionIcon
+                  className={`pulsating-icon-${theme.palette.mode}`}
+                />
               </Link>
             </Grid>
           </Grid>
