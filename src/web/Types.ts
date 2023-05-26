@@ -10,7 +10,6 @@ export interface AnswerElem {
   getText: () => string;
   isStatic: () => boolean;
   isHidden: () => boolean;
-  isLiked: () => boolean;
   getSpoilerText: () => string;
   getAllText: () => string;
 }
@@ -24,7 +23,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
   dropped = false;
   hidden = false;
   dropAfterAnswer = false;
-  liked = false;
   spoiler = "";
 
   static newPrompt(id: number, text: string): ConversationElem {
@@ -64,10 +62,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
 
   isHidden(): boolean {
     return this.hidden;
-  }
-
-  isLiked(): boolean {
-    return this.liked;
   }
 
   getSpoilerText(): string {

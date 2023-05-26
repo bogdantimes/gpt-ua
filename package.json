@@ -37,6 +37,7 @@
     "@emotion/styled": "11.10.5",
     "@mui/icons-material": "5.11.0",
     "@mui/material": "5.11.6",
+    "html2canvas": "1.4.1",
     "i18next": "22.4.9",
     "i18next-http-backend": "2.1.1",
     "react": "18.2.0",
