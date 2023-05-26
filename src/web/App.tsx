@@ -337,35 +337,10 @@ export default function App(): JSX.Element {
     setNoAnswer(new Date().toISOString());
   };
 
-  const limitedFunctionsBox = (
-    <Box
-      sx={{
-        overflow: "hidden",
-        whiteSpace: "nowrap",
-        backgroundColor: "rgba(255, 215, 0, 0.5)",
-        position: "fixed",
-        width: "100%",
-        top: 0,
-        left: 0,
-        mt: 0,
-        zIndex: 10,
-      }}
-    >
-      <Box
-        sx={{
-          display: "inline-block",
-          animation: "marquee 15s linear infinite",
-        }}
-      >
-        <Typography variant={"body2"}>{t("lowBudget")}</Typography>
-      </Box>
-    </Box>
-  );
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Container maxWidth="sm" sx={{ padding: 2 }}>
-        {Number.isFinite(moneyLeft) && moneyLeft! <= 1 && limitedFunctionsBox}
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}
           <Box sx={{ padding: 2, textAlign: "center", position: "relative" }}>

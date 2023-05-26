@@ -29,6 +29,5 @@
   "no": "Nie",
   "spentChip": "Twoje łączne wydatki: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "To jest łączna kwota wspólnego budżetu strony, którą do tej pory wydałeś.",
-  "browsing": "🔎🌐 \"**{{query}}**\"...",
-  "lowBudget": "Budżet strony osiągnął krytyczny poziom, a funkcje takie jak wyszukiwanie online i długie rozmowy zostały ograniczone w celu oszczędności."
+  "browsing": "🔎🌐 \"**{{query}}**\"..."
 }
