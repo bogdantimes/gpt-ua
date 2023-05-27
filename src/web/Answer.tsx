@@ -40,7 +40,9 @@ const Answer: React.FC<AnswerProps> = ({ elem }) => {
   const handleShare = async () => {
     setScreenshotMode(true); // Hide the buttons
     setTimeout(async () => {
-      const canvas = await html2canvas(captureRef.current!);
+      const canvas = await html2canvas(captureRef.current!, {
+        backgroundColor: null, // or set it to your component's background color
+      });
       setScreenshotMode(false); // Show the buttons again
       const blob: BlobPart = await new Promise((resolve) => {
         canvas.toBlob(resolve as BlobCallback, "image/png");
@@ -77,10 +79,7 @@ const Answer: React.FC<AnswerProps> = ({ elem }) => {
   const spoilerText = elem.getSpoilerText();
 
   return (
-    <Box
-      ref={captureRef}
-      sx={{ p: screenshotMode ? "0.1px 0.1px 0 0.1px" : 0 }}
-    >
+    <Box ref={captureRef}>
       <Card
         sx={{
           padding: 2,
@@ -88,10 +87,9 @@ const Answer: React.FC<AnswerProps> = ({ elem }) => {
           position: "relative",
           background: screenshotMode
             ? theme.palette.mode === "dark"
-              ? "linear-gradient(90deg, rgba(16, 26, 48, 1) 0%, rgba(38, 50, 72, 1) 100%)" // Dark theme gradient
-              : "linear-gradient(90deg, rgba(201, 235, 138, 1) 0%, rgba(99, 161, 235, 1) 100%)" // Light theme gradient
+              ? "linear-gradient(90deg, rgba(10, 24, 61, 1) 0%, rgba(3, 54, 73, 1) 100%)" // Dark theme gradient
+              : "linear-gradient(90deg, rgba(176, 233, 157, 1) 0%, rgba(123, 201, 246, 1) 100%)" // Light theme gradient
             : undefined,
-          borderRadius: screenshotMode ? "0" : undefined,
         }}
       >
         {screenshotMode && (
@@ -100,11 +98,11 @@ const Answer: React.FC<AnswerProps> = ({ elem }) => {
               position: "absolute",
               top: 0,
               right: 0,
-              backgroundColor: "rgba(255, 255, 255, 0.5)", // Semi-transparent background
+              backgroundColor: "rgba(72, 52, 212, 0.6)",
               padding: 1,
               borderRadius: "0 0 0 4px", // Rounded corner
               fontSize: "14px", // Size of the watermark
-              color: "#333",
+              color: "#D3D3D3",
             }}
           >
             ⚡ gpt-ua.click
