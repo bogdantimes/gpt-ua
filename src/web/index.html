@@ -56,7 +56,7 @@
           <span class="text-primary">Задачі, реферати, курсові, дипломи та інше на заказ!</span>
         </div>
         <div class="box-horizon order">
-          <a href="https://na5ku.com.ua/?ref_id=10010514" class="order-btn" target="_blank">ЗАКАЗАТЬ</a>
+          <a href="https://na5ku.com.ua/?ref_id=10010514" class="order-btn" target="_blank">Тицяй</a>
         </div>
       </div>
     </div>
@@ -70,6 +70,7 @@
             background-color: #3f51b5;
             color: white;
             padding: 1px;
+            z-index: 10;
         }
 
         .content {
@@ -81,6 +82,7 @@
 
         .box-horizon {
             text-align: center;
+            padding-left: 8px;
         }
 
         .logo img {
@@ -112,17 +114,18 @@
             background-color: #ffcc00;
         }
 
-        @media screen and (max-width: 768px) {
-            .edu-masters-banner {
+        @media screen and (max-width: 520px) {
+            .logo {
                 display: none;
+            }
+            .content {
+                justify-content: flex-start;
+            }
+            .box-horizon {
+                text-align: left;
             }
         }
     </style>
-
-
-
-
-
 
   </body>
 </html>
