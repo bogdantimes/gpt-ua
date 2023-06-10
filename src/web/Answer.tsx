@@ -38,32 +38,43 @@ const Answer: React.FC<AnswerProps> = ({ elem }) => {
 
   const captureRef = useRef<HTMLDivElement | null>(null);
   const handleShare = async () => {
-    setScreenshotMode(true); // Hide the buttons
+    setScreenshotMode(true);
     setTimeout(async () => {
       const canvas = await html2canvas(captureRef.current!, {
-        backgroundColor: null, // or set it to your component's background color
+        backgroundColor: null,
       });
-      setScreenshotMode(false); // Show the buttons again
-      const blob: BlobPart = await new Promise((resolve) => {
-        canvas.toBlob(resolve as BlobCallback, "image/png");
-      });
-      const file = new File([blob], "screenshot.png", { type: "image/png" });
+      setScreenshotMode(false);
+      const dataUrl = canvas.toDataURL("image/png");
 
-      try {
-        await navigator.share({
-          files: [file],
-          title: t("title")!,
-          url: "https://gpt-ua.click",
-          text: elem.getAllText(),
+      // Check if we're on iOS
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+      if (isIOS) {
+        // If we're on iOS, open the screenshot in a new tab
+        window.open(dataUrl, "_blank");
+      } else {
+        // If we're not on iOS, share the file as usual
+        const blob: BlobPart = await new Promise((resolve) => {
+          canvas.toBlob(resolve as BlobCallback, "image/png");
         });
+        const file = new File([blob], "screenshot.png", { type: "image/png" });
 
-        console.log("Sharing was successful.");
-        // @ts-expect-error external gtag
-        gtag("event", "shared");
-      } catch (err) {
-        // @ts-expect-error external gtag
-        gtag("event", "shareFailed");
-        console.error("There was an error sharing.", err);
+        try {
+          await navigator.share({
+            files: [file],
+            title: t("title")!,
+            url: "https://gpt-ua.click",
+            text: elem.getAllText(),
+          });
+
+          console.log("Sharing was successful.");
+          // @ts-expect-error external gtag
+          gtag("event", "shared");
+        } catch (err) {
+          // @ts-expect-error external gtag
+          gtag("event", "shareFailed");
+          console.error("There was an error sharing.", err);
+        }
       }
     }, 0);
   };
