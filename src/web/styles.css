@@ -112,3 +112,7 @@ body {
         opacity: 0;
     }
 }
+
+a {
+    color: green;
+}

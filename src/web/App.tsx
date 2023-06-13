@@ -196,7 +196,7 @@ export default function App(): JSX.Element {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            v: 15,
+            v: 16,
             token,
             messages,
             searchDisabled: search.disabled,
@@ -232,7 +232,7 @@ export default function App(): JSX.Element {
                 handleAnswer(gptReply, answer);
               }
               const searchParams = gptReply?.searchParams;
-              if (searchParams) {
+              if (searchParams?.q) {
                 handleSearchRequest(searchParams);
               }
             }
