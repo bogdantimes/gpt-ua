@@ -5,6 +5,7 @@ import {
   Alert,
   Box,
   Button,
+  ButtonGroup,
   Collapse,
   Container,
   createTheme,
@@ -54,9 +55,11 @@ const SESSION_COST_KEY = "sessionCost";
 const REQUESTS_NUM_KEY = "requestsNum";
 const USD_UAH_RATE = 40;
 
+type ChatMode = "default" | "research";
+
 export default function App(): JSX.Element {
   const { t, i18n } = useTranslation("translation");
-  const mode = useMediaQuery(`(prefers-color-scheme: dark)`);
+  const darkScheme = useMediaQuery(`(prefers-color-scheme: dark)`);
 
   const checkForCyberTheme = () => {
     return window.location.hash.includes("theme=cyber");
@@ -66,11 +69,12 @@ export default function App(): JSX.Element {
     if (checkForCyberTheme()) {
       return cyberpunkTheme;
     } else {
-      return createTheme({ palette: { mode: mode ? `dark` : `light` } });
+      return createTheme({ palette: { mode: darkScheme ? `dark` : `light` } });
     }
   };
 
   const [theme, setTheme] = useState(getTheme());
+  const [mode, setMode] = useState<ChatMode>(`default`);
 
   useEffect(() => {
     setTheme(getTheme());
@@ -196,10 +200,11 @@ export default function App(): JSX.Element {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            v: 16,
+            v: 17,
             token,
             messages,
-            searchDisabled: search.disabled,
+            searchDisabled: true, // search disabled as research mode was added
+            mode,
           }),
         })
           .then(async (response) => {
@@ -356,7 +361,37 @@ export default function App(): JSX.Element {
               ChatGPT🔎🌐
             </p>
           </Box>
+          <Box sx={{ textAlign: "center", pt: 1 }}>
+            <ButtonGroup
+              color="primary"
+              aria-label="outlined primary button group"
+            >
+              {["default", "research"].map((m: ChatMode) => (
+                <Button
+                  variant={mode === m ? "contained" : "outlined"}
+                  onClick={() => {
+                    setMode(m);
+                  }}
+                >
+                  {t(`mode.${m}`)}
+                </Button>
+              ))}
+            </ButtonGroup>
+            {mode === "research" && (
+              <Alert severity={"info"} sx={{ mt: 1 }}>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  align="center"
+                >
+                  {t(`mode.note`)}
+                </Typography>
+              </Alert>
+            )}
+          </Box>
           {conversation
+            // in research mode, display only first QA
+            .slice(0, mode === "research" ? 2 : undefined)
             .filter((el) => !el.hidden)
             .map((elem, i) => {
               return elem.isUser ? (

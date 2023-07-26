@@ -29,5 +29,10 @@
   "no": "No",
   "spentChip": "Your total spending: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "This is the amount of shared site budget money that you have spent in total.",
-  "browsing": "🔎🌐 \"**{{query}}**\"..."
+  "browsing": "🔎🌐 \"**{{query}}**\"...",
+  "mode": {
+    "default": "Chat",
+    "research": "Research (beta)",
+    "note": "Research mode browses information online to check your claims; may take longer."
+  }
 }

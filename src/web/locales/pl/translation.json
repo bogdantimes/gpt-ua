@@ -29,5 +29,10 @@
   "no": "Nie",
   "spentChip": "Twoje łączne wydatki: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "To jest łączna kwota wspólnego budżetu strony, którą do tej pory wydałeś.",
-  "browsing": "🔎🌐 \"**{{query}}**\"..."
+  "browsing": "🔎🌐 \"**{{query}}**\"...",
+  "mode": {
+    "default": "Czat",
+    "research": "Badania (beta)",
+    "note": "Tryb badawczy przegląda informacje online, aby sprawdzić twoje twierdzenia; może to zająć więcej czasu."
+  }
 }
