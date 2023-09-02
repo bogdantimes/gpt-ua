@@ -32,7 +32,7 @@
   "browsing": "🔎🌐 \"**{{query}}**\"...",
   "mode": {
     "default": "Chat",
-    "research": "Research (beta)",
+    "research": "Research",
     "note": "Research mode browses information online to check your claims; may take longer."
   }
 }

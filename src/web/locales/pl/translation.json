@@ -32,7 +32,7 @@
   "browsing": "🔎🌐 \"**{{query}}**\"...",
   "mode": {
     "default": "Czat",
-    "research": "Badania (beta)",
+    "research": "Badania",
     "note": "Tryb badawczy przegląda informacje online, aby sprawdzić twoje twierdzenia; może to zająć więcej czasu."
   }
 }
