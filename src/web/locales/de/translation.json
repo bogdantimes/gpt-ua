@@ -33,6 +33,6 @@
   "mode": {
     "default": "Chat",
     "research": "Forschung",
-    "note": "Im Forschungsmodus werden Informationen online durchsucht, um Ihre Behauptungen zu überprüfen; dies kann länger dauern."
+    "note": "Im Forschungsmodus werden Informationen online durchsucht, um Ihre Behauptungen zu überprüfen."
   }
 }

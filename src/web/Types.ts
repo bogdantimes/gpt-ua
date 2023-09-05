@@ -73,3 +73,5 @@ export class ConversationElem implements PromptElem, AnswerElem {
     return `${this.getText()}${slText ? `\n\n${slText}` : ""}`;
   }
 }
+
+export type ChatMode = "default" | "research";

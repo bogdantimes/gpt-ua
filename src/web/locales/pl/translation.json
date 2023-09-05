@@ -33,6 +33,6 @@
   "mode": {
     "default": "Czat",
     "research": "Badania",
-    "note": "Tryb badawczy przegląda informacje online, aby sprawdzić twoje twierdzenia; może to zająć więcej czasu."
+    "note": "Tryb badawczy przegląda informacje online, aby sprawdzić twoje twierdzenia."
   }
 }

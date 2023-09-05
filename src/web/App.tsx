@@ -31,7 +31,7 @@ import {
 import { useTranslation } from "react-i18next";
 import Answer from "./Answer";
 import Prompt from "./Prompt";
-import { ConversationElem, type PromptElem } from "./Types";
+import { type ChatMode, ConversationElem, type PromptElem } from "./Types";
 import { FundingBar } from "./FundingBar";
 import cyberpunkTheme from "./theme";
 import { YesNoOverlay } from "./YesNoOverlay";
@@ -54,8 +54,6 @@ const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
 const REQUESTS_NUM_KEY = "requestsNum";
 const USD_UAH_RATE = 40;
-
-type ChatMode = "default" | "research";
 
 export default function App(): JSX.Element {
   const { t, i18n } = useTranslation("translation");
@@ -385,6 +383,11 @@ export default function App(): JSX.Element {
                   align="center"
                 >
                   {t(`mode.note`)}
+                  <Typography display="block" variant={"caption"}>
+                    <Link target="_blank" href="https://x.com/PlentyOfClarity">
+                      Powered by Clarity Bot
+                    </Link>
+                  </Typography>
                 </Typography>
               </Alert>
             )}
@@ -406,7 +409,7 @@ export default function App(): JSX.Element {
                   sendDisabled={loading}
                 />
               ) : (
-                <Answer key={i} elem={elem} />
+                <Answer key={i} elem={elem} mode={mode} />
               );
             })}
           {loading && <LinearProgress />}

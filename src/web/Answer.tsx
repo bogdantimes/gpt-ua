@@ -14,7 +14,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import { ContentCopy, Share } from "@mui/icons-material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { type AnswerElem } from "./Types";
+import { type ChatMode, type AnswerElem } from "./Types";
 import Typist from "react-typist";
 import gfm from "remark-gfm";
 import html2canvas from "html2canvas";
@@ -24,9 +24,10 @@ import { useTheme } from "@mui/material/styles";
 
 interface AnswerProps {
   elem: AnswerElem;
+  mode: ChatMode;
 }
 
-const Answer: React.FC<AnswerProps> = ({ elem }) => {
+const Answer: React.FC<AnswerProps> = ({ elem, mode }) => {
   const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
   const [isSpoilerOpen, setIsSpoilerOpen] = useState(false);
   const [screenshotMode, setScreenshotMode] = useState(false);
@@ -63,7 +64,10 @@ const Answer: React.FC<AnswerProps> = ({ elem }) => {
           await navigator.share({
             files: [file],
             title: t("title")!,
-            url: "https://gpt-ua.click",
+            url:
+              mode === `research`
+                ? "https://x.com/PlentyOfClarity"
+                : "https://gpt-ua.click",
             text: elem.getAllText(),
           });
 
@@ -116,7 +120,7 @@ const Answer: React.FC<AnswerProps> = ({ elem }) => {
               color: "#D3D3D3",
             }}
           >
-            ⚡ gpt-ua.click
+            ⚡ {mode === `research` ? "x.com/PlentyOfClarity" : "gpt-ua.click"}
           </Box>
         )}
         <Grid container direction={"row"} spacing={2} rowSpacing={-1}>
