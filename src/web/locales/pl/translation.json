@@ -12,6 +12,7 @@
     "tooltip": "Skopiowane do schowka"
   },
   "errors": {
+    "internal": "Przepraszamy, wystąpił nieznany błąd. Proszę spróbować ponownie.",
     "notEnoughDetails": "Proszę podać więcej szczegółów dotyczących twojego żądania",
     "insecureContext": "Ta funkcja jest dostępna tylko w bezpiecznym kontekście (HTTPS) w niektórych lub we wszystkich obsługiwanych przeglądarkach."
   },

@@ -12,6 +12,7 @@
     "tooltip": "Copied to clipboard"
   },
   "errors": {
+    "internal": "Sorry, an unknown error occurred. Please try again.",
     "notEnoughDetails": "Please provide more details for your request",
     "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
   },

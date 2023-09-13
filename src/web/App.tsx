@@ -245,7 +245,7 @@ export default function App(): JSX.Element {
           })
           .catch((err) => {
             console.log(err);
-            setError(err?.message);
+            setError(t(`errors.internal`));
           })
           .finally(() => {
             setLoading(false);
