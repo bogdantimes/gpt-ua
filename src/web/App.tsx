@@ -140,7 +140,7 @@ export default function App(): JSX.Element {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            v: 17,
+            v: 18,
             token,
             messages,
             searchDisabled: true, // search disabled as research mode was added
