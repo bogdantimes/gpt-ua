@@ -14,6 +14,7 @@
   "errors": {
     "internal": "Przepraszamy, wystąpił nieznany błąd. Proszę spróbować ponownie.",
     "notEnoughDetails": "Proszę podać więcej szczegółów dotyczących twojego żądania",
+    "only140CharsSupported": "W tym trybie pytania powinny mieć mniej niż 140 znaków.",
     "insecureContext": "Ta funkcja jest dostępna tylko w bezpiecznym kontekście (HTTPS) w niektórych lub we wszystkich obsługiwanych przeglądarkach."
   },
   "budget": {
@@ -34,6 +35,8 @@
   "mode": {
     "default": "Czat",
     "research": "Badania",
-    "note": "Tryb badawczy przegląda informacje online, aby sprawdzić twoje twierdzenia."
+    "wolfram": "Nauka (beta)",
+    "noteResearch": "Tryb badawczy przeszukuje informacje online, aby sprawdzić twoje twierdzenia; zwykle zajmuje więcej czasu.",
+    "noteScience": "Tryb naukowy używa Wolfram Alpha do rozwiązania twojego zadania; zwykle zajmuje więcej czasu."
   }
 }

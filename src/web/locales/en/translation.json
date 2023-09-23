@@ -13,7 +13,8 @@
   },
   "errors": {
     "internal": "Sorry, an unknown error occurred. Please try again.",
-    "notEnoughDetails": "Please provide more details for your request",
+    "notEnoughDetails": "Please provide more details for your request.",
+    "only140CharsSupported": "In this mode, keep questions under 140 characters.",
     "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
   },
   "budget": {
@@ -30,10 +31,11 @@
   "no": "No",
   "spentChip": "Your total spending: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "This is the amount of shared site budget money that you have spent in total.",
-  "browsing": "🔎🌐 \"**{{query}}**\"...",
   "mode": {
     "default": "Chat",
     "research": "Research",
-    "note": "Research mode browses information online to check your claims; may take longer."
+    "wolfram": "Science (beta)",
+    "noteResearch": "Research mode browses information online to check your claims; usually takes longer.",
+    "noteScience": "Science mode uses Wolfram Alpha to solve your task; usually takes longer."
   }
 }

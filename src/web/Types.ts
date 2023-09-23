@@ -8,7 +8,6 @@ export interface PromptElem {
 export interface AnswerElem {
   getId: () => number;
   getText: () => string;
-  isStatic: () => boolean;
   isHidden: () => boolean;
   getSpoilerText: () => string;
   getAllText: () => string;
@@ -19,7 +18,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
   text = "";
   isUser = false;
   answered = false;
-  staticMode = false;
   dropped = false;
   hidden = false;
   dropAfterAnswer = false;
@@ -56,10 +54,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
     this.text = text;
   }
 
-  isStatic(): boolean {
-    return this.staticMode;
-  }
-
   isHidden(): boolean {
     return this.hidden;
   }
@@ -74,4 +68,4 @@ export class ConversationElem implements PromptElem, AnswerElem {
   }
 }
 
-export type ChatMode = "default" | "research";
+export type ChatMode = "default" | "research" | "wolfram";

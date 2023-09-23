@@ -14,6 +14,7 @@
   "errors": {
     "internal": "Entschuldigung, ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
     "notEnoughDetails": "Bitte geben Sie mehr Details für Ihre Anfrage an",
+    "only140CharsSupported": "In diesem Modus sollten Fragen weniger als 140 Zeichen haben.",
     "insecureContext": "Diese Funktion ist nur in einem sicheren Kontext (HTTPS) in einigen oder allen unterstützten Browsern verfügbar."
   },
   "budget": {
@@ -30,10 +31,11 @@
   "no": "Nein",
   "spentChip": "Ihre Gesamtausgaben: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "Dies ist der Gesamtbetrag des gemeinsamen Website-Budgets, den Sie ausgegeben haben.",
-  "browsing": "🔎🌐 \"**{{query}}**\"...",
   "mode": {
     "default": "Chat",
     "research": "Forschung",
-    "note": "Im Forschungsmodus werden Informationen online durchsucht, um Ihre Behauptungen zu überprüfen."
+    "wolfram": "Wissenschaft (beta)",
+    "noteResearch": "Der Forschungsmodus durchsucht online Informationen, um Ihre Behauptungen zu überprüfen; dauert in der Regel länger.",
+    "noteScience": "Der Wissenschaftsmodus verwendet Wolfram Alpha, um Ihre Aufgabe zu lösen; dauert in der Regel länger."
   }
 }

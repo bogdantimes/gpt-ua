@@ -38,7 +38,6 @@ import { YesNoOverlay } from "./YesNoOverlay";
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/system";
 import InfoIcon from "@mui/icons-material/Info";
-import { searchGoogle } from "./searchGoogle";
 import ExtensionIcon from "@mui/icons-material/Extension";
 
 // Define a styled Chip for better visuals
@@ -76,11 +75,10 @@ export default function App(): JSX.Element {
 
   useEffect(() => {
     setTheme(getTheme());
-  }, [mode]);
+  }, [darkScheme]);
 
   const [error, setError] = useState<null | string>("");
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState({ disabled: false });
   const [moneyLeft, setMoneyLeft] = useState<number | null>(null);
   const [conversation, setConversation] =
     useState<ConversationElem[]>(conversationLoader);
@@ -130,62 +128,6 @@ export default function App(): JSX.Element {
     setConversation([...conversation]);
   }
 
-  const handleSearchRequest = (searchParams: {
-    q: string;
-    dateRestrict: string;
-    num: number;
-  }) => {
-    const searchHidden = ConversationElem.newAnswer(
-      conversation.length,
-      `/google ${JSON.stringify(searchParams)}`
-    );
-    searchHidden.hidden = true;
-    searchHidden.dropAfterAnswer = true;
-    conversation.push(searchHidden);
-
-    const searchDisplayed = ConversationElem.newAnswer(
-      conversation.length,
-      t("browsing", { query: searchParams.q })
-    );
-    searchDisplayed.staticMode = true; // No animation
-    searchDisplayed.dropAfterAnswer = true;
-
-    conversation.push(searchDisplayed);
-    setConversation([...conversation]);
-
-    searchGoogle({
-      q: searchParams.q,
-      num: searchParams.num || 3,
-      dateRestrict: searchParams.dateRestrict,
-    })
-      .then((results) => {
-        const resultsMarkdown = results
-          .map((r) => `- [${r.title}](${r.link})\n\t${r.snippet}`)
-          .join(`\n`);
-
-        searchDisplayed.spoiler = `${resultsMarkdown}`;
-
-        setConversation([...conversation]);
-      })
-      .catch((e) => {
-        search.disabled = true;
-        setSearch(search);
-        searchDisplayed.text += `\n\n❌ ${e.message}`;
-        setConversation([...conversation]);
-      })
-      .finally(() => {
-        setLoading(true);
-        sendConversation(() => {
-          // On answer - we can mark all previous searches as dropped to save budget next time
-          conversation.forEach((el) => {
-            if (el.dropAfterAnswer) {
-              el.dropped = true;
-            }
-          });
-        });
-      });
-  };
-
   function sendConversation(onAnswer = () => {}) {
     const messages = buildMessages(conversation, lang);
     // @ts-expect-error external grecaptcha.enterprise
@@ -234,10 +176,6 @@ export default function App(): JSX.Element {
                 onAnswer();
                 handleAnswer(gptReply, answer);
               }
-              const searchParams = gptReply?.searchParams;
-              if (searchParams?.q) {
-                handleSearchRequest(searchParams);
-              }
             }
             if (Number.isFinite(+gptReply?.moneyLeft)) {
               setMoneyLeft(+gptReply?.moneyLeft);
@@ -258,6 +196,11 @@ export default function App(): JSX.Element {
 
     if (el.getText().length <= 1) {
       setError(t("errors.notEnoughDetails"));
+      return;
+    }
+
+    if (mode !== "default" && el.getText().length >= 140) {
+      setError(t("errors.only140CharsSupported"));
       return;
     }
 
@@ -340,6 +283,7 @@ export default function App(): JSX.Element {
     setNoAnswer(new Date().toISOString());
   };
 
+  const modes: ChatMode[] = ["default", "research", "wolfram"];
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -350,13 +294,13 @@ export default function App(): JSX.Element {
             <h1>{t("name")}</h1>
             <p
               style={{
-                marginLeft: "105px",
+                marginLeft: "20px",
                 marginTop: "-38px",
                 marginBottom: 0,
                 padding: 0,
               }}
             >
-              ChatGPT🔎🌐
+              ChatGPT | Online Research | Science 🔎🌐
             </p>
           </Box>
           <Box sx={{ textAlign: "center", pt: 1 }}>
@@ -364,8 +308,9 @@ export default function App(): JSX.Element {
               color="primary"
               aria-label="outlined primary button group"
             >
-              {["default", "research"].map((m: ChatMode) => (
+              {modes.map((m: ChatMode) => (
                 <Button
+                  key={m}
                   variant={mode === m ? "contained" : "outlined"}
                   onClick={() => {
                     setMode(m);
@@ -382,10 +327,32 @@ export default function App(): JSX.Element {
                   color="textSecondary"
                   align="center"
                 >
-                  {t(`mode.note`)}
+                  {t(`mode.noteResearch`)}
                   <Typography display="block" variant={"caption"}>
-                    <Link target="_blank" href="https://x.com/PlentyOfClarity">
-                      Powered by Clarity Bot
+                    <Link
+                      target="_blank"
+                      href="https://www.patreon.com/BogdanTimes/shop/claritybot-service-5-top-up-2309"
+                    >
+                      Powered by Clarity Bot Service
+                    </Link>
+                  </Typography>
+                </Typography>
+              </Alert>
+            )}
+            {mode === "wolfram" && (
+              <Alert severity={"info"} sx={{ mt: 1 }}>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  align="center"
+                >
+                  {t(`mode.noteScience`)}
+                  <Typography display="block" variant={"caption"}>
+                    <Link
+                      target="_blank"
+                      href="https://www.patreon.com/BogdanTimes/shop/claritybot-service-5-top-up-2309"
+                    >
+                      Powered by Clarity Bot Service
                     </Link>
                   </Typography>
                 </Typography>
@@ -393,8 +360,8 @@ export default function App(): JSX.Element {
             )}
           </Box>
           {conversation
-            // in research mode, display only first QA
-            .slice(0, mode === "research" ? 2 : undefined)
+            // in non default mode, display only first QA
+            .slice(0, mode !== "default" ? 2 : undefined)
             .filter((el) => !el.hidden)
             .map((elem, i) => {
               return elem.isUser ? (
@@ -446,7 +413,7 @@ export default function App(): JSX.Element {
                   icon={<InfoIcon color={"inherit"} />}
                   label={t(`spentChip`, {
                     costUSD: +sessionCost.toFixed(
-                      sessionCost > 0.01 ? 2 : sessionCost > 0.001 ? 3 : 4
+                      sessionCost > 0.01 ? 2 : sessionCost > 0.001 ? 3 : 4,
                     ),
                     costUAH: +(sessionCost * USD_UAH_RATE).toFixed(1),
                   })}
@@ -473,7 +440,7 @@ export default function App(): JSX.Element {
                       gtag("event", "budget_top_up_open");
                       window.open(
                         `https://send.monobank.ua/jar/3Q3K3VdHuU`,
-                        "_blank"
+                        "_blank",
                       );
                     }}
                     sx={{
@@ -613,7 +580,7 @@ interface Message {
 
 function buildMessages(
   conversation: ConversationElem[],
-  lang: string
+  lang: string,
 ): Message[] {
   const messages: Message[] = [];
   for (const elem of conversation) {
