@@ -4,15 +4,13 @@ import {
   Avatar,
   Box,
   Card,
-  Collapse,
   Fade,
   Grid,
   IconButton,
   Stack,
   Tooltip,
 } from "@mui/material";
-import { ContentCopy } from "@mui/icons-material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { ContentCopy, QuestionMark } from "@mui/icons-material";
 import { type AnswerElem, type ChatMode } from "./Types";
 import { mainIconBase64 } from "./Icon";
 import { t } from "i18next";
@@ -26,27 +24,20 @@ interface AnswerProps {
 
 const Answer: React.FC<AnswerProps> = ({ elem, mode }) => {
   const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
-  const [isSpoilerOpen, setIsSpoilerOpen] = useState(false);
   const theme = useTheme();
 
-  const toggleSpoiler = () => {
-    setIsSpoilerOpen(!isSpoilerOpen);
-  };
-
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(elem.getAllText());
+    await navigator.clipboard.writeText(elem.getText());
     setCbTooltipOpen(true);
     setTimeout(() => {
       setCbTooltipOpen(false);
     }, 2000);
   };
 
-  const spoilerText = elem.getSpoilerText();
-
   return (
     <Card
       sx={{
-        padding: 2,
+        padding: "28px 16px",
         overflowX: "auto",
         position: "relative",
         background:
@@ -83,41 +74,20 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode }) => {
           />
         </Grid>
         <Grid item xs={12} sm={11} sx={{ pr: 2 }}>
-          <Box
-            onClick={toggleSpoiler}
-            sx={{
-              display: spoilerText ? "flex" : "block",
-              alignItems: "center",
-              cursor: spoilerText ? "pointer" : "default",
-            }}
-          >
-            <Markdown
-              options={{
-                overrides: {
-                  img: {
-                    props: {
-                      width: "100%",
-                      crossOrigin: null,
-                    },
+          <Markdown
+            options={{
+              overrides: {
+                img: {
+                  props: {
+                    width: "100%",
+                    crossOrigin: null,
                   },
                 },
-              }}
-            >
-              {elem.getText()}
-            </Markdown>
-            {spoilerText && (
-              <ExpandMoreIcon
-                sx={{
-                  transform: isSpoilerOpen ? "rotate(180deg)" : "rotate(0deg)",
-                  transition: ".3s",
-                  ml: 1,
-                }}
-              />
-            )}
-          </Box>
-          <Collapse in={isSpoilerOpen && !!spoilerText}>
-            {spoilerText && <Markdown>{spoilerText}</Markdown>}
-          </Collapse>
+              },
+            }}
+          >
+            {elem.getText()}
+          </Markdown>
         </Grid>
         <Box sx={{ position: "absolute", right: 0, bottom: 0 }}>
           <Tooltip
@@ -129,6 +99,15 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode }) => {
             TransitionProps={{ timeout: 600 }}
           >
             <Stack direction="row" alignItems="center">
+              <IconButton
+                onClick={() => {
+                  // @ts-expect-error external gtag
+                  gtag("event", "tg_chat_open");
+                  window.open("https://t.me/gpt_ua_chat", "_blank");
+                }}
+              >
+                <QuestionMark fontSize="small" />
+              </IconButton>
               {window.isSecureContext && !!navigator.clipboard && (
                 <IconButton
                   onClick={() => {

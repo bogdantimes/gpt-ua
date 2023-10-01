@@ -48,6 +48,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.7rem",
 }));
 
+const VERSION = 19;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -80,6 +81,22 @@ export default function App(): JSX.Element {
   const [error, setError] = useState<null | string>("");
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState<number | null>(null);
+
+  const [limitBudget, setLimitBudget] = useState(() => {
+    try {
+      return !!localStorage.getItem("lb");
+    } catch (e) {}
+  });
+  useEffect(() => {
+    try {
+      if (limitBudget) {
+        localStorage.setItem("lb", "1");
+      } else {
+        localStorage.removeItem("lb");
+      }
+    } catch (e) {}
+  }, [limitBudget]);
+
   const [conversation, setConversation] =
     useState<ConversationElem[]>(conversationLoader);
   useEffect(() => {
@@ -140,7 +157,8 @@ export default function App(): JSX.Element {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            v: 18,
+            v: VERSION,
+            l: limitBudget,
             token,
             messages,
             searchDisabled: true, // search disabled as research mode was added
@@ -177,8 +195,12 @@ export default function App(): JSX.Element {
                 handleAnswer(gptReply, answer);
               }
             }
-            if (Number.isFinite(+gptReply?.moneyLeft)) {
-              setMoneyLeft(+gptReply?.moneyLeft);
+            const budget = +gptReply?.moneyLeft;
+            if (Number.isFinite(budget)) {
+              setMoneyLeft(budget);
+              if (budget <= 0) {
+                setLimitBudget(true);
+              }
             }
           })
           .catch((err) => {
@@ -217,10 +239,10 @@ export default function App(): JSX.Element {
     }, new Date().getMilliseconds());
   };
 
-  const [expanded, setExpanded] = useState(false);
+  const [dashBoardExpanded, setDashBoardExpanded] = useState(false);
 
   const handleExpandClick = () => {
-    setExpanded(!expanded);
+    setDashBoardExpanded(!dashBoardExpanded);
   };
 
   const [askQuestion, setAskQuestion] = useState(false);
@@ -251,22 +273,22 @@ export default function App(): JSX.Element {
     localStorage.setItem(NO_KEY, noAnswer || "");
   }, [noAnswer]);
 
-  useEffect(() => {
-    const checkAnswerDate = (answer, timeFrame) => {
-      if (answer) {
-        const answerDate = new Date(answer);
-        const timeDifference = +new Date() - +answerDate;
-        return timeDifference >= timeFrame;
-      }
-      return true;
-    };
+  function isTimePassed(date: string | null, duration: number) {
+    if (date) {
+      const answerDate = new Date(date);
+      const timeDifference = +new Date() - +answerDate;
+      return timeDifference >= duration;
+    }
+    return true;
+  }
 
-    const oneDay = 24 * 60 * 60 * 1000;
-    const oneWeek = 7 * oneDay;
-    const showQuestionForNoAnswer =
-      noAnswer && checkAnswerDate(noAnswer, oneDay);
+  const oneDay = 24 * 60 * 60 * 1000;
+  const oneWeek = 7 * oneDay;
+
+  useEffect(() => {
+    const showQuestionForNoAnswer = noAnswer && isTimePassed(noAnswer, oneDay);
     const showQuestionForYesAnswer =
-      !noAnswer && checkAnswerDate(yesAnswer, oneWeek);
+      !noAnswer && isTimePassed(yesAnswer, oneWeek);
 
     setAskQuestion(showQuestionForNoAnswer || showQuestionForYesAnswer);
   }, [sessionCost, yesAnswer, noAnswer]);
@@ -283,7 +305,16 @@ export default function App(): JSX.Element {
     setNoAnswer(new Date().toISOString());
   };
 
+  function handleTopUpBtnClick() {
+    // @ts-expect-error external gtag
+    gtag("event", "budget_top_up_open");
+    window.open(`https://send.monobank.ua/jar/3Q3K3VdHuU`, "_blank");
+    // reset the budget limit timer
+    setLimitBudget(false);
+  }
+
   const modes: ChatMode[] = ["default", "research", "wolfram"];
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -362,7 +393,6 @@ export default function App(): JSX.Element {
           {conversation
             // in non default mode, display only first QA
             .slice(0, mode !== "default" ? 2 : undefined)
-            .filter((el) => !el.hidden)
             .map((elem, i) => {
               return elem.isUser ? (
                 <Prompt
@@ -435,14 +465,7 @@ export default function App(): JSX.Element {
                   <Button
                     variant="contained"
                     size={"small"}
-                    onClick={() => {
-                      // @ts-expect-error external gtag
-                      gtag("event", "budget_top_up_open");
-                      window.open(
-                        `https://send.monobank.ua/jar/3Q3K3VdHuU`,
-                        "_blank",
-                      );
-                    }}
+                    onClick={handleTopUpBtnClick}
                     sx={{
                       backgroundColor:
                         theme.palette.mode === "light" ? "black" : "darkgrey",
@@ -533,7 +556,7 @@ export default function App(): JSX.Element {
               <IconButton size={"small"} onClick={handleExpandClick}>
                 <ExpandMore
                   sx={{
-                    transform: expanded ? "rotate(180deg)" : "none",
+                    transform: dashBoardExpanded ? "rotate(180deg)" : "none",
                     transition: theme.transitions.create("transform", {
                       duration: theme.transitions.duration.shortest,
                     }),
@@ -542,7 +565,7 @@ export default function App(): JSX.Element {
               </IconButton>
             </Box>
             <Box sx={{ position: "relative", pb: "130%", scale: "0.5" }}>
-              <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <Collapse in={dashBoardExpanded} timeout="auto" unmountOnExit>
                 <iframe
                   style={{
                     position: "absolute",
@@ -588,7 +611,7 @@ function buildMessages(
     messages.push({
       lang,
       id: elem.getId(),
-      original: `${elem.getAllText()}`,
+      original: `${elem.getText()}`,
       isUser: elem.isUser,
     });
   }

@@ -8,9 +8,6 @@ export interface PromptElem {
 export interface AnswerElem {
   getId: () => number;
   getText: () => string;
-  isHidden: () => boolean;
-  getSpoilerText: () => string;
-  getAllText: () => string;
 }
 
 export class ConversationElem implements PromptElem, AnswerElem {
@@ -19,9 +16,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
   isUser = false;
   answered = false;
   dropped = false;
-  hidden = false;
-  dropAfterAnswer = false;
-  spoiler = "";
 
   static newPrompt(id: number, text: string): ConversationElem {
     const elem = new ConversationElem();
@@ -52,19 +46,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
 
   setText(text: string): void {
     this.text = text;
-  }
-
-  isHidden(): boolean {
-    return this.hidden;
-  }
-
-  getSpoilerText(): string {
-    return this.spoiler;
-  }
-
-  getAllText(): string {
-    const slText = this.getSpoilerText();
-    return `${this.getText()}${slText ? `\n\n${slText}` : ""}`;
   }
 }
 
