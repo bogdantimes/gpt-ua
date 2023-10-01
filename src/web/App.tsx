@@ -161,7 +161,6 @@ export default function App(): JSX.Element {
             l: limitBudget,
             token,
             messages,
-            searchDisabled: true, // search disabled as research mode was added
             mode,
           }),
         })
