@@ -48,7 +48,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.7rem",
 }));
 
-const VERSION = 19;
+const VERSION = 20;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -82,6 +82,7 @@ export default function App(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState<number | null>(null);
 
+  const [stopLimiting, setStopLimiting] = useState(false);
   const [limitBudget, setLimitBudget] = useState(() => {
     try {
       return !!localStorage.getItem("lb");
@@ -158,7 +159,7 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             v: VERSION,
-            l: limitBudget,
+            l: limitBudget && !stopLimiting,
             token,
             messages,
             mode,
@@ -199,6 +200,8 @@ export default function App(): JSX.Element {
               setMoneyLeft(budget);
               if (budget <= 0) {
                 setLimitBudget(true);
+              } else {
+                setStopLimiting(false);
               }
             }
           })
@@ -310,6 +313,7 @@ export default function App(): JSX.Element {
     window.open(`https://send.monobank.ua/jar/3Q3K3VdHuU`, "_blank");
     // reset the budget limit timer
     setLimitBudget(false);
+    setStopLimiting(true);
   }
 
   const modes: ChatMode[] = ["default", "research", "wolfram"];
