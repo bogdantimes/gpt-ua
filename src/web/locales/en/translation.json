@@ -14,7 +14,7 @@
   "errors": {
     "internal": "Sorry, an unknown error occurred. Please try again.",
     "notEnoughDetails": "Please provide more details for your request.",
-    "only140CharsSupported": "In this mode, keep questions under 140 characters.",
+    "only280CharsSupported": "In this mode, keep questions under 280 characters.",
     "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
   },
   "budget": {

@@ -14,7 +14,7 @@
   "errors": {
     "internal": "Przepraszamy, wystąpił nieznany błąd. Proszę spróbować ponownie.",
     "notEnoughDetails": "Proszę podać więcej szczegółów dotyczących twojego żądania",
-    "only140CharsSupported": "W tym trybie pytania powinny mieć mniej niż 140 znaków.",
+    "only280CharsSupported": "W tym trybie pytania powinny mieć mniej niż 280 znaków.",
     "insecureContext": "Ta funkcja jest dostępna tylko w bezpiecznym kontekście (HTTPS) w niektórych lub we wszystkich obsługiwanych przeglądarkach."
   },
   "budget": {
@@ -31,7 +31,6 @@
   "no": "Nie",
   "spentChip": "Twoje łączne wydatki: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "To jest łączna kwota wspólnego budżetu strony, którą do tej pory wydałeś.",
-  "browsing": "🔎🌐 \"**{{query}}**\"...",
   "mode": {
     "default": "Czat",
     "research": "Badania",

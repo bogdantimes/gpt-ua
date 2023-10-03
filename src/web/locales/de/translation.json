@@ -14,7 +14,7 @@
   "errors": {
     "internal": "Entschuldigung, ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
     "notEnoughDetails": "Bitte geben Sie mehr Details für Ihre Anfrage an",
-    "only140CharsSupported": "In diesem Modus sollten Fragen weniger als 140 Zeichen haben.",
+    "only280CharsSupported": "In diesem Modus sollten Fragen weniger als 280 Zeichen haben.",
     "insecureContext": "Diese Funktion ist nur in einem sicheren Kontext (HTTPS) in einigen oder allen unterstützten Browsern verfügbar."
   },
   "budget": {

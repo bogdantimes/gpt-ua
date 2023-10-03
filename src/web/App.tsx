@@ -200,8 +200,6 @@ export default function App(): JSX.Element {
               setMoneyLeft(budget);
               if (budget <= 0) {
                 setLimitBudget(true);
-              } else {
-                setStopLimiting(false);
               }
             }
           })
@@ -223,8 +221,8 @@ export default function App(): JSX.Element {
       return;
     }
 
-    if (mode !== "default" && el.getText().length >= 140) {
-      setError(t("errors.only140CharsSupported"));
+    if (mode !== "default" && el.getText().length >= 280) {
+      setError(t("errors.only280CharsSupported"));
       return;
     }
 
@@ -314,6 +312,7 @@ export default function App(): JSX.Element {
     // reset the budget limit timer
     setLimitBudget(false);
     setStopLimiting(true);
+    setSessionCost(0);
   }
 
   const modes: ChatMode[] = ["default", "research", "wolfram"];
