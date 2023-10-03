@@ -45,7 +45,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   color: theme.palette.common.white,
   fontWeight: "bold",
-  fontSize: "0.7rem",
+  fontSize: "0.8rem",
 }));
 
 const VERSION = 20;
@@ -313,6 +313,7 @@ export default function App(): JSX.Element {
     setLimitBudget(false);
     setStopLimiting(true);
     setSessionCost(0);
+    setRequestsNum(0);
   }
 
   const modes: ChatMode[] = ["default", "research", "wolfram"];
@@ -328,16 +329,17 @@ export default function App(): JSX.Element {
             <p
               style={{
                 marginLeft: "20px",
-                marginTop: "-38px",
+                marginTop: "-33px",
                 marginBottom: 0,
                 padding: 0,
               }}
             >
-              ChatGPT | Online Research | Science 🔎🌐
+              ChatGPT | Online Research | Science
             </p>
           </Box>
           <Box sx={{ textAlign: "center", pt: 1 }}>
             <ButtonGroup
+              size={"small"}
               color="primary"
               aria-label="outlined primary button group"
             >
@@ -479,9 +481,11 @@ export default function App(): JSX.Element {
                       ml: `auto`,
                     }}
                   >
-                    {t(`budget.mono`)} (Google Pay / Visa / Mastercard)
+                    {t(`budget.mono`)}
                   </Button>
                   <Typography ml={"auto"} mr={"auto"} variant={"caption"}>
+                    (Monobank / Google Pay / Visa / Mastercard)
+                    <br />
                     10₴ ≈ $0.25
                   </Typography>
                 </>

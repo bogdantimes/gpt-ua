@@ -18,19 +18,19 @@
     "insecureContext": "Diese Funktion ist nur in einem sicheren Kontext (HTTPS) in einigen oder allen unterstützten Browsern verfügbar."
   },
   "budget": {
-    "mono": "Aufladen",
+    "mono": "Budget aufladen",
     "donate": "\uD83D\uDEA8 OpenAI verlangt etwa $0.005 pro Antwort. Der Website-Autor unterstützt dies, aber bei hohem Nutzeraufkommen reicht es oft nicht aus. Bitte erwägen Sie, selbst beizutragen - es ist automatisiert und einfach. \uD83D\uDE4F",
     "remaining": "Website-Budget"
   },
   "openai": {
     "slowResponse": "Keine Antwort? Überprüfen Sie den Status:"
   },
-  "requestSummary": "Bisher haben Sie {{requestsNum}} Anfrage(n) gestellt, die etwa ${{costUSD}} (≈ {{costUAH}}₴) kosten.",
-  "topUpQuestion": "Haben Sie das Budget der Website aufgefüllt?",
+  "requestSummary": "Bisher haben Sie {{requestsNum}} Anfrage(n) gemacht, die ungefähr ${{costUSD}} kosten (≈ {{costUAH}}₴).",
+  "topUpQuestion": "Haben Sie das Budget der Website aufgestockt?",
   "yes": "Ja",
   "no": "Nein",
-  "spentChip": "Ihre Gesamtausgaben: ${{costUSD}} (≈ {{costUAH}}₴)",
-  "chipTooltip": "Dies ist der Gesamtbetrag des gemeinsamen Website-Budgets, den Sie ausgegeben haben.",
+  "spentChip": "Sie haben ausgegeben: ${{costUSD}} (≈ {{costUAH}}₴)",
+  "chipTooltip": "Dies ist der Betrag aus dem gemeinsamen Budget der Website, den Sie ausgegeben haben.",
   "mode": {
     "default": "Chat",
     "research": "Forschung",

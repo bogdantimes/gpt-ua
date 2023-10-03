@@ -18,19 +18,19 @@
     "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
   },
   "budget": {
-    "mono": "Top-up",
+    "mono": "Top-up the budget",
     "donate": "\uD83D\uDEA8 OpenAI charges around $0.005 per answer. The site author helps fund this, but due to the high user volume, it's often insufficient. Please consider contributing - it's automated and easy.  \uD83D\uDE4F",
     "remaining": "Site budget"
   },
   "openai": {
     "slowResponse": "No response? Check the status:"
   },
-  "requestSummary": "So far you've made {{requestsNum}} request(s), which costs around ${{costUSD}} (≈ {{costUAH}}₴).",
-  "topUpQuestion": "Did you replenish the site budget?",
+  "requestSummary": "So far, you have made {{requestsNum}} request(s), costing approximately ${{costUSD}} (≈ {{costUAH}}₴).",
+  "topUpQuestion": "Have you topped up the website's budget?",
   "yes": "Yes",
   "no": "No",
-  "spentChip": "Your total spending: ${{costUSD}} (≈ {{costUAH}}₴)",
-  "chipTooltip": "This is the amount of shared site budget money that you have spent in total.",
+  "spentChip": "You've spent: ${{costUSD}} (≈ {{costUAH}}₴)",
+  "chipTooltip": "This is the amount of money from the website's shared budget that you have spent.",
   "mode": {
     "default": "Chat",
     "research": "Research",
