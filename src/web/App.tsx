@@ -324,20 +324,22 @@ export default function App(): JSX.Element {
       <Container maxWidth="sm" sx={{ padding: 2 }}>
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}
-          <Box sx={{ padding: 2, textAlign: "center", position: "relative" }}>
+          <Box sx={{ padding: 1, textAlign: "center", position: "relative" }}>
             <h1>{t("name")}</h1>
             <p
               style={{
-                marginLeft: "20px",
+                marginLeft: "10px",
                 marginTop: "-33px",
                 marginBottom: 0,
                 padding: 0,
               }}
             >
               ChatGPT | Online Research | Science
+              <br />
+              🔎🌐
             </p>
           </Box>
-          <Box sx={{ textAlign: "center", pt: 1 }}>
+          <Box sx={{ textAlign: "center", p: 1 }}>
             <ButtonGroup
               size={"small"}
               color="primary"
