@@ -82,7 +82,6 @@ export default function App(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState<number | null>(null);
 
-  const [stopLimiting, setStopLimiting] = useState(false);
   const [limitBudget, setLimitBudget] = useState(() => {
     try {
       return !!localStorage.getItem("lb");
@@ -159,7 +158,7 @@ export default function App(): JSX.Element {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             v: VERSION,
-            l: limitBudget && !stopLimiting,
+            l: limitBudget && requestsNum,
             token,
             messages,
             mode,
@@ -311,7 +310,6 @@ export default function App(): JSX.Element {
     window.open(`https://send.monobank.ua/jar/3Q3K3VdHuU`, "_blank");
     // reset the budget limit timer
     setLimitBudget(false);
-    setStopLimiting(true);
     setSessionCost(0);
     setRequestsNum(0);
   }
