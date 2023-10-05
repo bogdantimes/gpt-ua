@@ -35,7 +35,8 @@
     "default": "Chat",
     "research": "Research",
     "wolfram": "Science (beta)",
-    "noteResearch": "Research mode browses information online to check your claims; usually takes longer.",
-    "noteScience": "Science mode uses Wolfram Alpha to solve your task; usually takes longer."
+    "note_default": "Chat does not have a browsing function or the ability to work with images, but it's the most creative mode and usually replies faster.",
+    "note_research": "Research mode can browse information online to verify your claims; it usually takes longer.",
+    "note_wolfram": "Science mode uses formulas, graphs, and precise data to solve your task; it usually takes more time."
   }
 }

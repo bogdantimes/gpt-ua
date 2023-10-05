@@ -35,7 +35,8 @@
     "default": "Chat",
     "research": "Forschung",
     "wolfram": "Wissenschaft (beta)",
-    "noteResearch": "Der Forschungsmodus durchsucht online Informationen, um Ihre Behauptungen zu überprüfen; dauert in der Regel länger.",
-    "noteScience": "Der Wissenschaftsmodus verwendet Wolfram Alpha, um Ihre Aufgabe zu lösen; dauert in der Regel länger."
+    "note_default": "Der Chat hat keine Online-Suchfunktion oder die Fähigkeit, mit Bildern zu arbeiten, aber er ist der kreativste Modus und antwortet in der Regel schneller.",
+    "note_research": "Im Forschungsmodus können Informationen online durchsucht werden, um Ihre Behauptungen zu überprüfen; dies dauert in der Regel länger.",
+    "note_wolfram": "Der Wissenschaftsmodus verwendet Formeln, Diagramme und genaue Daten, um Ihre Aufgabe zu lösen; dies dauert in der Regel länger."
   }
 }

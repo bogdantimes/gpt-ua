@@ -355,44 +355,19 @@ export default function App(): JSX.Element {
                 </Button>
               ))}
             </ButtonGroup>
-            {mode === "research" && (
-              <Alert severity={"info"} sx={{ mt: 1 }}>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  align="center"
-                >
-                  {t(`mode.noteResearch`)}
-                  <Typography display="block" variant={"caption"}>
-                    <Link
-                      target="_blank"
-                      href="https://www.patreon.com/BogdanTimes/shop/claritybot-service-5-top-up-2309"
-                    >
-                      Powered by Clarity Bot Service
-                    </Link>
-                  </Typography>
+            <Alert severity={"info"} sx={{ mt: 1 }}>
+              <Typography variant="body2" color="textSecondary" align="center">
+                {t(`mode.note_${mode}`)}
+                <Typography display="block" variant={"caption"}>
+                  <Link
+                    target="_blank"
+                    href="https://www.patreon.com/BogdanTimes/shop/claritybot-service-5-top-up-2309"
+                  >
+                    Powered by Clarity Bot Service
+                  </Link>
                 </Typography>
-              </Alert>
-            )}
-            {mode === "wolfram" && (
-              <Alert severity={"info"} sx={{ mt: 1 }}>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  align="center"
-                >
-                  {t(`mode.noteScience`)}
-                  <Typography display="block" variant={"caption"}>
-                    <Link
-                      target="_blank"
-                      href="https://www.patreon.com/BogdanTimes/shop/claritybot-service-5-top-up-2309"
-                    >
-                      Powered by Clarity Bot Service
-                    </Link>
-                  </Typography>
-                </Typography>
-              </Alert>
-            )}
+              </Typography>
+            </Alert>
           </Box>
           {conversation
             // in non default mode, display only first QA

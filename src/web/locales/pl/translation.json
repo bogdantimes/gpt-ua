@@ -35,7 +35,8 @@
     "default": "Czat",
     "research": "Badania",
     "wolfram": "Nauka (beta)",
-    "noteResearch": "Tryb badawczy przeszukuje informacje online, aby sprawdzić twoje twierdzenia; zwykle zajmuje więcej czasu.",
-    "noteScience": "Tryb naukowy używa Wolfram Alpha do rozwiązania twojego zadania; zwykle zajmuje więcej czasu."
+    "note_default": "Czat nie ma funkcji wyszukiwania online ani możliwości pracy z obrazami, ale to najbardziej kreatywny tryb i zwykle odpowiada szybciej.",
+    "note_research": "Tryb badawczy może przeszukiwać informacje w Internecie, aby zweryfikować Twoje twierdzenia; zwykle zajmuje to więcej czasu.",
+    "note_wolfram": "Tryb naukowy korzysta z formuł, wykresów i dokładnych danych do rozwiązania Twojego zadania; zwykle zajmuje to więcej czasu."
   }
 }
