@@ -363,7 +363,7 @@ export default function App(): JSX.Element {
                     target="_blank"
                     href="https://www.patreon.com/BogdanTimes/shop/claritybot-service-5-top-up-2309"
                   >
-                    Powered by Clarity Bot Service
+                    Powered by Clarity AI Service
                   </Link>
                 </Typography>
               </Typography>
