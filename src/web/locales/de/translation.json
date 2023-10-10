@@ -37,6 +37,7 @@
     "wolfram": "Wissenschaft (beta)",
     "note_default": "Der Chat hat keine Online-Suchfunktion oder die Fähigkeit, mit Bildern zu arbeiten, aber er ist der kreativste Modus und antwortet in der Regel schneller.",
     "note_research": "Im Forschungsmodus können Informationen online durchsucht werden, um Ihre Behauptungen zu überprüfen; dies dauert in der Regel länger.",
-    "note_wolfram": "Der Wissenschaftsmodus verwendet Formeln, Diagramme und genaue Daten, um Ihre Aufgabe zu lösen; dies dauert in der Regel länger."
+    "note_wolfram": "Der Wissenschaftsmodus verwendet Formeln, Diagramme und genaue Daten, um Ihre Aufgabe zu lösen; dies dauert in der Regel länger.",
+    "note_wiki": "Der Wiki-Modus sucht Informationen nur in Wikipedia; dies dauert in der Regel länger."
   }
 }

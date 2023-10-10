@@ -35,8 +35,10 @@
     "default": "Chat",
     "research": "Research",
     "wolfram": "Science (beta)",
+    "wiki": "Wiki",
     "note_default": "Chat does not have a browsing function or the ability to work with images, but it's the most creative mode and usually replies faster.",
     "note_research": "Research mode can browse information online to verify your claims; it usually takes longer.",
-    "note_wolfram": "Science mode uses formulas, graphs, and precise data to solve your task; it usually takes more time."
+    "note_wolfram": "Science mode uses formulas, graphs, and precise data to solve your task; it usually takes more time.",
+    "note_wiki": "Wiki mode researches information using Wikipedia as the only source; it usually takes longer."
   }
 }

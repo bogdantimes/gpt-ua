@@ -48,7 +48,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 20;
+const VERSION = 21;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -314,7 +314,7 @@ export default function App(): JSX.Element {
     setRequestsNum(0);
   }
 
-  const modes: ChatMode[] = ["default", "research", "wolfram"];
+  const modes: ChatMode[] = ["default", "research", "wolfram", "wiki"];
 
   return (
     <ThemeProvider theme={theme}>
