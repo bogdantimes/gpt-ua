@@ -19,7 +19,7 @@
   },
   "budget": {
     "mono": "Top-up the budget",
-    "donate": "\uD83D\uDEA8 OpenAI charges around $0.005 per answer. The site author helps fund this, but due to the high user volume, it's often insufficient. Please consider contributing - it's automated and easy.  \uD83D\uDE4F",
+    "donate": "\uD83D\uDEA8 OpenAI charges around $0.005-$0.03 per answer. The site author helps fund this, but due to the high user volume, it's often insufficient. Please consider contributing - it's automated and easy.  \uD83D\uDE4F",
     "remaining": "Site budget"
   },
   "openai": {

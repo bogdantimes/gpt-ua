@@ -19,7 +19,7 @@
   },
   "budget": {
     "mono": "Budget aufladen",
-    "donate": "\uD83D\uDEA8 OpenAI verlangt etwa $0.005 pro Antwort. Der Website-Autor unterstützt dies, aber bei hohem Nutzeraufkommen reicht es oft nicht aus. Bitte erwägen Sie, selbst beizutragen - es ist automatisiert und einfach. \uD83D\uDE4F",
+    "donate": "\uD83D\uDEA8 OpenAI verlangt etwa $0.005-$0.03 pro Antwort. Der Website-Autor unterstützt dies, aber bei hohem Nutzeraufkommen reicht es oft nicht aus. Bitte erwägen Sie, selbst beizutragen - es ist automatisiert und einfach. \uD83D\uDE4F",
     "remaining": "Website-Budget"
   },
   "openai": {
