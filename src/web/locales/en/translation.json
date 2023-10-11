@@ -33,11 +33,13 @@
   "chipTooltip": "This is the amount of money from the website's shared budget that you have spent.",
   "mode": {
     "default": "Chat",
-    "research": "Research",
+    "gpt4": "GPT4",
+    "research": "Google",
     "wolfram": "Science (beta)",
     "wiki": "Wiki",
-    "note_default": "Chat does not have a browsing function or the ability to work with images, but it's the most creative mode and usually replies faster.",
-    "note_research": "Research mode can browse information online to verify your claims; it usually takes longer.",
+    "note_default": "Chat can't browse the web or see pictures, but it's the cheapest and fastest mode for everyday tasks.",
+    "note_gpt4": "Chat GPT-4 understands better and is suitable for complex questions. But it is more expensive and slower.",
+    "note_research": "Google mode researches information online to verify your claims; it usually takes longer.",
     "note_wolfram": "Science mode uses formulas, graphs, and precise data to solve your task; it usually takes more time.",
     "note_wiki": "Wiki mode researches information using Wikipedia as the only source; it usually takes longer."
   }

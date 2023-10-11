@@ -48,7 +48,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 21;
+const VERSION = 22;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -71,9 +71,20 @@ export default function App(): JSX.Element {
     }
   };
 
-  const [theme, setTheme] = useState(getTheme());
-  const [mode, setMode] = useState<ChatMode>(`default`);
+  const [mode, setMode] = useState<ChatMode>(() => {
+    try {
+      return (localStorage.getItem("mode") as ChatMode) || "default";
+    } catch (e) {
+      return "default";
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("mode", mode);
+    } catch (e) {}
+  }, [mode]);
 
+  const [theme, setTheme] = useState(getTheme());
   useEffect(() => {
     setTheme(getTheme());
   }, [darkScheme]);
@@ -314,7 +325,8 @@ export default function App(): JSX.Element {
     setRequestsNum(0);
   }
 
-  const modes: ChatMode[] = ["default", "research", "wolfram", "wiki"];
+  const modes: ChatMode[] = ["default", "gpt4", "research", "wiki", "wolfram"];
+  const clarityMode = ["research", "wiki", "wolfram"].includes(mode);
 
   return (
     <ThemeProvider theme={theme}>
@@ -358,20 +370,22 @@ export default function App(): JSX.Element {
             <Alert severity={"info"} sx={{ mt: 1 }}>
               <Typography variant="body2" color="textSecondary" align="center">
                 {t(`mode.note_${mode}`)}
-                <Typography display="block" variant={"caption"}>
-                  <Link
-                    target="_blank"
-                    href="https://www.patreon.com/BogdanTimes/shop/claritybot-service-5-top-up-2309"
-                  >
-                    Powered by Clarity AI Service
-                  </Link>
-                </Typography>
+                {clarityMode && (
+                  <Typography display="block" variant={"caption"}>
+                    <Link
+                      target="_blank"
+                      href="https://www.patreon.com/BogdanTimes/shop/claritybot-service-5-top-up-2309"
+                    >
+                      Powered by Clarity AI Service
+                    </Link>
+                  </Typography>
+                )}
               </Typography>
             </Alert>
           </Box>
           {conversation
             // in non default mode, display only first QA
-            .slice(0, mode !== "default" ? 2 : undefined)
+            .slice(0, clarityMode ? 2 : undefined)
             .map((elem, i) => {
               return elem.isUser ? (
                 <Prompt

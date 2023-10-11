@@ -49,4 +49,4 @@ export class ConversationElem implements PromptElem, AnswerElem {
   }
 }
 
-export type ChatMode = "default" | "research" | "wolfram" | "wiki";
+export type ChatMode = "default" | "gpt4" | "research" | "wolfram" | "wiki";

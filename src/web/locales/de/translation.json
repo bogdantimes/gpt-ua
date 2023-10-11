@@ -33,11 +33,11 @@
   "chipTooltip": "Dies ist der Betrag aus dem gemeinsamen Budget der Website, den Sie ausgegeben haben.",
   "mode": {
     "default": "Chat",
-    "research": "Forschung",
     "wolfram": "Wissenschaft (beta)",
-    "note_default": "Der Chat hat keine Online-Suchfunktion oder die Fähigkeit, mit Bildern zu arbeiten, aber er ist der kreativste Modus und antwortet in der Regel schneller.",
-    "note_research": "Im Forschungsmodus können Informationen online durchsucht werden, um Ihre Behauptungen zu überprüfen; dies dauert in der Regel länger.",
-    "note_wolfram": "Der Wissenschaftsmodus verwendet Formeln, Diagramme und genaue Daten, um Ihre Aufgabe zu lösen; dies dauert in der Regel länger.",
-    "note_wiki": "Der Wiki-Modus sucht Informationen nur in Wikipedia; dies dauert in der Regel länger."
+    "note_default": "Chat kann nicht im Web surfen oder Bilder sehen, aber es ist der günstigste und schnellste Modus für alltägliche Aufgaben.",
+    "note_gpt4": "Chat GPT-4 versteht besser und ist für komplexe Fragen geeignet. Aber es ist teurer und langsamer.",
+    "note_research": "Der Google-Modus recherchiert online, um Ihre Behauptungen zu überprüfen; dies dauert in der Regel länger.",
+    "note_wolfram": "Der Wissenschaftsmodus verwendet Formeln, Diagramme und genaue Daten, um Ihre Aufgabe zu lösen; dies nimmt meistens mehr Zeit in Anspruch.",
+    "note_wiki": "Der Wiki-Modus recherchiert Informationen und verwendet dabei Wikipedia als einzige Quelle; dies dauert in der Regel länger."
   }
 }

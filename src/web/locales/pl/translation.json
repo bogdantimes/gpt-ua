@@ -33,11 +33,11 @@
   "chipTooltip": "To jest kwota z wspólnego budżetu strony, którą wydałeś.",
   "mode": {
     "default": "Czat",
-    "research": "Badania",
     "wolfram": "Nauka (beta)",
-    "note_default": "Czat nie ma funkcji wyszukiwania online ani możliwości pracy z obrazami, ale to najbardziej kreatywny tryb i zwykle odpowiada szybciej.",
-    "note_research": "Tryb badawczy może przeszukiwać informacje w Internecie, aby zweryfikować Twoje twierdzenia; zwykle zajmuje to więcej czasu.",
-    "note_wolfram": "Tryb naukowy korzysta z formuł, wykresów i dokładnych danych do rozwiązania Twojego zadania; zwykle zajmuje to więcej czasu.",
-    "note_wiki": "Tryb Wiki wyszukuje informacje tylko w Wikipedii; zwykle zajmuje to więcej czasu."
+    "note_default": "Czat nie może przeglądać sieci ani widzieć zdjęć, ale to najtańszy i najszybszy sposób na codzienne zadania.",
+    "note_gpt4": "Chat GPT-4 lepiej rozumie i nadaje się do skomplikowanych pytań. Ale jest droższy i wolniejszy.",
+    "note_research": "Tryb Google przeszukuje informacje w Internecie, aby zweryfikować twoje twierdzenia; zwykle zajmuje to więcej czasu.",
+    "note_wolfram": "Tryb naukowy używa wzorów, wykresów i dokładnych danych do rozwiązania twojego zadania; zwykle zajmuje to więcej czasu.",
+    "note_wiki": "Tryb Wiki przeszukuje informacje korzystając tylko z Wikipedii jako źródła; zwykle zajmuje to więcej czasu."
   }
 }
