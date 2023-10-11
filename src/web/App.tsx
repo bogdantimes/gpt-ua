@@ -48,7 +48,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 22;
+const VERSION = 23;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -231,7 +231,7 @@ export default function App(): JSX.Element {
       return;
     }
 
-    if (mode !== "default" && el.getText().length >= 280) {
+    if (clarityMode && el.getText().length >= 280) {
       setError(t("errors.only280CharsSupported"));
       return;
     }
