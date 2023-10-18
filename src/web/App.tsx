@@ -124,8 +124,10 @@ export default function App(): JSX.Element {
 
   // initiate lang using the browser's language
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
     const browserLang = navigator?.language?.split("-")[0] || "en";
-    changeLanguage(browserLang);
+    const lang = params.get("lang") || browserLang;
+    changeLanguage(lang);
   }, []);
 
   useEffect(() => {
