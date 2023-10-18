@@ -116,3 +116,9 @@ a {
     width: 100%;
     height: auto;
 }
+
+.link-top-right {
+    position: absolute;
+    top: 2px;  /* Adjust as needed for spacing from the top */
+    right: 5px;  /* Adjust as needed for spacing from the right */
+}
