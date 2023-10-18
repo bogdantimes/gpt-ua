@@ -22,7 +22,6 @@ import {
 import {
   ExpandMore,
   Instagram,
-  LinkedIn,
   Replay,
   Telegram,
   Twitter,
@@ -490,15 +489,7 @@ export default function App(): JSX.Element {
             paddingRight={"30px"}
           >
             <Grid item>
-              <Link
-                href="https://www.linkedin.com/in/bohdan-kovalov"
-                target="_blank"
-              >
-                <LinkedIn className={`pulsating-icon-${theme.palette.mode}`} />
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="https://twitter.com/bogdantimes" target="_blank">
+              <Link href="https://twitter.com/PlentyOfClarity" target="_blank">
                 <Twitter className={`pulsating-icon-${theme.palette.mode}`} />
               </Link>
             </Grid>
@@ -517,7 +508,7 @@ export default function App(): JSX.Element {
             </Grid>
             <Grid item>
               <Link
-                href="https://chrome.google.com/webstore/detail/gpt-uaclick-chrome/fbbjiglnminppnhbddnihgeoipoamhnm"
+                href="https://chrome.google.com/webstore/detail/gpt-ua-clarity-ai-chrome/fbbjiglnminppnhbddnihgeoipoamhnm"
                 target="_blank"
               >
                 <ExtensionIcon
