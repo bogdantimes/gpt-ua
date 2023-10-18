@@ -12,7 +12,6 @@ import {
   CssBaseline,
   Grid,
   IconButton,
-  LinearProgress,
   Link,
   Stack,
   ThemeProvider,
@@ -39,6 +38,7 @@ import Chip from "@mui/material/Chip";
 import { styled } from "@mui/system";
 import InfoIcon from "@mui/icons-material/Info";
 import ExtensionIcon from "@mui/icons-material/Extension";
+import { StyledLinearProgress } from "./StyledLinearProgress";
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -402,7 +402,7 @@ export default function App(): JSX.Element {
                 <Answer key={i} elem={elem} mode={mode} />
               );
             })}
-          {loading && <LinearProgress />}
+          {loading && <StyledLinearProgress />}
           {error && (
             <Alert
               severity="error"
