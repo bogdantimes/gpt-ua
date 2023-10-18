@@ -1,53 +1,34 @@
 import { styled } from "@mui/system";
 import { LinearProgress } from "@mui/material";
+import { keyframes } from "@emotion/react";
 
-export const StyledLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: "15px",
-  borderRadius: "10px",
-  background: "linear-gradient(90deg, #B2DFDB, #E0F7FA)", // Calm teal gradient background
-  position: "relative",
-  overflow: "hidden",
-  boxShadow: "0 0 10px rgba(178, 223, 219, 0.3)", // Soft ambient glow
+const gradientAnimation = keyframes`
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+`;
 
-  "& .MuiLinearProgress-bar": {
-    borderRadius: "10px",
-    background: "linear-gradient(45deg, #4FC3F7 30%, #81D4FA 90%)", // Gentle blue gradient
-    transition: "width 1s ease-in-out",
-    animation: "pulse 2s infinite alternate", // Subtle pulsing effect
-  },
+export const StyledLinearProgress = styled(LinearProgress)`
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
 
-  "&:before": {
-    // Soft shimmer effect
-    content: '""',
-    position: "absolute",
-    top: "0",
-    right: "0",
-    bottom: "0",
-    left: "0",
-    background:
-      "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent)",
-    transform: "translateX(-100%)",
-    animation: "shimmer 2s infinite",
-  },
+  &.MuiLinearProgress-root {
+    background: linear-gradient(
+      45deg,
+      rgba(255, 0, 150, 0.8),
+      rgba(0, 206, 209, 0.8),
+      rgba(255, 165, 0, 0.8)
+    );
+    background-size: 300% 300%;
+    animation: ${gradientAnimation} 3s infinite;
+  }
 
-  "@keyframes shimmer": {
-    "0%": {
-      transform: "translateX(-100%)",
-    },
-    "60%": {
-      transform: "translateX(100%)",
-    },
-    "100%": {
-      transform: "translateX(100%)",
-    },
-  },
-
-  "@keyframes pulse": {
-    "0%": {
-      boxShadow: "0 0 5px rgba(77, 195, 247, 0.5)", // Soft blue glow
-    },
-    "100%": {
-      boxShadow: "0 0 10px rgba(129, 212, 250, 0.5)", // Lighter blue glow
-    },
-  },
-}));
+  & .MuiLinearProgress-bar {
+    background: transparent;
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.8);
+  }
+`;
