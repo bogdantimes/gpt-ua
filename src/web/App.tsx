@@ -426,7 +426,7 @@ export default function App(): JSX.Element {
             </Alert>
           )}
           {!!sessionCost && (
-            <Box sx={{ textAlign: "center" }}>
+            <Box sx={{ textAlign: "center", pt: 3 }}>
               <Tooltip
                 enterTouchDelay={1}
                 leaveTouchDelay={2000}
