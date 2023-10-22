@@ -31,7 +31,7 @@ import Answer from "./Answer";
 import Prompt from "./Prompt";
 import { type ChatMode, ConversationElem, type PromptElem } from "./Types";
 import { FundingBar } from "./FundingBar";
-import cyberpunkTheme from "./theme";
+import { cyberpunkTheme, personalTheme } from "./themes";
 import { YesNoOverlay } from "./YesNoOverlay";
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/system";
@@ -63,9 +63,15 @@ export default function App(): JSX.Element {
     return window.location.hash.includes("theme=cyber");
   };
 
+  const checkForApiKey = () => {
+    return window.location.search.includes("key=");
+  };
+
   const getTheme = () => {
     if (checkForCyberTheme()) {
       return cyberpunkTheme;
+    } else if (checkForApiKey()) {
+      return personalTheme;
     } else {
       return createTheme({ palette: { mode: darkScheme ? `dark` : `light` } });
     }
@@ -83,11 +89,6 @@ export default function App(): JSX.Element {
       localStorage.setItem("mode", mode);
     } catch (e) {}
   }, [mode]);
-
-  const [theme, setTheme] = useState(getTheme());
-  useEffect(() => {
-    setTheme(getTheme());
-  }, [darkScheme]);
 
   const [error, setError] = useState<null | string>("");
   const [loading, setLoading] = useState(false);
@@ -135,7 +136,8 @@ export default function App(): JSX.Element {
   // read the api-key (if present)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setApiKey(params.get("key") || "");
+    const key = params.get("key") || "";
+    setApiKey(key);
   }, []);
 
   useEffect(() => {
@@ -151,6 +153,11 @@ export default function App(): JSX.Element {
       handleSend(ConversationElem.newPrompt(0, prompt));
     }
   }, []);
+
+  const [theme, setTheme] = useState(getTheme());
+  useEffect(() => {
+    setTheme(getTheme());
+  }, [darkScheme, apiKey]);
 
   function handleAnswer(gptReply: any, answer: string) {
     conversation.push(ConversationElem.newAnswer(conversation.length, answer));
