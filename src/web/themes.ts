@@ -111,7 +111,6 @@ export const personalTheme = createTheme({
         root: {
           backgroundColor: "#ffffff",
           border: "1px solid #ff4757",
-          boxShadow: "0 0 10px #ff4757",
         },
       },
     },
