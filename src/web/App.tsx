@@ -38,6 +38,7 @@ import { styled } from "@mui/system";
 import InfoIcon from "@mui/icons-material/Info";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import { StyledLinearProgress } from "./StyledLinearProgress";
+import { PersonalBudget } from "./PersonalBudget";
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -129,6 +130,14 @@ export default function App(): JSX.Element {
     changeLanguage(lang);
   }, []);
 
+  const [apiKey, setApiKey] = useState("");
+  const [topUpLink, setTopUpLink] = useState("");
+  // read the api-key (if present)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setApiKey(params.get("key") || "");
+  }, []);
+
   useEffect(() => {
     document.title = t("title");
   }, [lang]);
@@ -165,9 +174,13 @@ export default function App(): JSX.Element {
       .then(function (token) {
         const serviceURL =
           "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws";
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: apiKey ? `Bearer ${apiKey}` : undefined,
+        };
         fetch(serviceURL, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: headers as HeadersInit,
           body: JSON.stringify({
             v: VERSION,
             l: limitBudget && requestsNum,
@@ -209,7 +222,13 @@ export default function App(): JSX.Element {
             const budget = +gptReply?.moneyLeft;
             if (Number.isFinite(budget)) {
               setMoneyLeft(budget);
-              if (budget <= 0) {
+              if (gptReply.topUpLink) {
+                setTopUpLink(gptReply.topUpLink);
+              }
+              if (!gptReply.topUpLink && apiKey) {
+                setError(t("errors.apiKey", { key: apiKey }));
+              }
+              if (budget <= 0 && !apiKey) {
                 setLimitBudget(true);
               }
             }
@@ -319,7 +338,7 @@ export default function App(): JSX.Element {
   function handleTopUpBtnClick() {
     // @ts-expect-error external gtag
     gtag("event", "budget_top_up_open");
-    window.open(`https://send.monobank.ua/jar/3Q3K3VdHuU`, "_blank");
+    window.open(topUpLink, "_blank");
     // reset the budget limit timer
     setLimitBudget(false);
     setSessionCost(0);
@@ -329,6 +348,32 @@ export default function App(): JSX.Element {
   const modes: ChatMode[] = ["default", "gpt4", "research", "wiki", "wolfram"];
   const clarityMode = ["research", "wiki", "wolfram"].includes(mode);
 
+  const topUpButton = (
+    <>
+      <Button
+        variant="contained"
+        size={"small"}
+        onClick={handleTopUpBtnClick}
+        sx={{
+          backgroundColor:
+            theme.palette.mode === "light" ? "black" : "darkgrey",
+          color: "white",
+          borderRadius: `8px`,
+          mt: "16px",
+          display: `flex`,
+          mr: `auto`,
+          ml: `auto`,
+        }}
+      >
+        {t(`budget.mono`)}
+      </Button>
+      <Typography ml={"auto"} mr={"auto"} variant={"caption"}>
+        (Monobank / Google Pay / Visa / Mastercard)
+        <br />
+        10₴ ≈ $0.25
+      </Typography>
+    </>
+  );
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -445,7 +490,7 @@ export default function App(): JSX.Element {
               </Tooltip>
             </Box>
           )}
-          {Number.isFinite(moneyLeft) && (
+          {topUpLink && Number.isFinite(moneyLeft) && (
             <Alert
               sx={{
                 textAlign: "center",
@@ -454,32 +499,15 @@ export default function App(): JSX.Element {
               icon={false}
               severity={moneyLeft! <= 1 ? "warning" : "info"}
             >
-              <FundingBar target={20} value={moneyLeft!}>
-                <>
-                  <Button
-                    variant="contained"
-                    size={"small"}
-                    onClick={handleTopUpBtnClick}
-                    sx={{
-                      backgroundColor:
-                        theme.palette.mode === "light" ? "black" : "darkgrey",
-                      color: "white",
-                      borderRadius: `8px`,
-                      mt: "16px",
-                      display: `flex`,
-                      mr: `auto`,
-                      ml: `auto`,
-                    }}
-                  >
-                    {t(`budget.mono`)}
-                  </Button>
-                  <Typography ml={"auto"} mr={"auto"} variant={"caption"}>
-                    (Monobank / Google Pay / Visa / Mastercard)
-                    <br />
-                    10₴ ≈ $0.25
-                  </Typography>
-                </>
-              </FundingBar>
+              {apiKey ? (
+                <PersonalBudget value={moneyLeft!}>
+                  {topUpButton}
+                </PersonalBudget>
+              ) : (
+                <FundingBar target={20} value={moneyLeft!}>
+                  {topUpButton}
+                </FundingBar>
+              )}
             </Alert>
           )}
           <Grid

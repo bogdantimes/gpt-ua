@@ -15,12 +15,14 @@
     "internal": "Entschuldigung, ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
     "notEnoughDetails": "Bitte geben Sie mehr Details für Ihre Anfrage an",
     "only280CharsSupported": "In diesem Modus sollten Fragen weniger als 280 Zeichen haben.",
-    "insecureContext": "Diese Funktion ist nur in einem sicheren Kontext (HTTPS) in einigen oder allen unterstützten Browsern verfügbar."
+    "insecureContext": "Diese Funktion ist nur in einem sicheren Kontext (HTTPS) in einigen oder allen unterstützten Browsern verfügbar.",
+    "apiKey": "Der API-Schlüssel '{{key}}' ist keinem Budget zugeordnet. Bitte stellen Sie sicher, dass die URL der Website korrekt ist."
   },
   "budget": {
-    "mono": "Budget aufladen",
+    "mono": "Geld hinzufügen",
     "donate": "\uD83D\uDEA8 OpenAI verlangt etwa $0.005-$0.03 pro Antwort. Der Website-Autor unterstützt dies, aber bei hohem Nutzeraufkommen reicht es oft nicht aus. Bitte erwägen Sie, selbst beizutragen - es ist automatisiert und einfach. \uD83D\uDE4F",
-    "remaining": "Website-Budget"
+    "remaining": "Website-Budget",
+    "personal": "Persönliches Budget"
   },
   "openai": {
     "slowResponse": "Keine Antwort? Überprüfen Sie den Status:"

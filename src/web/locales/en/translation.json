@@ -15,12 +15,14 @@
     "internal": "Sorry, an unknown error occurred. Please try again.",
     "notEnoughDetails": "Please provide more details for your request.",
     "only280CharsSupported": "In this mode, keep questions under 280 characters.",
-    "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers."
+    "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers.",
+    "apiKey": "The API '{{key}}' is not attached to any budget. Please, make sure the site URL is correct."
   },
   "budget": {
-    "mono": "Top-up the budget",
+    "mono": "Add money",
     "donate": "\uD83D\uDEA8 OpenAI charges around $0.005-$0.03 per answer. The site author helps fund this, but due to the high user volume, it's often insufficient. Please consider contributing - it's automated and easy.  \uD83D\uDE4F",
-    "remaining": "Site budget"
+    "remaining": "Site budget",
+    "personal": "Personal budget"
   },
   "openai": {
     "slowResponse": "No response? Check the status:"

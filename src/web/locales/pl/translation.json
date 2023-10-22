@@ -15,12 +15,14 @@
     "internal": "Przepraszamy, wystąpił nieznany błąd. Proszę spróbować ponownie.",
     "notEnoughDetails": "Proszę podać więcej szczegółów dotyczących twojego żądania",
     "only280CharsSupported": "W tym trybie pytania powinny mieć mniej niż 280 znaków.",
-    "insecureContext": "Ta funkcja jest dostępna tylko w bezpiecznym kontekście (HTTPS) w niektórych lub we wszystkich obsługiwanych przeglądarkach."
+    "insecureContext": "Ta funkcja jest dostępna tylko w bezpiecznym kontekście (HTTPS) w niektórych lub we wszystkich obsługiwanych przeglądarkach.",
+    "apiKey": "Klucz API '{{key}}' nie jest przypisany do żadnego budżetu. Upewnij się, że adres URL strony jest poprawny."
   },
   "budget": {
-    "mono": "Doładuj budżet",
+    "mono": "Dodać pieniędzy",
     "donate": "\uD83D\uDEA8 OpenAI pobiera około $0.005-$0.03 za odpowiedź. Autor strony pomaga w finansowaniu, ale ze względu na dużą liczbę użytkowników, często jest to niewystarczające. Prosimy o rozważenie wsparcia - jest to zautomatyzowane i łatwe.  \uD83D\uDE4F",
-    "remaining": "Budżet strony"
+    "remaining": "Budżet strony",
+    "personal": "Budżet osobisty"
   },
   "openai": {
     "slowResponse": "Brak odpowiedzi? Sprawdź status:"
