@@ -242,7 +242,11 @@ export default function App(): JSX.Element {
           })
           .catch((err) => {
             console.log(err);
-            setError(t(`errors.internal`));
+            if (!err?.message || err?.message?.match(/internal/gi)) {
+              setError(t(`errors.internal`));
+            } else {
+              setError(err.message);
+            }
           })
           .finally(() => {
             setLoading(false);
