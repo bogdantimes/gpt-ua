@@ -49,7 +49,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 24;
+const VERSION = 25;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -273,7 +273,7 @@ export default function App(): JSX.Element {
       });
     conversation.splice(0);
     conversation.push(...pinned, ConversationElem.newPrompt(0, startText));
-    setConversation(conversation);
+    setConversation([...conversation]);
   }
 
   const handleSend = (el: PromptElem) => {
