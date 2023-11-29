@@ -8,6 +8,7 @@ export interface PromptElem {
 export interface AnswerElem {
   getId: () => number;
   getText: () => string;
+  isPinned: () => boolean;
 }
 
 export class ConversationElem implements PromptElem, AnswerElem {
@@ -16,6 +17,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
   isUser = false;
   answered = false;
   dropped = false;
+  pinned = false;
 
   static newPrompt(id: number, text: string): ConversationElem {
     const elem = new ConversationElem();
@@ -46,6 +48,10 @@ export class ConversationElem implements PromptElem, AnswerElem {
 
   setText(text: string): void {
     this.text = text;
+  }
+
+  isPinned(): boolean {
+    return this.pinned;
   }
 }
 

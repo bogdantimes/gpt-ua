@@ -10,6 +10,7 @@ import {
   Container,
   createTheme,
   CssBaseline,
+  Divider,
   Grid,
   IconButton,
   Link,
@@ -112,6 +113,10 @@ export default function App(): JSX.Element {
   const [conversation, setConversation] =
     useState<ConversationElem[]>(conversationLoader);
   useEffect(() => {
+    if (!conversation.length) {
+      conversation.push(ConversationElem.newPrompt(conversation.length, ""));
+      setConversation([...conversation]);
+    }
     try {
       localStorage.setItem("gpt_conversation", JSON.stringify(conversation));
     } catch (e) {}
@@ -269,8 +274,16 @@ export default function App(): JSX.Element {
 
     // if el is start prompt, then clear the conversation
     if (el.getId() === 0) {
+      const pinned = conversation
+        .filter((el) => el.pinned)
+        .map((e) => {
+          // assign a random ID to make it a unique msg, as the original conversation is being cleared,
+          // so that new messages do not match ID with these pinned ones
+          e.id = Math.floor(Math.random() * 1e6);
+          return e;
+        });
       conversation.splice(0);
-      conversation.push(ConversationElem.newPrompt(0, el.getText()));
+      conversation.push(...pinned, ConversationElem.newPrompt(0, el.getText()));
       setConversation(conversation);
     }
 
@@ -385,6 +398,13 @@ export default function App(): JSX.Element {
       </Typography>
     </>
   );
+
+  const unpinAnswer = (id: number) => {
+    setConversation([
+      ...conversation.filter((el) => !(el.id === id && el.pinned)),
+    ]);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -441,9 +461,28 @@ export default function App(): JSX.Element {
             </Alert>
           </Box>
           {conversation
+            .filter((e) => e.isPinned())
+            .map((elem, i) => {
+              return (
+                <Answer
+                  key={i}
+                  elem={elem}
+                  mode={mode}
+                  onUnpin={() => {
+                    unpinAnswer(elem.id);
+                  }}
+                />
+              );
+            })}
+          <Divider style={{ marginBottom: "24px" }} />
+          {conversation
             // in non default mode, display only first QA
+            .filter((e) => !e.isPinned())
             .slice(0, clarityMode ? 2 : undefined)
             .map((elem, i) => {
+              const hasPinnedCopy = conversation.some(
+                (e) => e.id === elem.id && e.pinned,
+              );
               return elem.isUser ? (
                 <Prompt
                   key={`${i}_${elem.text.length}`}
@@ -456,7 +495,31 @@ export default function App(): JSX.Element {
                   sendDisabled={loading}
                 />
               ) : (
-                <Answer key={i} elem={elem} mode={mode} />
+                <Answer
+                  key={i}
+                  elem={elem}
+                  mode={mode}
+                  onUnpin={
+                    hasPinnedCopy
+                      ? () => {
+                          unpinAnswer(elem.id);
+                        }
+                      : undefined
+                  }
+                  onPin={
+                    hasPinnedCopy
+                      ? undefined
+                      : () => {
+                          const pinElem = ConversationElem.newAnswer(
+                            elem.id,
+                            elem.getText(),
+                          );
+                          pinElem.pinned = true;
+                          pinElem.dropped = true;
+                          setConversation([pinElem, ...conversation]);
+                        }
+                  }
+                />
               );
             })}
           {loading && <StyledLinearProgress />}

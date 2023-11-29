@@ -4,13 +4,20 @@ import {
   Avatar,
   Box,
   Card,
+  Collapse,
   Fade,
   Grid,
   IconButton,
   Stack,
   Tooltip,
 } from "@mui/material";
-import { ContentCopy, QuestionMark } from "@mui/icons-material";
+import {
+  ContentCopy,
+  ExpandMore,
+  PushPin,
+  PushPinOutlined,
+  QuestionMark,
+} from "@mui/icons-material";
 import { type AnswerElem, type ChatMode } from "./Types";
 import { mainIconBase64 } from "./Icon";
 import { t } from "i18next";
@@ -20,11 +27,20 @@ import Markdown from "markdown-to-jsx";
 interface AnswerProps {
   elem: AnswerElem;
   mode: ChatMode;
+  onPin?: () => void;
+  onUnpin?: () => void;
 }
 
-const Answer: React.FC<AnswerProps> = ({ elem, mode }) => {
+const PinSpoiler = 25;
+
+const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
   const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
+  const [isSpoilerOpen, setIsSpoilerOpen] = useState(false);
   const theme = useTheme();
+
+  const toggleSpoiler = () => {
+    setIsSpoilerOpen(!isSpoilerOpen);
+  };
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(elem.getText());
@@ -34,35 +50,45 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode }) => {
     }, 2000);
   };
 
+  const showSpoiler = elem.isPinned();
+
+  const spoilerVisibleText = elem
+    .getText()
+    .slice(0, PinSpoiler)
+    .replace(/\S+$/, "");
   return (
     <Card
       sx={{
-        padding: "28px 16px",
+        padding: elem.isPinned() && !isSpoilerOpen ? "8px 16px" : "28px 16px",
         overflowX: "auto",
         position: "relative",
-        background:
-          theme.palette.mode === "dark"
-            ? "linear-gradient(90deg, rgba(10, 24, 61, 1) 0%, rgba(3, 54, 73, 1) 100%)" // Dark theme gradient
-            : "linear-gradient(90deg, rgba(216, 251, 204, 1) 0%, rgba(171, 229, 255, 1) 100%)", // Lighter light theme gradient
+        background: elem.isPinned()
+          ? undefined
+          : theme.palette.mode === "dark"
+          ? "linear-gradient(90deg, rgba(10, 24, 61, 1) 0%, rgba(3, 54, 73, 1) 100%)" // Dark theme gradient
+          : "linear-gradient(90deg, rgba(216, 251, 204, 1) 0%, rgba(171, 229, 255, 1) 100%)", // Lighter light theme gradient
+        transition: "padding 0.3s ease", // Adding transition for padding
       }}
     >
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          backgroundColor: "rgba(72, 52, 212, 0.6)",
-          padding: 1,
-          borderRadius: "0 0 0 4px", // Rounded corner
-          fontSize: "16px", // Size of the watermark
-          color: "#D3D3D3",
-          lineHeight: "10px",
-        }}
-      >
-        ⚡ gpt-ua.click
-      </Box>
+      {!elem.isPinned() && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            backgroundColor: "rgba(72, 52, 212, 0.6)",
+            padding: 1,
+            borderRadius: "0 0 0 4px", // Rounded corner
+            fontSize: "16px", // Size of the watermark
+            color: "#D3D3D3",
+            lineHeight: "10px",
+          }}
+        >
+          ⚡ gpt-ua.click
+        </Box>
+      )}
       <Grid container direction={"row"} spacing={2} rowSpacing={-1}>
-        <Grid item xs={12} sm={1}>
+        <Grid item xs={1}>
           <Avatar
             sx={{
               width: 24,
@@ -73,21 +99,57 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode }) => {
             src={mainIconBase64}
           />
         </Grid>
-        <Grid item xs={12} sm={11} sx={{ pr: 2 }}>
-          <Markdown
-            options={{
-              overrides: {
-                img: {
-                  props: {
-                    width: "100%",
-                    crossOrigin: null,
-                  },
-                },
-              },
+        <Grid item xs={11}>
+          <Box
+            onClick={toggleSpoiler}
+            sx={{
+              display: showSpoiler ? "flex" : "block",
+              alignItems: "center",
+              cursor: showSpoiler ? "pointer" : "default",
+              pl: 1,
+              color:
+                showSpoiler && isSpoilerOpen
+                  ? theme.palette.text.disabled
+                  : undefined,
+              transition: "color 0.3s ease",
             }}
           >
-            {elem.getText()}
-          </Markdown>
+            <Markdown
+              options={{
+                overrides: {
+                  img: {
+                    props: {
+                      width: "100%",
+                      crossOrigin: null,
+                    },
+                  },
+                  a: {
+                    props: {
+                      target: "_blank",
+                    },
+                  },
+                },
+              }}
+            >
+              {showSpoiler ? spoilerVisibleText + " ..." : elem.getText()}
+            </Markdown>
+            {showSpoiler && (
+              <ExpandMore
+                sx={{
+                  transform: isSpoilerOpen ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: ".3s",
+                  ml: 1,
+                }}
+              />
+            )}
+          </Box>
+          <Collapse in={isSpoilerOpen && showSpoiler}>
+            {showSpoiler && (
+              <Box mt={1}>
+                <Markdown>{elem.getText()}</Markdown>
+              </Box>
+            )}
+          </Collapse>
         </Grid>
         <Box sx={{ position: "absolute", right: 0, bottom: 0 }}>
           <Tooltip
@@ -99,15 +161,17 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode }) => {
             TransitionProps={{ timeout: 600 }}
           >
             <Stack direction="row" alignItems="center">
-              <IconButton
-                onClick={() => {
-                  // @ts-expect-error external gtag
-                  gtag("event", "tg_chat_open");
-                  window.open("https://t.me/gpt_ua_chat", "_blank");
-                }}
-              >
-                <QuestionMark fontSize="small" />
-              </IconButton>
+              {!elem.isPinned() && (
+                <IconButton
+                  onClick={() => {
+                    // @ts-expect-error external gtag
+                    gtag("event", "tg_chat_open");
+                    window.open("https://t.me/gpt_ua_chat", "_blank");
+                  }}
+                >
+                  <QuestionMark fontSize="small" />
+                </IconButton>
+              )}
               {window.isSecureContext && !!navigator.clipboard && (
                 <IconButton
                   onClick={() => {
@@ -115,6 +179,28 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode }) => {
                   }}
                 >
                   <ContentCopy fontSize="small" />
+                </IconButton>
+              )}
+              {onUnpin && (
+                <IconButton
+                  onClick={() => {
+                    // @ts-expect-error external gtag
+                    gtag("event", "answer_unpinned");
+                    onUnpin();
+                  }}
+                >
+                  <PushPin fontSize="small" />
+                </IconButton>
+              )}{" "}
+              {onPin && (
+                <IconButton
+                  onClick={() => {
+                    // @ts-expect-error external gtag
+                    gtag("event", "answer_pinned");
+                    onPin();
+                  }}
+                >
+                  <PushPinOutlined fontSize="small" />
                 </IconButton>
               )}
             </Stack>
