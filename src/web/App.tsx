@@ -112,9 +112,12 @@ export default function App(): JSX.Element {
 
   const [conversation, setConversation] =
     useState<ConversationElem[]>(conversationLoader);
+
+  const conversationLength = () => conversation.filter((e) => !e.pinned).length;
+
   useEffect(() => {
-    if (!conversation.length) {
-      conversation.push(ConversationElem.newPrompt(conversation.length, ""));
+    if (!conversationLength()) {
+      conversation.push(ConversationElem.newPrompt(conversationLength(), ""));
       setConversation([...conversation]);
     }
     try {
@@ -165,8 +168,8 @@ export default function App(): JSX.Element {
   }, [darkScheme, apiKey]);
 
   function handleAnswer(gptReply: any, answer: string) {
-    conversation.push(ConversationElem.newAnswer(conversation.length, answer));
-    conversation.push(ConversationElem.newPrompt(conversation.length, ""));
+    conversation.push(ConversationElem.newAnswer(conversationLength(), answer));
+    conversation.push(ConversationElem.newPrompt(conversationLength(), ""));
 
     // Mark dropped messages
     const lastDroppedMessageId = gptReply.lastDroppedMessageId ?? -1;
@@ -259,6 +262,20 @@ export default function App(): JSX.Element {
       });
   }
 
+  function clearConversation(startText: string) {
+    const pinned = conversation
+      .filter((el) => el.pinned)
+      .map((e) => {
+        // assign a random ID to make it a unique msg, as the original conversation is being cleared,
+        // so that new messages do not match ID with these pinned ones
+        e.id = Math.floor(Math.random() * 1e6);
+        return e;
+      });
+    conversation.splice(0);
+    conversation.push(...pinned, ConversationElem.newPrompt(0, startText));
+    setConversation(conversation);
+  }
+
   const handleSend = (el: PromptElem) => {
     setError("");
 
@@ -274,17 +291,7 @@ export default function App(): JSX.Element {
 
     // if el is start prompt, then clear the conversation
     if (el.getId() === 0) {
-      const pinned = conversation
-        .filter((el) => el.pinned)
-        .map((e) => {
-          // assign a random ID to make it a unique msg, as the original conversation is being cleared,
-          // so that new messages do not match ID with these pinned ones
-          e.id = Math.floor(Math.random() * 1e6);
-          return e;
-        });
-      conversation.splice(0);
-      conversation.push(...pinned, ConversationElem.newPrompt(0, el.getText()));
-      setConversation(conversation);
+      clearConversation(el.getText());
     }
 
     setLoading(true);
@@ -489,9 +496,9 @@ export default function App(): JSX.Element {
                   elem={elem}
                   onClickSend={handleSend}
                   onClear={() => {
-                    setConversation([ConversationElem.newPrompt(0, "")]);
+                    clearConversation("");
                   }}
-                  showClear={conversation.length > 1}
+                  showClear={conversationLength() > 1}
                   sendDisabled={loading}
                 />
               ) : (
