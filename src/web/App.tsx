@@ -49,7 +49,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 23;
+const VERSION = 24;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
