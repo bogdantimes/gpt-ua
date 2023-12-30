@@ -9,6 +9,7 @@ export interface AnswerElem {
   getId: () => number;
   getText: () => string;
   isPinned: () => boolean;
+  isClarity: () => boolean;
 }
 
 export class ConversationElem implements PromptElem, AnswerElem {
@@ -18,6 +19,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
   answered = false;
   dropped = false;
   pinned = false;
+  clarity = false;
 
   static newPrompt(id: number, text: string): ConversationElem {
     const elem = new ConversationElem();
@@ -53,6 +55,11 @@ export class ConversationElem implements PromptElem, AnswerElem {
   isPinned(): boolean {
     return this.pinned;
   }
+
+  isClarity(): boolean {
+    return this.clarity;
+  }
 }
 
-export type ChatMode = "default" | "gpt4" | "research" | "wolfram" | "wiki";
+export type ChatMode = "default" | "gpt4" | "gpt4+";
+export const ChatModes: ChatMode[] = ["default", "gpt4", "gpt4+"];

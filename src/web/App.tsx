@@ -30,7 +30,12 @@ import {
 import { useTranslation } from "react-i18next";
 import Answer from "./Answer";
 import Prompt from "./Prompt";
-import { type ChatMode, ConversationElem, type PromptElem } from "./Types";
+import {
+  type ChatMode,
+  ChatModes,
+  ConversationElem,
+  type PromptElem,
+} from "./Types";
 import { FundingBar } from "./FundingBar";
 import { cyberpunkTheme, personalTheme } from "./themes";
 import { YesNoOverlay } from "./YesNoOverlay";
@@ -49,7 +54,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 25;
+const VERSION = 26;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -80,7 +85,8 @@ export default function App(): JSX.Element {
 
   const [mode, setMode] = useState<ChatMode>(() => {
     try {
-      return (localStorage.getItem("mode") as ChatMode) || "default";
+      const _mode = (localStorage.getItem("mode") as ChatMode) || "default";
+      return ChatModes.includes(_mode) ? _mode : "default";
     } catch (e) {
       return "default";
     }
@@ -168,7 +174,12 @@ export default function App(): JSX.Element {
   }, [darkScheme, apiKey]);
 
   function handleAnswer(gptReply: any, answer: string) {
-    conversation.push(ConversationElem.newAnswer(conversationLength(), answer));
+    const aElem: ConversationElem = ConversationElem.newAnswer(
+      conversationLength(),
+      answer,
+    );
+    aElem.clarity = !!gptReply.clarity;
+    conversation.push(aElem);
     conversation.push(ConversationElem.newPrompt(conversationLength(), ""));
 
     // Mark dropped messages
@@ -284,11 +295,6 @@ export default function App(): JSX.Element {
       return;
     }
 
-    if (clarityMode && el.getText().length >= 280) {
-      setError(t("errors.only280CharsSupported"));
-      return;
-    }
-
     // if el is start prompt, then clear the conversation
     if (el.getId() === 0) {
       clearConversation(el.getText());
@@ -376,8 +382,8 @@ export default function App(): JSX.Element {
     setRequestsNum(0);
   }
 
-  const modes: ChatMode[] = ["default", "gpt4", "research", "wiki", "wolfram"];
-  const clarityMode = ["research", "wiki", "wolfram"].includes(mode);
+  const modes: ChatMode[] = ["default", "gpt4", "gpt4+"];
+  const clarityMode = mode === "gpt4+";
 
   const topUpButton = (
     <>
@@ -483,9 +489,7 @@ export default function App(): JSX.Element {
             })}
           <Divider style={{ marginBottom: "24px" }} />
           {conversation
-            // in non default mode, display only first QA
             .filter((e) => !e.isPinned())
-            .slice(0, clarityMode ? 2 : undefined)
             .map((elem, i) => {
               const hasPinnedCopy = conversation.some(
                 (e) => e.id === elem.id && e.pinned,

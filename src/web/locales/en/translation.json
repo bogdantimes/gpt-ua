@@ -34,15 +34,11 @@
   "spentChip": "You've spent: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "This is the amount of money from the website's shared budget that you have spent.",
   "mode": {
-    "default": "Chat",
+    "default": "GPT3.5",
     "gpt4": "GPT4",
-    "research": "Google",
-    "wolfram": "Science (beta)",
-    "wiki": "Wiki",
-    "note_default": "Chat can't browse the web or see pictures, but it's the cheapest and fastest mode for everyday tasks.",
-    "note_gpt4": "Chat GPT-4 understands better and is suitable for complex questions. But it is more expensive and slower.",
-    "note_research": "Google mode researches information online to verify your claims; it usually takes longer.",
-    "note_wolfram": "Science mode uses formulas, graphs, and precise data to solve your task; it usually takes more time.",
-    "note_wiki": "Wiki mode researches information using Wikipedia as the only source; it usually takes longer."
+    "gpt4+": "GPT4+Clarity",
+    "note_default": "Chat GPT-3.5 can't browse the web or see pictures, but it's the cheapest and fastest mode for everyday tasks.",
+    "note_gpt4": "Chat GPT-4 understands better and is suitable for complex questions, but it is more expensive and slower.",
+    "note_gpt4+": "Chat GPT-4+Clarity is able to research information online, calculate with precision and draw graphs; it usually takes longer."
   }
 }
