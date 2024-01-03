@@ -36,6 +36,6 @@
   "mode": {
     "note_default": "Chat GPT-3.5 kann nicht im Web surfen oder Bilder sehen, aber es ist der günstigste und schnellste Modus für alltägliche Aufgaben.",
     "note_gpt4": "Chat GPT-4 versteht besser und eignet sich für komplexe Fragen, ist jedoch teurer und langsamer.",
-    "note_gpt4+": "Chat GPT-4+Clarity kann Informationen online recherchieren, präzise Berechnungen durchführen und Diagramme zeichnen; dies dauert normalerweise länger."
+    "note_gpt4+": "Chat Clarity kann Informationen online recherchieren, präzise Berechnungen durchführen und Diagramme zeichnen; dies dauert normalerweise länger."
   }
 }

@@ -178,7 +178,7 @@ export default function App(): JSX.Element {
       conversationLength(),
       answer,
     );
-    aElem.clarity = !!gptReply.clarity;
+    aElem.clarity = mode === "gpt4+";
     conversation.push(aElem);
     conversation.push(ConversationElem.newPrompt(conversationLength(), ""));
 
