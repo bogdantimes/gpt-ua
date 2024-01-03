@@ -232,7 +232,7 @@ const lightComponentStyles = {
     styleOverrides: {
       root: {
         borderRadius: "12px", // Rounded corners for icon buttons
-        padding: "12px", // Increase padding to meet MD3 touch target size
+        padding: "8px", // Increase padding to meet MD3 touch target size
       },
     },
   },
