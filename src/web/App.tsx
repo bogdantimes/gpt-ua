@@ -8,7 +8,6 @@ import {
   ButtonGroup,
   Collapse,
   Container,
-  createTheme,
   CssBaseline,
   Divider,
   Grid,
@@ -29,7 +28,6 @@ import {
 } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import Answer from "./Answer";
-import Prompt from "./Prompt";
 import {
   type ChatMode,
   ChatModes,
@@ -37,7 +35,7 @@ import {
   type PromptElem,
 } from "./Types";
 import { FundingBar } from "./FundingBar";
-import { cyberpunkTheme, personalTheme } from "./themes";
+import { cyberpunkTheme, darkTheme, lightTheme, personalTheme } from "./themes";
 import { YesNoOverlay } from "./YesNoOverlay";
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/system";
@@ -45,6 +43,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import { StyledLinearProgress } from "./StyledLinearProgress";
 import { PersonalBudget } from "./PersonalBudget";
+import PromptVision from "./PromptVision";
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -54,7 +53,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 26;
+const VERSION = 27;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -79,7 +78,7 @@ export default function App(): JSX.Element {
     } else if (checkForApiKey()) {
       return personalTheme;
     } else {
-      return createTheme({ palette: { mode: darkScheme ? `dark` : `light` } });
+      return darkScheme ? darkTheme : lightTheme;
     }
   };
 
@@ -193,7 +192,7 @@ export default function App(): JSX.Element {
   }
 
   function sendConversation(onAnswer = () => {}) {
-    const messages = buildMessages(conversation, lang);
+    const messages = buildMessages(conversation, lang, mode === "gpt4");
     // @ts-expect-error external grecaptcha.enterprise
     grecaptcha.enterprise
       .execute("6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom", { action: "login" })
@@ -273,7 +272,7 @@ export default function App(): JSX.Element {
       });
   }
 
-  function clearConversation(startText: string) {
+  function clearConversation(startText: string, image: string) {
     const pinned = conversation
       .filter((el) => el.pinned)
       .map((e) => {
@@ -283,21 +282,23 @@ export default function App(): JSX.Element {
         return e;
       });
     conversation.splice(0);
-    conversation.push(...pinned, ConversationElem.newPrompt(0, startText));
+    const initPrompt = ConversationElem.newPrompt(0, startText);
+    initPrompt.setImage(image);
+    conversation.push(...pinned, initPrompt);
     setConversation([...conversation]);
   }
 
   const handleSend = (el: PromptElem) => {
     setError("");
 
-    if (el.getText().length <= 1) {
+    if (el.getText().length <= 1 && (mode !== "gpt4" || !el.getImage())) {
       setError(t("errors.notEnoughDetails"));
       return;
     }
 
     // if el is start prompt, then clear the conversation
     if (el.getId() === 0) {
-      clearConversation(el.getText());
+      clearConversation(el.getText(), el.getImage());
     }
 
     setLoading(true);
@@ -494,17 +495,19 @@ export default function App(): JSX.Element {
               const hasPinnedCopy = conversation.some(
                 (e) => e.id === elem.id && e.pinned,
               );
+              const promptProps = {
+                key: `${i}_${elem.text.length}`,
+                elem,
+                onClickSend: handleSend,
+                onClear: () => {
+                  clearConversation("", "");
+                },
+                showClear: conversationLength() > 1,
+                sendDisabled: loading,
+                visionDisabled: mode !== "gpt4",
+              };
               return elem.isUser ? (
-                <Prompt
-                  key={`${i}_${elem.text.length}`}
-                  elem={elem}
-                  onClickSend={handleSend}
-                  onClear={() => {
-                    clearConversation("");
-                  }}
-                  showClear={conversationLength() > 1}
-                  sendDisabled={loading}
-                />
+                <PromptVision {...promptProps} />
               ) : (
                 <Answer
                   key={i}
@@ -700,11 +703,13 @@ interface Message {
   lang: string;
   original: string;
   isUser: boolean;
+  images?: string[];
 }
 
 function buildMessages(
   conversation: ConversationElem[],
   lang: string,
+  vision: boolean,
 ): Message[] {
   const messages: Message[] = [];
   for (const elem of conversation) {
@@ -714,6 +719,7 @@ function buildMessages(
       id: elem.getId(),
       original: `${elem.getText()}`,
       isUser: elem.isUser,
+      images: vision ? (elem.image ? [elem.image] : undefined) : undefined,
     });
   }
   return messages;

@@ -36,9 +36,9 @@
   "mode": {
     "default": "GPT3.5",
     "gpt4": "GPT4",
-    "gpt4+": "GPT4+Clarity",
+    "gpt4+": "Clarity",
     "note_default": "Chat GPT-3.5 can't browse the web or see pictures, but it's the cheapest and fastest mode for everyday tasks.",
-    "note_gpt4": "Chat GPT-4 understands better and is suitable for complex questions, but it is more expensive and slower.",
+    "note_gpt4": "Chat GPT-4 can see pictures, understands better and is suitable for complex questions, but it is more expensive and slower.",
     "note_gpt4+": "Chat Clarity is able to research information online, calculate with precision and draw graphs; it usually takes longer."
   }
 }

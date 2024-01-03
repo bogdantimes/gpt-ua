@@ -35,7 +35,7 @@
   "chipTooltip": "To jest kwota z wspólnego budżetu strony, którą wydałeś.",
   "mode": {
     "note_default": "Czat GPT-3.5 nie może przeglądać sieci ani widzieć zdjęć, ale to najtańszy i najszybszy sposób na codzienne zadania.",
-    "note_gpt4": "Czat GPT-4 lepiej rozumie i nadaje się do skomplikowanych pytań. Ale jest droższy i wolniejszy.",
+    "note_gpt4": "Czat GPT-4 może widzieć obrazy, lepiej rozumie i nadaje się do skomplikowanych pytań, ale jest droższy i wolniejszy.",
     "note_gpt4+": "Czat Clarity jest w stanie przeszukiwać informacje online, dokonywać precyzyjnych obliczeń i rysować wykresy; zazwyczaj zajmuje to więcej czasu."
   }
 }

@@ -2,6 +2,8 @@ export interface PromptElem {
   getId: () => number;
   getText: () => string;
   setText: (text: string) => void;
+  getImage: () => string;
+  setImage: (imgSrc: string) => void;
   isAnswered: () => boolean;
 }
 
@@ -20,6 +22,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
   dropped = false;
   pinned = false;
   clarity = false;
+  image = "";
 
   static newPrompt(id: number, text: string): ConversationElem {
     const elem = new ConversationElem();
@@ -50,6 +53,14 @@ export class ConversationElem implements PromptElem, AnswerElem {
 
   setText(text: string): void {
     this.text = text;
+  }
+
+  setImage(imgSrc: string): void {
+    this.image = imgSrc;
+  }
+
+  getImage(): string {
+    return this.image;
   }
 
   isPinned(): boolean {

@@ -116,3 +116,172 @@ export const personalTheme = createTheme({
     },
   },
 });
+
+// Base colors
+const primaryColor = {
+  light: "#6200ea",
+  dark: "#bb86fc",
+};
+const secondaryColor = {
+  light: "#03dac6",
+  dark: "#03dac6",
+};
+const errorColor = {
+  light: "#b00020",
+  dark: "#cf6679",
+};
+const warningColor = {
+  light: "#ffab00",
+  dark: "#ffab00",
+};
+const infoColor = {
+  light: "#2196f3",
+  dark: "#2196f3",
+};
+const successColor = {
+  light: "#00c853",
+  dark: "#00c853",
+};
+
+// Light mode palette
+const lightPalette = {
+  mode: "light",
+  primary: {
+    main: primaryColor.light,
+  },
+  secondary: {
+    main: secondaryColor.light,
+  },
+  error: {
+    main: errorColor.light,
+  },
+  warning: {
+    main: warningColor.light,
+  },
+  info: {
+    main: infoColor.light,
+  },
+  success: {
+    main: successColor.light,
+  },
+};
+
+// Dark mode palette
+const darkPalette = {
+  mode: "dark",
+  primary: {
+    main: primaryColor.dark,
+    contrastText: "#ffffff", // Ensure text on primary color is readable
+  },
+  secondary: {
+    main: secondaryColor.dark,
+    contrastText: "#000000", // Ensure text on secondary color is readable
+  },
+  error: {
+    main: errorColor.dark,
+  },
+  warning: {
+    main: warningColor.dark,
+  },
+  info: {
+    main: infoColor.dark,
+  },
+  success: {
+    main: successColor.dark,
+  },
+};
+
+const lightComponentStyles = {
+  MuiAlert: {
+    styleOverrides: {
+      root: {
+        borderRadius: "12px", // MD3 uses more rounded corners
+        padding: "6px 16px",
+        elevation: 1, // Add slight elevation for depth
+      },
+    },
+  },
+  MuiChip: {
+    styleOverrides: {
+      root: {
+        borderRadius: "16px",
+        padding: "0 12px", // Slightly increase padding for better touch targets
+      },
+    },
+  },
+  MuiButton: {
+    styleOverrides: {
+      root: {
+        borderRadius: "16px", // Increase rounding for buttons
+        padding: "8px 20px", // Increase padding to follow MD3 touch target guidelines
+        textTransform: "none", // MD3 prefers buttons without uppercase transformation
+        fontWeight: 500, // Adjust font weight for better readability
+      },
+    },
+  },
+  MuiButtonGroup: {
+    styleOverrides: {
+      grouped: {
+        borderRadius: "16px", // Increase rounding to match individual buttons
+        margin: "4px", // Add margin to separate buttons visually
+        borderRightColor: "inherit",
+      },
+    },
+  },
+  MuiIconButton: {
+    styleOverrides: {
+      root: {
+        borderRadius: "12px", // Rounded corners for icon buttons
+        padding: "12px", // Increase padding to meet MD3 touch target size
+      },
+    },
+  },
+  MuiTextField: {
+    styleOverrides: {
+      root: {
+        borderRadius: "16px", // More rounded text fields as per MD3
+        // Implement filled style with MD3-like background
+        "& .MuiFilledInput-root": {
+          backgroundColor: "rgba(0, 0, 0, 0.04)", // subtle background for light mode
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.08)", // darken on hover
+          },
+          "&.Mui-focused": {
+            backgroundColor: "rgba(0, 0, 0, 0.12)", // further darken when focused
+          },
+        },
+      },
+    },
+  },
+};
+
+// Component styles for dark mode (adjust accordingly)
+const darkComponentStyles = {
+  ...lightComponentStyles,
+  MuiTextField: {
+    styleOverrides: {
+      root: {
+        // Implement filled style with MD3-like background for dark mode
+        "& .MuiFilledInput-root": {
+          backgroundColor: "rgba(255, 255, 255, 0.08)", // subtle background for dark mode
+          "&:hover": {
+            backgroundColor: "rgba(255, 255, 255, 0.12)", // lighten on hover
+          },
+          "&.Mui-focused": {
+            backgroundColor: "rgba(255, 255, 255, 0.16)", // further lighten when focused
+          },
+        },
+      },
+    },
+  },
+};
+
+// Create light and dark themes
+export const lightTheme = createTheme({
+  palette: lightPalette,
+  components: lightComponentStyles,
+});
+export const darkTheme = createTheme({
+  palette: darkPalette,
+  components: darkComponentStyles,
+});
