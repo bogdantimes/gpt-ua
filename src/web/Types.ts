@@ -11,6 +11,7 @@ export interface AnswerElem {
   getId: () => number;
   getText: () => string;
   isPinned: () => boolean;
+  getMedia: () => Array<{ b64_json: string; revised_prompt: string }> | undefined;
 }
 
 export class ConversationElem implements PromptElem, AnswerElem {
@@ -21,6 +22,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
   dropped = false;
   pinned = false;
   image = "";
+  media: Array<{ b64_json: string; revised_prompt: string }> | undefined;
 
   static newPrompt(id: number, text: string): ConversationElem {
     const elem = new ConversationElem();
@@ -63,6 +65,14 @@ export class ConversationElem implements PromptElem, AnswerElem {
 
   isPinned(): boolean {
     return this.pinned;
+  }
+
+  addMedia(media?: Array<{ b64_json: string; revised_prompt: string }>) {
+    this.media = media;
+  }
+
+  getMedia(): Array<{ b64_json: string; revised_prompt: string }> | undefined {
+    return this.media;
   }
 }
 

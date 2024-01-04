@@ -57,7 +57,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 31;
+const VERSION = 32;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -189,11 +189,16 @@ export default function App(): JSX.Element {
     setTheme(getTheme());
   }, [darkScheme, apiKey]);
 
-  function handleAnswer(answer: string, lastDroppedMessageId = -1) {
+  function handleAnswer({
+    answer = "",
+    lastDroppedMessageId = -1,
+    media = undefined,
+  }) {
     const aElem: ConversationElem = ConversationElem.newAnswer(
       conversationLength(),
       answer,
     );
+    aElem.addMedia(media);
     conversation.push(aElem);
     conversation.push(ConversationElem.newPrompt(conversationLength(), ""));
 
@@ -238,40 +243,49 @@ export default function App(): JSX.Element {
               }
             });
           })
-          .then((gptReply) => {
-            console.log(gptReply);
-            if (gptReply?.error) {
-              setError((gptReply?.answer as string) || gptReply?.error);
-            } else {
-              setError("");
-              const cost = gptReply?.cost || 0;
-              setSessionCost(sessionCost + +cost);
-              setRequestsNum(requestsNum + 1);
-              const lastPrompt = conversation
-                .filter((elem) => elem.isUser)
-                .pop();
-              if (lastPrompt) {
-                lastPrompt.answered = true;
+          .then(
+            (gptReply: {
+              answer: string;
+              error: string;
+              media: any;
+              cost: number;
+              moneyLeft: number;
+              topUpLink: string;
+            }) => {
+              console.log(gptReply);
+              if (gptReply?.error) {
+                setError(gptReply?.answer || gptReply?.error);
+              } else {
+                setError("");
+                const cost = gptReply?.cost || 0;
+                setSessionCost(sessionCost + +cost);
+                setRequestsNum(requestsNum + 1);
+                const lastPrompt = conversation
+                  .filter((elem) => elem.isUser)
+                  .pop();
+                if (lastPrompt) {
+                  lastPrompt.answered = true;
+                }
+                const answer = gptReply?.answer ?? "";
+                if (answer) {
+                  handleAnswer(gptReply);
+                }
               }
-              const answer = gptReply?.answer ?? "";
-              if (answer) {
-                handleAnswer(answer as string, +gptReply.lastDroppedMessageId);
+              const budget = +gptReply?.moneyLeft;
+              if (Number.isFinite(budget)) {
+                setMoneyLeft(budget);
+                if (gptReply.topUpLink) {
+                  setTopUpLink(gptReply.topUpLink);
+                }
+                if (!gptReply.topUpLink && apiKey) {
+                  setError(t("errors.apiKey", { key: apiKey }));
+                }
+                if (budget <= 0 && !apiKey) {
+                  setLimitBudget(true);
+                }
               }
-            }
-            const budget = +gptReply?.moneyLeft;
-            if (Number.isFinite(budget)) {
-              setMoneyLeft(budget);
-              if (gptReply.topUpLink) {
-                setTopUpLink(gptReply.topUpLink as string);
-              }
-              if (!gptReply.topUpLink && apiKey) {
-                setError(t("errors.apiKey", { key: apiKey }));
-              }
-              if (budget <= 0 && !apiKey) {
-                setLimitBudget(true);
-              }
-            }
-          })
+            },
+          )
           .catch((err) => {
             console.log(err);
             if (!err?.message || err?.message?.match(/internal/gi)) {
@@ -755,12 +769,19 @@ function buildMessages(
   const messages: Message[] = [];
   for (const elem of conversation) {
     if (elem.dropped) continue;
+    const images: string[] = [];
+    if (elem.image) {
+      images.push(elem.image);
+    }
+    elem.media?.forEach((m) => {
+      images.push(`data:image/png;base64,${m.b64_json}`);
+    });
     messages.push({
       lang,
       id: elem.getId(),
       original: `${elem.getText()}`,
       isUser: elem.isUser,
-      images: vision ? (elem.image ? [elem.image] : undefined) : undefined,
+      images: vision ? images : undefined,
     });
   }
   return messages;

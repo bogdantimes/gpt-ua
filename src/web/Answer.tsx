@@ -8,6 +8,8 @@ import {
   Fade,
   Grid,
   IconButton,
+  ImageList,
+  ImageListItem,
   Stack,
   Tooltip,
 } from "@mui/material";
@@ -19,7 +21,7 @@ import {
   QuestionMark,
 } from "@mui/icons-material";
 import { type AnswerElem, type ChatMode } from "./Types";
-import { clarityIconBase64, mainIconBase64 } from "./Icon";
+import { mainIconBase64 } from "./Icon";
 import { t } from "i18next";
 import { useTheme } from "@mui/material/styles";
 import Markdown from "markdown-to-jsx";
@@ -32,6 +34,29 @@ interface AnswerProps {
 }
 
 const PinSpoiler = 25;
+
+function renderMedia(elem: AnswerElem) {
+  const media = elem.getMedia();
+
+  if (!media) {
+    return null;
+  }
+
+  return (
+    <ImageList cols={1} sx={{ width: "90%" }}>
+      {media.map((m, i) => (
+        <ImageListItem key={i}>
+          <img
+            src={`data:image/png;base64,${m.b64_json}`}
+            alt={m.revised_prompt}
+            loading="lazy"
+            style={{ borderRadius: "5px" }}
+          />
+        </ImageListItem>
+      ))}
+    </ImageList>
+  );
+}
 
 const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
   const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
@@ -132,6 +157,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
             <Markdown options={markdownOptions}>
               {showSpoiler ? spoilerVisibleText + " ..." : elem.getText()}
             </Markdown>
+            {!showSpoiler && renderMedia(elem)}
             {showSpoiler && (
               <ExpandMore
                 sx={{
@@ -146,6 +172,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
             {showSpoiler && (
               <Box mt={1}>
                 <Markdown options={markdownOptions}>{elem.getText()}</Markdown>
+                {renderMedia(elem)}
               </Box>
             )}
           </Collapse>
