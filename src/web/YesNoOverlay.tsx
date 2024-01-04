@@ -87,7 +87,6 @@ export function YesNoOverlay({
               opacity: 0.5,
             }}
             onClick={() => {
-              // @ts-expect-error external gtag
               gtag("event", "overlay_answer_yes");
               onClickYes();
             }}
@@ -129,7 +128,6 @@ export function YesNoOverlay({
               opacity: 0.5,
             }}
             onClick={() => {
-              // @ts-expect-error external gtag
               gtag("event", "overlay_answer_no");
               onClickNo();
             }}

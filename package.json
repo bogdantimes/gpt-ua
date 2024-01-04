@@ -35,6 +35,7 @@
     "@emotion/styled": "11.11.0",
     "@mui/icons-material": "5.15.3",
     "@mui/material": "5.15.3",
+    "@types/gtag.js": "^0.0.18",
     "html-to-image": "1.11.11",
     "i18next": "23.7.16",
     "i18next-http-backend": "2.4.2",

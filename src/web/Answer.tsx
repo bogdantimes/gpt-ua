@@ -190,7 +190,6 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
               {!elem.isPinned() && (
                 <IconButton
                   onClick={() => {
-                    // @ts-expect-error external gtag
                     gtag("event", "tg_chat_open");
                     window.open("https://t.me/gpt_ua_chat", "_blank");
                   }}
@@ -210,7 +209,6 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
               {onUnpin && (
                 <IconButton
                   onClick={() => {
-                    // @ts-expect-error external gtag
                     gtag("event", "answer_unpinned");
                     onUnpin();
                   }}
@@ -221,7 +219,6 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
               {onPin && (
                 <IconButton
                   onClick={() => {
-                    // @ts-expect-error external gtag
                     gtag("event", "answer_pinned");
                     onPin();
                   }}
