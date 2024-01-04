@@ -2,6 +2,14 @@ import "./styles.css";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  Button,
+} from "@mui/material";
+
+import {
   Alert,
   Box,
   Button,
@@ -9,6 +17,11 @@ import {
   Collapse,
   Container,
   CssBaseline,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Grid,
   IconButton,
@@ -61,6 +74,19 @@ const REQUESTS_NUM_KEY = "requestsNum";
 const USD_UAH_RATE = 40;
 
 export default function App(): JSX.Element {
+  const [firstTimeModalOpen, setFirstTimeModalOpen] = useState(false);
+
+  useEffect(() => {
+    // Retrieve the visit count from local storage, or start with 0 if it doesn't exist
+    const visitCount = parseInt(localStorage.getItem("visitCount") || "0", 10);
+    // Increment the visit count
+    localStorage.setItem("visitCount", (visitCount + 1).toString());
+    // If this is the second visit (visitCount was 1 before incrementing), open the modal
+    if (visitCount === 1) {
+      setFirstTimeModalOpen(true);
+    }
+  }, []);
+
   const { t, i18n } = useTranslation("translation");
   const darkScheme = useMediaQuery(`(prefers-color-scheme: dark)`);
 
@@ -422,6 +448,38 @@ export default function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+
+      {firstTimeModalOpen && (
+        <Dialog open={firstTimeModalOpen}>
+          <DialogTitle style={{ fontWeight: "bold", textAlign: "center" }}>
+            {t("welcomeTitle")}
+          </DialogTitle>
+          <DialogContent style={{ textAlign: "center" }}>
+            <DialogContentText sx={{mb: 1}}>
+              {t("welcomeMessage")}
+            </DialogContentText>
+            <Button
+              variant="contained"
+              href="https://t.me/gpt_ua_chat"
+              target="_blank"
+              onClick={() => setFirstTimeModalOpen(false)} // Closes modal on click
+              style={{
+                backgroundImage: "linear-gradient(45deg, #0198E1, #0575E6)",
+                boxShadow: "0 4px 10px 0 rgba(0, 0, 0, 0.25)",
+                color: "#ffffff",
+                fontWeight: "bold",
+                textTransform: "none",
+                padding: "12px 30px",
+                fontSize: "1rem",
+              }}
+            >
+              <Telegram/>&nbsp;
+              {t("telegramLinkText")}
+            </Button>
+          </DialogContent>
+        </Dialog>
+      )}
+
       <Container maxWidth="sm" sx={{ padding: 2 }}>
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}

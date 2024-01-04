@@ -1,6 +1,9 @@
 {
   "name": "GPT-UA",
   "title": "GPT-UA - bezpłatny asystent ChatGPT",
+  "welcomeTitle": "Witaj ponownie!",
+  "welcomeMessage": "Utworzyliśmy grupę, gdzie możesz zadawać pytania i być na bieżąco z najnowszymi informacjami z serwisu:",
+  "telegramLinkText": "Dołącz do Telegramu",
   "conversation": {
     "start": "Rozpocznij dialog (w dowolnym języku)",
     "you": "Twoja odpowiedź"
@@ -14,7 +17,6 @@
   "errors": {
     "internal": "Przepraszamy, wystąpił nieznany błąd. Proszę spróbować ponownie.",
     "notEnoughDetails": "Proszę podać więcej szczegółów dotyczących twojego żądania",
-    "only280CharsSupported": "W tym trybie pytania powinny mieć mniej niż 280 znaków.",
     "insecureContext": "Ta funkcja jest dostępna tylko w bezpiecznym kontekście (HTTPS) w niektórych lub we wszystkich obsługiwanych przeglądarkach.",
     "apiKey": "Klucz API '{{key}}' nie jest przypisany do żadnego budżetu. Upewnij się, że adres URL strony jest poprawny."
   },

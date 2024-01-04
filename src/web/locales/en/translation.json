@@ -1,6 +1,9 @@
 {
   "name": "GPT-UA",
   "title": "GPT-UA - free ChatGPT assistant",
+  "welcomeTitle": "Welcome back!",
+  "welcomeMessage": "We've created a group where you can ask questions and stay updated with the latest site news:",
+  "telegramLinkText": "Join",
   "conversation": {
     "start": "Start the dialog (in any language)",
     "you": "Your response"
@@ -14,7 +17,6 @@
   "errors": {
     "internal": "Sorry, an unknown error occurred. Please try again.",
     "notEnoughDetails": "Please provide more details for your request.",
-    "only280CharsSupported": "In this mode, keep questions under 280 characters.",
     "insecureContext": "This feature is only available in a secure context (HTTPS) in some or all supported browsers.",
     "apiKey": "The API '{{key}}' is not attached to any budget. Please, make sure the site URL is correct."
   },
