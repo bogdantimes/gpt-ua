@@ -70,7 +70,7 @@ const PromptVision: React.FC<PromptProps> = ({
 
   const handlePaste = (items: DataTransferItemList | File[]) => {
     for (const item of items) {
-      const file = item instanceof File ? item : item.getAsFile();
+      let file = item instanceof File ? item : item.getAsFile();
       console.log(file);
       if (
         file &&
@@ -79,42 +79,40 @@ const PromptVision: React.FC<PromptProps> = ({
       ) {
         const reader = new FileReader();
         reader.onload = (e: ProgressEvent<FileReader>) => {
-          // Create an image to read the dimensions
           const img = new Image();
           img.onload = () => {
-            // Check if the image needs to be scaled down
-            const scaleDown = 1024;
-            if (img.width > scaleDown || img.height > scaleDown) {
-              // Get the aspect ratio of the image
-              const aspectRatio = img.width / img.height;
-              let targetWidth = img.width;
-              let targetHeight = img.height;
+            let targetWidth = img.width;
+            let targetHeight = img.height;
+            const aspectRatio = img.width / img.height;
+            let scaleDown = 1024;
+            let scaleDownNeeded =
+              img.width > scaleDown || img.height > scaleDown;
 
-              // Calculate the target dimensions
+            // Calculate the target dimensions if scaling is needed
+            if (scaleDownNeeded) {
               if (aspectRatio > 1) {
                 // Image is wider than tall
                 targetWidth = scaleDown;
-                targetHeight = targetWidth / aspectRatio;
+                targetHeight = scaleDown / aspectRatio;
               } else {
                 // Image is taller than wide
                 targetHeight = scaleDown;
-                targetWidth = targetHeight * aspectRatio;
+                targetWidth = scaleDown * aspectRatio;
               }
-
-              // Create a canvas to draw the scaled image
-              const canvas = document.createElement("canvas");
-              canvas.width = targetWidth;
-              canvas.height = targetHeight;
-              const ctx = canvas.getContext("2d");
-              ctx?.drawImage(img, 0, 0, targetWidth, targetHeight);
-
-              // Convert the canvas to a data URL and set it as the image source
-              const scaledImageDataURL = canvas.toDataURL(file.type);
-              setImageSrc(scaledImageDataURL);
-            } else {
-              // If no scaling is needed, use the original image
-              setImageSrc(e.target?.result as string);
             }
+
+            // Create a canvas to draw the scaled image or convert to PNG
+            const canvas = document.createElement("canvas");
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
+            const ctx = canvas.getContext("2d");
+
+            // Draw the image onto the canvas
+            ctx?.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+            // Convert the canvas to a PNG data URL
+            const imageDataURL = canvas.toDataURL("image/png");
+            setImageSrc(imageDataURL);
           };
           // Set the source of the image to the FileReader result
           img.src = e.target?.result as string;
