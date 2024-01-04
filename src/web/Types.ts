@@ -11,7 +11,6 @@ export interface AnswerElem {
   getId: () => number;
   getText: () => string;
   isPinned: () => boolean;
-  isClarity: () => boolean;
 }
 
 export class ConversationElem implements PromptElem, AnswerElem {
@@ -21,7 +20,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
   answered = false;
   dropped = false;
   pinned = false;
-  clarity = false;
   image = "";
 
   static newPrompt(id: number, text: string): ConversationElem {
@@ -65,10 +63,6 @@ export class ConversationElem implements PromptElem, AnswerElem {
 
   isPinned(): boolean {
     return this.pinned;
-  }
-
-  isClarity(): boolean {
-    return this.clarity;
   }
 }
 

@@ -2,14 +2,6 @@ import "./styles.css";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  Button,
-} from "@mui/material";
-
-import {
   Alert,
   Box,
   Button,
@@ -18,7 +10,6 @@ import {
   Container,
   CssBaseline,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -66,7 +57,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 30;
+const VERSION = 31;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -198,17 +189,15 @@ export default function App(): JSX.Element {
     setTheme(getTheme());
   }, [darkScheme, apiKey]);
 
-  function handleAnswer(gptReply: any, answer: string) {
+  function handleAnswer(answer: string, lastDroppedMessageId = -1) {
     const aElem: ConversationElem = ConversationElem.newAnswer(
       conversationLength(),
       answer,
     );
-    aElem.clarity = mode === "gpt4+";
     conversation.push(aElem);
     conversation.push(ConversationElem.newPrompt(conversationLength(), ""));
 
     // Mark dropped messages
-    const lastDroppedMessageId = gptReply.lastDroppedMessageId ?? -1;
     if (lastDroppedMessageId >= 0) {
       conversation.forEach((el) => {
         el.dropped = el.id <= lastDroppedMessageId;
@@ -217,7 +206,7 @@ export default function App(): JSX.Element {
     setConversation([...conversation]);
   }
 
-  function sendConversation(onAnswer = () => {}) {
+  function sendConversation() {
     const messages = buildMessages(conversation, lang, mode === "gpt4");
     // @ts-expect-error external grecaptcha.enterprise
     grecaptcha.enterprise
@@ -252,7 +241,7 @@ export default function App(): JSX.Element {
           .then((gptReply) => {
             console.log(gptReply);
             if (gptReply?.error) {
-              setError(gptReply?.answer || gptReply?.error);
+              setError((gptReply?.answer as string) || gptReply?.error);
             } else {
               setError("");
               const cost = gptReply?.cost || 0;
@@ -266,15 +255,14 @@ export default function App(): JSX.Element {
               }
               const answer = gptReply?.answer ?? "";
               if (answer) {
-                onAnswer();
-                handleAnswer(gptReply, answer);
+                handleAnswer(answer as string, +gptReply.lastDroppedMessageId);
               }
             }
             const budget = +gptReply?.moneyLeft;
             if (Number.isFinite(budget)) {
               setMoneyLeft(budget);
               if (gptReply.topUpLink) {
-                setTopUpLink(gptReply.topUpLink);
+                setTopUpLink(gptReply.topUpLink as string);
               }
               if (!gptReply.topUpLink && apiKey) {
                 setError(t("errors.apiKey", { key: apiKey }));
@@ -289,12 +277,15 @@ export default function App(): JSX.Element {
             if (!err?.message || err?.message?.match(/internal/gi)) {
               setError(t(`errors.internal`));
             } else {
-              setError(err.message);
+              setError(err.message as string);
             }
           })
           .finally(() => {
             setLoading(false);
           });
+      })
+      .catch(() => {
+        setLoading(false);
       });
   }
 
@@ -410,7 +401,6 @@ export default function App(): JSX.Element {
   }
 
   const modes: ChatMode[] = ["default", "gpt4", "gpt4+"];
-  const clarityMode = mode === "gpt4+";
 
   const topUpButton = (
     <>
@@ -455,14 +445,16 @@ export default function App(): JSX.Element {
             {t("welcomeTitle")}
           </DialogTitle>
           <DialogContent style={{ textAlign: "center" }}>
-            <DialogContentText sx={{mb: 1}}>
+            <DialogContentText sx={{ mb: 1 }}>
               {t("welcomeMessage")}
             </DialogContentText>
             <Button
               variant="contained"
               href="https://t.me/gpt_ua_chat"
               target="_blank"
-              onClick={() => setFirstTimeModalOpen(false)} // Closes modal on click
+              onClick={() => {
+                setFirstTimeModalOpen(false);
+              }} // Closes modal on click
               style={{
                 backgroundImage: "linear-gradient(45deg, #0198E1, #0575E6)",
                 boxShadow: "0 4px 10px 0 rgba(0, 0, 0, 0.25)",
@@ -473,7 +465,8 @@ export default function App(): JSX.Element {
                 fontSize: "1rem",
               }}
             >
-              <Telegram/>&nbsp;
+              <Telegram />
+              &nbsp;
               {t("telegramLinkText")}
             </Button>
           </DialogContent>
@@ -519,16 +512,6 @@ export default function App(): JSX.Element {
             <Alert severity={"info"} sx={{ mt: 1 }}>
               <Typography variant="body2" color="textSecondary" align="center">
                 {t(`mode.note_${mode}`)}
-                {clarityMode && (
-                  <Typography display="block" variant={"caption"}>
-                    <Link
-                      target="_blank"
-                      href="https://www.patreon.com/BogdanTimes/shop/claritybot-service-5-top-up-2309"
-                    >
-                      Powered by Clarity AI Service
-                    </Link>
-                  </Typography>
-                )}
               </Typography>
             </Alert>
           </Box>

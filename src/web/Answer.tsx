@@ -56,6 +56,21 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
     .getText()
     .slice(0, PinSpoiler)
     .replace(/\S+$/, "");
+  const markdownOptions = {
+    overrides: {
+      img: {
+        props: {
+          width: "90%",
+          crossOrigin: null,
+        },
+      },
+      a: {
+        props: {
+          target: "_blank",
+        },
+      },
+    },
+  };
   return (
     <Card
       sx={{
@@ -65,8 +80,8 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
         background: elem.isPinned()
           ? undefined
           : theme.palette.mode === "dark"
-          ? "linear-gradient(90deg, rgba(10, 24, 61, 1) 0%, rgba(3, 54, 73, 1) 100%)" // Dark theme gradient
-          : "linear-gradient(90deg, rgba(216, 251, 204, 1) 0%, rgba(171, 229, 255, 1) 100%)", // Lighter light theme gradient
+            ? "linear-gradient(90deg, rgba(10, 24, 61, 1) 0%, rgba(3, 54, 73, 1) 100%)" // Dark theme gradient
+            : "linear-gradient(90deg, rgba(216, 251, 204, 1) 0%, rgba(171, 229, 255, 1) 100%)", // Lighter light theme gradient
         transition: "padding 0.3s ease", // Adding transition for padding
       }}
     >
@@ -96,7 +111,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
               alignSelf: "center",
             }}
             alt="GPT-UA Avatar"
-            src={elem.isClarity() ? clarityIconBase64 : mainIconBase64}
+            src={mainIconBase64}
           />
         </Grid>
         <Grid item xs={11}>
@@ -114,23 +129,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
               transition: "color 0.3s ease",
             }}
           >
-            <Markdown
-              options={{
-                overrides: {
-                  img: {
-                    props: {
-                      width: "100%",
-                      crossOrigin: null,
-                    },
-                  },
-                  a: {
-                    props: {
-                      target: "_blank",
-                    },
-                  },
-                },
-              }}
-            >
+            <Markdown options={markdownOptions}>
               {showSpoiler ? spoilerVisibleText + " ..." : elem.getText()}
             </Markdown>
             {showSpoiler && (
@@ -146,7 +145,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
           <Collapse in={isSpoilerOpen && showSpoiler}>
             {showSpoiler && (
               <Box mt={1}>
-                <Markdown>{elem.getText()}</Markdown>
+                <Markdown options={markdownOptions}>{elem.getText()}</Markdown>
               </Box>
             )}
           </Collapse>
