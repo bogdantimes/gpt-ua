@@ -83,7 +83,8 @@ const PromptVision: React.FC<PromptProps> = ({
           const img = new Image();
           img.onload = () => {
             // Check if the image needs to be scaled down
-            if (img.width > 2048 || img.height > 2048) {
+            const scaleDown = 1024;
+            if (img.width > scaleDown || img.height > scaleDown) {
               // Get the aspect ratio of the image
               const aspectRatio = img.width / img.height;
               let targetWidth = img.width;
@@ -92,11 +93,11 @@ const PromptVision: React.FC<PromptProps> = ({
               // Calculate the target dimensions
               if (aspectRatio > 1) {
                 // Image is wider than tall
-                targetWidth = 2048;
+                targetWidth = scaleDown;
                 targetHeight = targetWidth / aspectRatio;
               } else {
                 // Image is taller than wide
-                targetHeight = 2048;
+                targetHeight = scaleDown;
                 targetWidth = targetHeight * aspectRatio;
               }
 
