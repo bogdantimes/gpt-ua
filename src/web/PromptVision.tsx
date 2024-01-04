@@ -60,7 +60,7 @@ const PromptVision: React.FC<PromptProps> = ({
   onClear,
   sendDisabled,
   showClear,
-  visionDisabled
+  visionDisabled,
 }) => {
   const [text, setText] = React.useState(elem.getText());
   const [imageSrc, setImageSrc] = React.useState<string>(elem.getImage());
@@ -70,10 +70,7 @@ const PromptVision: React.FC<PromptProps> = ({
 
   const handlePaste = (items: DataTransferItemList | File[]) => {
     for (const item of items) {
-      let file = item;
-      if (item.kind === "file") {
-        file = item.getAsFile();
-      }
+      const file = item instanceof File ? item : item.getAsFile();
       console.log(file);
       if (
         file &&
@@ -82,7 +79,44 @@ const PromptVision: React.FC<PromptProps> = ({
       ) {
         const reader = new FileReader();
         reader.onload = (e: ProgressEvent<FileReader>) => {
-          setImageSrc(e.target?.result as string);
+          // Create an image to read the dimensions
+          const img = new Image();
+          img.onload = () => {
+            // Check if the image needs to be scaled down
+            if (img.width > 2048 || img.height > 2048) {
+              // Get the aspect ratio of the image
+              const aspectRatio = img.width / img.height;
+              let targetWidth = img.width;
+              let targetHeight = img.height;
+
+              // Calculate the target dimensions
+              if (aspectRatio > 1) {
+                // Image is wider than tall
+                targetWidth = 2048;
+                targetHeight = targetWidth / aspectRatio;
+              } else {
+                // Image is taller than wide
+                targetHeight = 2048;
+                targetWidth = targetHeight * aspectRatio;
+              }
+
+              // Create a canvas to draw the scaled image
+              const canvas = document.createElement("canvas");
+              canvas.width = targetWidth;
+              canvas.height = targetHeight;
+              const ctx = canvas.getContext("2d");
+              ctx?.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+              // Convert the canvas to a data URL and set it as the image source
+              const scaledImageDataURL = canvas.toDataURL(file.type);
+              setImageSrc(scaledImageDataURL);
+            } else {
+              // If no scaling is needed, use the original image
+              setImageSrc(e.target?.result as string);
+            }
+          };
+          // Set the source of the image to the FileReader result
+          img.src = e.target?.result as string;
         };
         reader.readAsDataURL(file);
       }
@@ -120,7 +154,14 @@ const PromptVision: React.FC<PromptProps> = ({
           },
           startAdornment: (
             <InputAdornment position="start">
-              <Box sx={{ minWidth: (imageSrc || (!isAnsweredReply && !visionDisabled)) ? "40px" : undefined }}>
+              <Box
+                sx={{
+                  minWidth:
+                    imageSrc || (!isAnsweredReply && !visionDisabled)
+                      ? "40px"
+                      : undefined,
+                }}
+              >
                 {imageSrc && (
                   <Box position={"relative"}>
                     {!isAnsweredReply && (
@@ -143,7 +184,7 @@ const PromptVision: React.FC<PromptProps> = ({
                       }}
                     />
                     <label htmlFor="raised-button-file">
-                      <IconButton component={'span'}>
+                      <IconButton component={"span"}>
                         <UploadIcon />
                       </IconButton>
                     </label>
