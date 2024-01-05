@@ -22,7 +22,7 @@
   },
   "budget": {
     "mono": "Geld hinzufügen",
-    "donate": "\uD83D\uDEA8 OpenAI verlangt etwa $0.005-$0.03 pro Antwort. Der Website-Autor unterstützt dies, aber bei hohem Nutzeraufkommen reicht es oft nicht aus. Bitte erwägen Sie, selbst beizutragen - es ist automatisiert und einfach. \uD83D\uDE4F",
+    "donate": "🚨 Der Ersteller der Website hilft bei der Finanzierung, aber aufgrund der großen Anzahl von Nutzern reicht dies oft nicht aus. Bitte erwägen Sie die Möglichkeit, eigenständig einen Beitrag zu leisten - der Prozess ist automatisiert und einfach. 🙏",
     "remaining": "Website-Budget",
     "personal": "Persönliches Budget"
   },
@@ -38,6 +38,7 @@
   "mode": {
     "note_default": "Chat GPT-3.5 kann nicht im Web surfen oder Bilder sehen, aber es ist der günstigste und schnellste Modus für alltägliche Aufgaben.",
     "note_gpt4": "Chat GPT-4 kann Bilder sehen, versteht besser und eignet sich für komplexe Fragen, ist aber teurer und langsamer.",
-    "note_gpt4+": "Chat GPT4+ kann Bilder generieren und online Informationen recherchieren, aber es kostet mehr und dauert in der Regel länger."
+    "note_gpt4+": "Chat GPT4+ kann Bilder generieren und online Informationen recherchieren, aber es kostet mehr und dauert in der Regel länger.",
+    "note_mistral": "Mistral ist ein neues Open-Source-Modell, entwickelt in der EU. Es ist weniger voreingenommen und liberaler als GPT3.5. Funktioniert am besten auf Englisch."
   }
 }

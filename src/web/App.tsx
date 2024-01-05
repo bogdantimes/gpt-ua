@@ -199,6 +199,7 @@ export default function App(): JSX.Element {
       answer,
     );
     aElem.addMedia(media);
+    aElem.setMode(mode);
     conversation.push(aElem);
     conversation.push(ConversationElem.newPrompt(conversationLength(), ""));
 
@@ -212,7 +213,7 @@ export default function App(): JSX.Element {
   }
 
   function sendConversation() {
-    const messages = buildMessages(conversation, lang, mode === "gpt4");
+    const messages = buildMessages(conversation, lang, mode);
     // @ts-expect-error external grecaptcha.enterprise
     grecaptcha.enterprise
       .execute("6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom", { action: "login" })
@@ -414,7 +415,7 @@ export default function App(): JSX.Element {
     setRequestsNum(0);
   }
 
-  const modes: ChatMode[] = ["default", "gpt4", "gpt4+"];
+  const modes: ChatMode[] = ["default", "gpt4", "gpt4+", "mistral"];
 
   const topUpButton = (
     <>
@@ -764,8 +765,9 @@ interface Message {
 function buildMessages(
   conversation: ConversationElem[],
   lang: string,
-  vision: boolean,
+  mode: ChatMode,
 ): Message[] {
+  const vision = mode === "gpt4";
   const messages: Message[] = [];
   for (const elem of conversation) {
     if (elem.dropped) continue;

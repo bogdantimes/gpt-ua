@@ -11,7 +11,11 @@ export interface AnswerElem {
   getId: () => number;
   getText: () => string;
   isPinned: () => boolean;
-  getMedia: () => Array<{ b64_json: string; revised_prompt: string }> | undefined;
+  getMedia: () =>
+    | Array<{ b64_json: string; revised_prompt: string }>
+    | undefined;
+  setMode: (mode: ChatMode) => void;
+  getMode: () => ChatMode;
 }
 
 export class ConversationElem implements PromptElem, AnswerElem {
@@ -23,6 +27,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
   pinned = false;
   image = "";
   media: Array<{ b64_json: string; revised_prompt: string }> | undefined;
+  mode: ChatMode = "default";
 
   static newPrompt(id: number, text: string): ConversationElem {
     const elem = new ConversationElem();
@@ -74,7 +79,15 @@ export class ConversationElem implements PromptElem, AnswerElem {
   getMedia(): Array<{ b64_json: string; revised_prompt: string }> | undefined {
     return this.media;
   }
+
+  setMode(mode: ChatMode) {
+    this.mode = mode;
+  }
+
+  getMode(): ChatMode {
+    return this.mode;
+  }
 }
 
-export type ChatMode = "default" | "gpt4" | "gpt4+";
+export type ChatMode = "default" | "gpt4" | "gpt4+" | "mistral";
 export const ChatModes: ChatMode[] = ["default", "gpt4", "gpt4+"];
