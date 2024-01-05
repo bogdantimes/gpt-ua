@@ -70,49 +70,40 @@ const PromptVision: React.FC<PromptProps> = ({
 
   const handlePaste = (items: DataTransferItemList | File[]) => {
     for (const item of items) {
-      let file = item instanceof File ? item : item.getAsFile();
+      const file = item instanceof File ? item : item.getAsFile();
       console.log(file);
-      if (
-        file &&
-        /^image\/(png|jpeg|webp|gif)$/.test(file.type) &&
-        file.size <= 20971520
-      ) {
+      if (file && /^image\/(png|jpeg|webp|gif)$/.test(file.type)) {
         const reader = new FileReader();
         reader.onload = (e: ProgressEvent<FileReader>) => {
           const img = new Image();
           img.onload = () => {
-            let targetWidth = img.width;
-            let targetHeight = img.height;
-            const aspectRatio = img.width / img.height;
-            let scaleDown = 1024;
-            let scaleDownNeeded =
-              img.width > scaleDown || img.height > scaleDown;
+            let scaleDownFactor = 1;
+            const resizeAndCheck = () => {
+              const targetWidth = img.width * scaleDownFactor;
+              const targetHeight = img.height * scaleDownFactor;
 
-            // Calculate the target dimensions if scaling is needed
-            if (scaleDownNeeded) {
-              if (aspectRatio > 1) {
-                // Image is wider than tall
-                targetWidth = scaleDown;
-                targetHeight = scaleDown / aspectRatio;
+              // Create a canvas to draw the scaled image
+              const canvas = document.createElement("canvas");
+              canvas.width = targetWidth;
+              canvas.height = targetHeight;
+              const ctx = canvas.getContext("2d");
+              ctx?.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+              // Convert the canvas to a data URL and check size
+              const imageDataURL = canvas.toDataURL("image/jpeg");
+              const byteString = atob(imageDataURL.split(",")[1]);
+              const byteStringLength = byteString.length;
+              console.log("SIZE", byteStringLength);
+              if (byteStringLength > 3145728) {
+                // More than 3 MB
+                scaleDownFactor *= 0.75; // Reduce size by 25%
+                console.log("SIZE REDUCED 10%");
+                resizeAndCheck(); // Recursive call
               } else {
-                // Image is taller than wide
-                targetHeight = scaleDown;
-                targetWidth = scaleDown * aspectRatio;
+                setImageSrc(imageDataURL);
               }
-            }
-
-            // Create a canvas to draw the scaled image or convert to PNG
-            const canvas = document.createElement("canvas");
-            canvas.width = targetWidth;
-            canvas.height = targetHeight;
-            const ctx = canvas.getContext("2d");
-
-            // Draw the image onto the canvas
-            ctx?.drawImage(img, 0, 0, targetWidth, targetHeight);
-
-            // Convert the canvas to a PNG data URL
-            const imageDataURL = canvas.toDataURL("image/png");
-            setImageSrc(imageDataURL);
+            };
+            resizeAndCheck();
           };
           // Set the source of the image to the FileReader result
           img.src = e.target?.result as string;
