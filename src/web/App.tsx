@@ -584,6 +584,8 @@ export default function App(): JSX.Element {
                             elem.id,
                             elem.getText(),
                           );
+                          pinElem.addMedia(elem.getMedia());
+                          pinElem.setMode(elem.getMode());
                           pinElem.pinned = true;
                           pinElem.dropped = true;
                           setConversation([pinElem, ...conversation]);
