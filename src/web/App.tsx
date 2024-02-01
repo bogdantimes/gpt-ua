@@ -415,7 +415,7 @@ export default function App(): JSX.Element {
     setRequestsNum(0);
   }
 
-  const modes: ChatMode[] = ["default", "gpt4", "gpt4+", "mistral"];
+  const modes: ChatMode[] = ["default", "gpt4", "gpt4+", "mistral", "mistral+"];
 
   const topUpButton = (
     <>
@@ -508,6 +508,7 @@ export default function App(): JSX.Element {
           </Box>
           <Box sx={{ textAlign: "center", p: 1 }}>
             <ButtonGroup
+              sx={{ "flex-wrap": "wrap" }}
               size={"small"}
               color="primary"
               aria-label="outlined primary button group"

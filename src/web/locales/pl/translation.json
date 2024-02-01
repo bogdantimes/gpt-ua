@@ -36,9 +36,10 @@
   "spentChip": "Wydałeś: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "To jest kwota z wspólnego budżetu strony, którą wydałeś.",
   "mode": {
-    "note_default": "Czat GPT-3.5 nie może przeglądać sieci ani widzieć zdjęć, ale to najtańszy i najszybszy sposób na codzienne zadania.",
-    "note_gpt4": "Czat GPT-4 może widzieć obrazy, lepiej rozumie i nadaje się do skomplikowanych pytań, ale jest droższy i wolniejszy.",
-    "note_gpt4+": "Chat GPT4+ może generować obrazy i wyszukiwać informacje w Internecie, ale kosztuje więcej i zwykle zajmuje więcej czasu.",
-    "note_mistral": "Mistral to nowy model open source, opracowany w UE. Jest mniej uprzedzony i bardziej liberalny niż GPT3.5. Najlepiej działa w języku angielskim."
+    "note_default": "Kosztowo-efektywny i szybki tryb do codziennych zadań, ale nie może przeglądać sieci ani widzieć obrazów.",
+    "note_gpt4": "Bardziej zaawansowany model, który może rozumieć złożone pytania i widzieć obrazy, ale jest droższy i wolniejszy.",
+    "note_gpt4+": "Najbardziej zaawansowany model, który może generować obrazy, wyszukiwać informacje w sieci, ale jest droższy i zazwyczaj wymaga więcej czasu.",
+    "note_mistral": "Model open-source opracowany w UE z mniejszą liczbą ograniczeń, działa najlepiej w języku angielskim. Tańszy niż wersja GPT-3.5.",
+    "note_mistral+": "Ulepszona wersja Mistrala z poprawionymi możliwościami, działa najlepiej w języku angielskim. Tańszy niż wersja GPT-4."
   }
 }

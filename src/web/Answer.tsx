@@ -94,6 +94,11 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
           target: "_blank",
         },
       },
+      pre: {
+        props: {
+          style: { "overflow-x": "auto" },
+        },
+      },
     },
   };
   return (

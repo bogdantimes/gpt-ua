@@ -89,5 +89,11 @@ export class ConversationElem implements PromptElem, AnswerElem {
   }
 }
 
-export type ChatMode = "default" | "gpt4" | "gpt4+" | "mistral";
-export const ChatModes: ChatMode[] = ["default", "gpt4", "gpt4+", "mistral"];
+export type ChatMode = "default" | "gpt4" | "gpt4+" | "mistral" | "mistral+";
+export const ChatModes: ChatMode[] = [
+  "default",
+  "gpt4",
+  "gpt4+",
+  "mistral",
+  "mistral+",
+];

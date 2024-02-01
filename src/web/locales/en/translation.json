@@ -40,9 +40,11 @@
     "gpt4": "GPT4",
     "gpt4+": "GPT4+",
     "mistral": "Mistral",
-    "note_default": "Chat GPT-3.5 can't browse the web or see pictures, but it's the cheapest and fastest mode for everyday tasks.",
-    "note_gpt4": "Chat GPT-4 can see pictures, understands better and is suitable for complex questions, but it is more expensive and slower.",
-    "note_gpt4+": "Chat GPT4+ is able to generate images and research information online, but it costs more and usually takes longer.",
-    "note_mistral": "Mistral is a new open-source model developed in EU. It is less restricted than GPT3.5. Works best in English."
+    "mistral+": "Mistral+",
+    "note_default": "A cost-effective and fast mode for everyday tasks, but it can't browse the web or see pictures.",
+    "note_gpt4": "A more advanced model that can understand complex questions and see pictures, but it's more expensive and slower.",
+    "note_gpt4+": "The most advanced model that can generate images, research information online, but it costs more and usually takes longer.",
+    "note_mistral": "An open-source model developed in the EU with fewer restrictions, works best in English. Cheaper than the GPT-3.5 version.",
+    "note_mistral+": "An enhanced version of Mistral with improved capabilities, works best in English. Cheaper than the GPT-4 version."
   }
 }
