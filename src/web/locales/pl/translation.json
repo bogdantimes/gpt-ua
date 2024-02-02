@@ -39,7 +39,7 @@
     "note_default": "Kosztowo-efektywny i szybki tryb do codziennych zadań, ale nie może przeglądać sieci ani widzieć obrazów.",
     "note_gpt4": "Bardziej zaawansowany model, który może rozumieć złożone pytania i widzieć obrazy, ale jest droższy i wolniejszy.",
     "note_gpt4+": "Najbardziej zaawansowany model, który może generować obrazy, wyszukiwać informacje w sieci, ale jest droższy i zazwyczaj wymaga więcej czasu.",
-    "note_mistral": "Model open-source opracowany w UE z mniejszą liczbą ograniczeń, działa najlepiej w języku angielskim. Tańszy niż wersja GPT-3.5.",
+    "note_mistral": "Model open-source opracowany w UE z mniejszą liczbą ograniczeń, działa najlepiej w języku angielskim.",
     "note_mistral+": "Ulepszona wersja Mistrala z poprawionymi możliwościami, działa najlepiej w języku angielskim. Tańszy niż wersja GPT-4."
   }
 }

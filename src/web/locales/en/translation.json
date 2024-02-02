@@ -44,7 +44,7 @@
     "note_default": "A cost-effective and fast mode for everyday tasks, but it can't browse the web or see pictures.",
     "note_gpt4": "A more advanced model that can understand complex questions and see pictures, but it's more expensive and slower.",
     "note_gpt4+": "The most advanced model that can generate images, research information online, but it costs more and usually takes longer.",
-    "note_mistral": "An open-source model developed in the EU with fewer restrictions, works best in English. Cheaper than the GPT-3.5 version.",
+    "note_mistral": "An open-source model developed in the EU with fewer restrictions, works best in English.",
     "note_mistral+": "An enhanced version of Mistral with improved capabilities, works best in English. Cheaper than the GPT-4 version."
   }
 }
