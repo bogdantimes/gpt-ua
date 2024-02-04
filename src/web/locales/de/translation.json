@@ -22,8 +22,8 @@
   },
   "budget": {
     "mono": "Geld hinzufügen",
-    "donate": "🚨 Der Ersteller der Website hilft bei der Finanzierung, aber aufgrund der großen Anzahl von Nutzern reicht dies oft nicht aus. Bitte erwägen Sie die Möglichkeit, eigenständig einen Beitrag zu leisten - der Prozess ist automatisiert und einfach. 🙏",
-    "remaining": "Website-Budget",
+    "donate": "🚨 Der Ersteller der App hilft bei der Finanzierung, aber aufgrund der großen Anzahl von Nutzern reicht dies oft nicht aus. Bitte erwägen Sie die Möglichkeit, eigenständig einen Beitrag zu leisten - der Prozess ist automatisiert und einfach. 🙏",
+    "remaining": "Verfügbares Budget",
     "personal": "Persönliches Budget"
   },
   "openai": {

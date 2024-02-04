@@ -22,8 +22,8 @@
   },
   "budget": {
     "mono": "Dodać pieniędzy",
-    "donate": "🚨 Twórca strony pomaga ją finansować, ale ze względu na dużą liczbę użytkowników często jest to niewystarczające. Rozważ możliwość samodzielnego wsparcia - proces jest zautomatyzowany i prosty. 🙏",
-    "remaining": "Budżet strony",
+    "donate": "🚨 Twórca aplikacji pomaga ją finansować, ale ze względu na dużą liczbę użytkowników często jest to niewystarczające. Rozważ możliwość samodzielnego wsparcia - proces jest zautomatyzowany i prosty. 🙏",
+    "remaining": "Dostępny budżet",
     "personal": "Budżet osobisty"
   },
   "openai": {

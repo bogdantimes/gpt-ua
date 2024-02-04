@@ -22,8 +22,8 @@
   },
   "budget": {
     "mono": "Add money",
-    "donate": "🚨 The website's creator helps fund it, but due to the large number of users, this is often not enough. Please consider the possibility of contributing independently - the process is automated and simple. 🙏",
-    "remaining": "Site budget",
+    "donate": "🚨 The app's creator helps fund it, but due to the large number of users, this is often not enough. Please consider the possibility of contributing independently - the process is automated and simple. 🙏",
+    "remaining": "Available budget",
     "personal": "Personal budget"
   },
   "openai": {

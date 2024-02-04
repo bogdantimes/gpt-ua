@@ -149,7 +149,7 @@ export default function App(): JSX.Element {
 
   const lang = i18n.language;
 
-  const changeLanguage = (lng) => {
+  const changeLanguage = (lng: string) => {
     void i18n.changeLanguage(lng);
   };
 
@@ -406,7 +406,6 @@ export default function App(): JSX.Element {
   };
 
   function handleTopUpBtnClick() {
-    // @ts-expect-error external gtag
     gtag("event", "budget_top_up_open");
     window.open(topUpLink, "_blank");
     // reset the budget limit timer
@@ -508,7 +507,7 @@ export default function App(): JSX.Element {
           </Box>
           <Box sx={{ textAlign: "center", p: 1 }}>
             <ButtonGroup
-              sx={{ "flex-wrap": "wrap" }}
+              sx={{ "flex-wrap": "wrap", "justify-content": "center" }}
               size={"small"}
               color="primary"
               aria-label="outlined primary button group"
