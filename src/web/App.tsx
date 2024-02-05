@@ -436,9 +436,7 @@ export default function App(): JSX.Element {
         {t(`budget.mono`)}
       </Button>
       <Typography ml={"auto"} mr={"auto"} variant={"caption"}>
-        (Monobank / Google Pay / Visa / Mastercard)
-        <br />
-        10₴ ≈ $0.25
+        (Apple Pay / Google Pay / Visa / Mastercard)
       </Typography>
     </>
   );
