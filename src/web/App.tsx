@@ -492,13 +492,12 @@ export default function App(): JSX.Element {
             <h1>{t("name")}</h1>
             <p
               style={{
-                marginLeft: "10px",
                 marginTop: "-33px",
                 marginBottom: 0,
                 padding: 0,
               }}
             >
-              ChatGPT | Online Research | Science
+              AI assistance for everyone
               <br />
               🔎🌐
             </p>
