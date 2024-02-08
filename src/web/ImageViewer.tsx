@@ -1,15 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { Box, IconButton, Typography } from "@mui/material";
 import { Download } from "@mui/icons-material";
 
 const ImageViewer = ({ src, alt }) => {
-  const [showCaption, setShowCaption] = useState(false);
-
-  const toggleCaption = () => {
-    setShowCaption(!showCaption);
-  };
-
   // Function to handle image download
   const downloadImage = () => {
     const element = document.createElement("a");
@@ -35,12 +29,12 @@ const ImageViewer = ({ src, alt }) => {
               <img
                 src={src}
                 alt={alt}
-                style={{ width: "100%", height: "auto", borderRadius: "5px" }}
+                style={{ width: "100%", height: "auto" }}
               />
             </TransformComponent>
             <Box sx={{ position: "absolute", top: 16, right: 16 }}>
               <IconButton onClick={downloadImage}>
-                <Download color={"info"} fontSize={"large"}></Download>
+                <Download color={"secondary"} fontSize={"large"}></Download>
               </IconButton>
             </Box>
             <Box

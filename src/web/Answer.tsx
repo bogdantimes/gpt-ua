@@ -44,7 +44,7 @@ function renderMedia(elem: AnswerElem) {
   }
 
   return (
-    <ImageList cols={1} sx={{ width: "95%" }}>
+    <ImageList cols={1}>
       {media.map((m, i) => (
         <ImageListItem key={i}>
           <ImageViewer
@@ -104,6 +104,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
     <Card
       sx={{
         padding: elem.isPinned() && !isSpoilerOpen ? "8px 16px" : "28px 16px",
+        paddingRight: elem.getMedia() ? 0 : undefined,
         overflowX: "auto",
         position: "relative",
         background: elem.isPinned()
@@ -132,27 +133,31 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
         </Box>
       )}
       <Grid container direction={"row"} spacing={2} rowSpacing={-1}>
-        <Grid item xs={1}>
-          <Avatar
-            sx={{
-              width: 24,
-              height: 24,
-              alignSelf: "center",
-            }}
-            alt="GPT-UA Avatar"
-            src={
-              elem.getMode() === "mistral" ? mistralIconBase64 : mainIconBase64
-            }
-          />
-        </Grid>
-        <Grid item xs={11}>
+        {!elem.getMedia() && (
+          <Grid item xs={1}>
+            <Avatar
+              sx={{
+                width: 24,
+                height: 24,
+                alignSelf: "center",
+              }}
+              alt="GPT-UA Avatar"
+              src={
+                elem.getMode() === "mistral"
+                  ? mistralIconBase64
+                  : mainIconBase64
+              }
+            />
+          </Grid>
+        )}
+        <Grid item xs={elem.getMedia() ? 12 : 11} style={{ padding: 0 }}>
           <Box
             onClick={toggleSpoiler}
             sx={{
               display: showSpoiler ? "flex" : "block",
               alignItems: "center",
               cursor: showSpoiler ? "pointer" : "default",
-              pl: 1,
+              pl: elem.getMedia() ? 0 : 1,
               color:
                 showSpoiler && isSpoilerOpen
                   ? theme.palette.text.disabled
