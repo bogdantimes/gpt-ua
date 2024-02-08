@@ -25,6 +25,7 @@ import { mainIconBase64, mistralIconBase64 } from "./Icon";
 import { t } from "i18next";
 import { useTheme } from "@mui/material/styles";
 import Markdown from "markdown-to-jsx";
+import ImageViewer from "./ImageViewer";
 
 interface AnswerProps {
   elem: AnswerElem;
@@ -43,14 +44,12 @@ function renderMedia(elem: AnswerElem) {
   }
 
   return (
-    <ImageList cols={1} sx={{ width: "90%" }}>
+    <ImageList cols={1} sx={{ width: "95%" }}>
       {media.map((m, i) => (
         <ImageListItem key={i}>
-          <img
+          <ImageViewer
             src={`data:image/png;base64,${m.b64_json}`}
             alt={m.revised_prompt}
-            loading="lazy"
-            style={{ borderRadius: "5px" }}
           />
         </ImageListItem>
       ))}
