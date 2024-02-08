@@ -49,6 +49,9 @@ export class ConversationElem implements PromptElem, AnswerElem {
   }
 
   getText(): string {
+    if (this.text.trim() === this.media?.[0]?.revised_prompt.trim()) {
+      return "";
+    }
     return this.text.trim();
   }
 
