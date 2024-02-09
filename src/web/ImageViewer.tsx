@@ -5,13 +5,21 @@ import { Download } from "@mui/icons-material";
 
 const ImageViewer = ({ src, alt }) => {
   // Function to handle image download
-  const downloadImage = () => {
-    const element = document.createElement("a");
-    element.href = src;
-    element.download = "downloadedImage"; // You can name the downloaded image
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+  const downloadImage = (event) => {
+    event.stopPropagation(); // Prevents the modal from opening when clicking the download button
+    // iOS devices do not support the download attribute fully, especially for images
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      // Open the image in a new tab/window
+      window.open(src, '_blank');
+    } else {
+      // For other devices, proceed with the download process
+      const element = document.createElement('a');
+      element.href = src;
+      element.download = 'downloadedImage'; // You can customize the file name here
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
   };
 
   return (
