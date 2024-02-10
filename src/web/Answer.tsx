@@ -79,7 +79,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
   const spoilerVisibleText = elem
     .getText()
     .slice(0, PinSpoiler)
-    .replace(/\S+$/, "");
+    .replace(/\S+$/, "").trim();
   const markdownOptions = {
     overrides: {
       img: {
@@ -150,7 +150,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
             />
           </Grid>
         )}
-        <Grid item xs={elem.getMedia() ? 12 : 11} style={{ padding: 0 }}>
+        <Grid item xs={elem.getMedia() ? 12 : 11} style={{ padding: elem.getMedia() ? 0: undefined }}>
           <Box
             onClick={toggleSpoiler}
             sx={{
@@ -166,7 +166,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
             }}
           >
             <Markdown options={markdownOptions}>
-              {showSpoiler ? spoilerVisibleText + " ..." : elem.getText()}
+              {showSpoiler ? spoilerVisibleText + "..." : elem.getText()}
             </Markdown>
             {!showSpoiler && renderMedia(elem)}
             {showSpoiler && (
@@ -174,7 +174,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
                 sx={{
                   transform: isSpoilerOpen ? "rotate(180deg)" : "rotate(0deg)",
                   transition: ".3s",
-                  ml: 1,
+                  ml: 0,
                 }}
               />
             )}
