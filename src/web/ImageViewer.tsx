@@ -10,12 +10,12 @@ const ImageViewer = ({ src, alt }) => {
     // iOS devices do not support the download attribute fully, especially for images
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
       // Open the image in a new tab/window
-      window.open(src, '_blank');
+      window.open(src, "_blank");
     } else {
       // For other devices, proceed with the download process
-      const element = document.createElement('a');
+      const element = document.createElement("a");
       element.href = src;
-      element.download = 'downloadedImage'; // You can customize the file name here
+      element.download = "downloadedImage"; // You can customize the file name here
       document.body.appendChild(element);
       element.click();
       document.body.removeChild(element);
@@ -42,7 +42,11 @@ const ImageViewer = ({ src, alt }) => {
             </TransformComponent>
             <Box sx={{ position: "absolute", top: 16, right: 16 }}>
               <IconButton onClick={downloadImage}>
-                <Download color={"secondary"} fontSize={"large"}></Download>
+                <Download
+                  className={"pulsate"}
+                  color={"secondary"}
+                  fontSize={"large"}
+                ></Download>
               </IconButton>
             </Box>
             <Box
