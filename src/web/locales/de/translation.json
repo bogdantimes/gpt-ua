@@ -41,5 +41,14 @@
     "note_gpt4+": "Das fortschrittlichste Modell, das Bilder generieren, Informationen online recherchieren kann, aber teurer ist und in der Regel länger dauert.",
     "note_mistral": "Ein in der EU entwickeltes Open-Source-Modell mit weniger Einschränkungen, funktioniert am besten auf Englisch.",
     "note_mistral+": "Eine verbesserte Version von Mistral mit verbesserten Fähigkeiten, funktioniert am besten auf Englisch. Günstiger als die GPT-4-Version."
-  }
+  },
+  "settings": {
+    "title": "Assistent anpassen",
+    "label": "Fakten und Anweisungen",
+    "placeholder": "z.B. Ich bevorzuge kurze Antworten.",
+    "helper": "Geben Sie alle Fakten oder Anweisungen an, die der Assistent sich über Sie merken soll."
+  },
+  "cancel": "Abbrechen",
+  "save": "Speichern"
+
 }

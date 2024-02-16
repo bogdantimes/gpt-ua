@@ -41,5 +41,14 @@
     "note_gpt4+": "Najbardziej zaawansowany model, który może generować obrazy, wyszukiwać informacje w sieci, ale jest droższy i zazwyczaj wymaga więcej czasu.",
     "note_mistral": "Model open-source opracowany w UE z mniejszą liczbą ograniczeń, działa najlepiej w języku angielskim.",
     "note_mistral+": "Ulepszona wersja Mistrala z poprawionymi możliwościami, działa najlepiej w języku angielskim. Tańszy niż wersja GPT-4."
-  }
+  },
+  "settings": {
+    "title": "Dostosuj Asystenta",
+    "label": "Fakty i instrukcje",
+    "placeholder": "np. Wolę krótkie odpowiedzi.",
+    "helper": "Podaj wszelkie fakty lub instrukcje, które chcesz, aby asystent zapamiętał o Tobie."
+  },
+  "cancel": "Anuluj",
+  "save": "Zapisz"
+
 }

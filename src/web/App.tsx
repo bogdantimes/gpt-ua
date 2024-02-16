@@ -3,6 +3,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import {
   Alert,
+  Badge,
   Box,
   Button,
   ButtonGroup,
@@ -24,9 +25,12 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import {
+  CheckCircleOutline,
   ExpandMore,
+  HelpOutline,
   Instagram,
   Replay,
+  Settings,
   Telegram,
   Twitter,
 } from "@mui/icons-material";
@@ -48,6 +52,7 @@ import ExtensionIcon from "@mui/icons-material/Extension";
 import { StyledLinearProgress } from "./StyledLinearProgress";
 import { PersonalBudget } from "./PersonalBudget";
 import PromptVision from "./PromptVision";
+import { SettingsModal } from "./SettingsModal";
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -57,7 +62,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 34;
+const VERSION = 35;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -233,6 +238,7 @@ export default function App(): JSX.Element {
             token,
             messages,
             mode,
+            customInstructions,
           }),
         })
           .then(async (response) => {
@@ -447,6 +453,14 @@ export default function App(): JSX.Element {
     ]);
   };
 
+  const [settingsModalOpen, setSettingsModalOpen] = useState(false);
+  const [customInstructions, setCustomInstructions] = useState(() => {
+    return localStorage.getItem("customInstructions") || "";
+  });
+  useEffect(() => {
+    localStorage.setItem("customInstructions", customInstructions);
+  }, [customInstructions]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -485,6 +499,17 @@ export default function App(): JSX.Element {
         </Dialog>
       )}
 
+      {settingsModalOpen && (
+        <SettingsModal
+          customInstructions={customInstructions}
+          open={settingsModalOpen}
+          onClose={() => {
+            setSettingsModalOpen(false);
+          }}
+          onSave={setCustomInstructions}
+        />
+      )}
+
       <Container maxWidth="sm" sx={{ padding: 2 }}>
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}
@@ -520,6 +545,43 @@ export default function App(): JSX.Element {
                   {t(`mode.${m}`)}
                 </Button>
               ))}
+              <Badge
+                overlap="circular"
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                badgeContent={
+                  customInstructions ? (
+                    <CheckCircleOutline
+                      sx={{
+                        fontSize: "1rem",
+                        color: theme.palette.success.main,
+                      }}
+                    />
+                  ) : (
+                    <HelpOutline
+                      sx={{
+                        fontSize: "1rem",
+                        color: theme.palette.info.main,
+                      }}
+                    />
+                  )
+                }
+              >
+                <IconButton
+                  onClick={() => {
+                    setSettingsModalOpen(true);
+                  }}
+                  sx={
+                    {
+                      // Apply additional styling if needed
+                    }
+                  }
+                >
+                  <Settings />
+                </IconButton>
+              </Badge>
             </ButtonGroup>
             <Alert severity={"info"} sx={{ mt: 1 }}>
               <Typography variant="body2" color="textSecondary" align="center">
