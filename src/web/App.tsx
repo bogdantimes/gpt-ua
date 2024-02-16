@@ -234,7 +234,7 @@ export default function App(): JSX.Element {
           headers: headers as HeadersInit,
           body: JSON.stringify({
             v: VERSION,
-            l: limitBudget && requestsNum,
+            l: !apiKey && limitBudget && requestsNum,
             token,
             messages,
             mode,
