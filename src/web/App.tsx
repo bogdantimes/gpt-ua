@@ -420,7 +420,7 @@ export default function App(): JSX.Element {
     setRequestsNum(0);
   }
 
-  const modes: ChatMode[] = ["default", "gpt4", "gpt4+", "mistral+"];
+  const modes: ChatMode[] = ["default", "gpt4", "mistral+"];
 
   const topUpButton = (
     <>
