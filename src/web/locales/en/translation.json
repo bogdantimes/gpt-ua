@@ -36,7 +36,7 @@
   "spentChip": "You've spent: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "This is the amount of money from the website's shared budget that you have spent.",
   "mode": {
-    "default": "GPT3.5",
+    "default": "Claude3",
     "gpt4": "GPT4",
     "gpt4+": "GPT4+",
     "mistral": "Mistral",
