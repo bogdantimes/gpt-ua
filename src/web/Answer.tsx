@@ -21,7 +21,7 @@ import {
   QuestionMark,
 } from "@mui/icons-material";
 import { type AnswerElem, type ChatMode } from "./Types";
-import { mainIconBase64, mistralIconBase64 } from "./Icon";
+import { defaultIconBase64, gptIconBase64, mistralIconBase64 } from "./Icon";
 import { t } from "i18next";
 import { useTheme } from "@mui/material/styles";
 import Markdown from "markdown-to-jsx";
@@ -79,7 +79,8 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
   const spoilerVisibleText = elem
     .getText()
     .slice(0, PinSpoiler)
-    .replace(/\S+$/, "").trim();
+    .replace(/\S+$/, "")
+    .trim();
   const markdownOptions = {
     overrides: {
       img: {
@@ -143,14 +144,20 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
               }}
               alt="GPT-UA Avatar"
               src={
-                elem.getMode() === "mistral"
+                elem.getMode() === "mistral+"
                   ? mistralIconBase64
-                  : mainIconBase64
+                  : elem.getMode() === "default"
+                    ? defaultIconBase64
+                    : gptIconBase64
               }
             />
           </Grid>
         )}
-        <Grid item xs={elem.getMedia() ? 12 : 11} style={{ padding: elem.getMedia() ? 0: undefined }}>
+        <Grid
+          item
+          xs={elem.getMedia() ? 12 : 11}
+          style={{ padding: elem.getMedia() ? 0 : undefined }}
+        >
           <Box
             onClick={toggleSpoiler}
             sx={{

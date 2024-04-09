@@ -39,8 +39,7 @@
     "note_default": "Ein kosteneffektiver und schneller Modus für alltägliche Aufgaben, kann jedoch nicht im Web surfen oder Bilder sehen.",
     "note_gpt4": "Ein fortschrittlicheres Modell, das komplexe Fragen verstehen und Bilder sehen kann, aber teurer und langsamer ist.",
     "note_gpt4+": "Das fortschrittlichste Modell, das Bilder generieren, Informationen online recherchieren kann, aber teurer ist und in der Regel länger dauert.",
-    "note_mistral": "Ein in der EU entwickeltes Open-Source-Modell mit weniger Einschränkungen, funktioniert am besten auf Englisch.",
-    "note_mistral+": "Eine verbesserte Version von Mistral mit verbesserten Fähigkeiten, funktioniert am besten auf Englisch. Günstiger als die GPT-4-Version."
+    "note_mistral+": "Ein in der EU entwickeltes Open-Source-Modell mit weniger Einschränkungen, funktioniert am besten auf Englisch. Günstiger als die GPT-4-Version."
   },
   "settings": {
     "title": "Assistent anpassen",
