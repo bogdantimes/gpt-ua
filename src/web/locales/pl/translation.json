@@ -37,7 +37,7 @@
   "chipTooltip": "To jest kwota z wspólnego budżetu strony, którą wydałeś.",
   "mode": {
     "note_default": "Tryb opłacalny i szybki, zalecany do większości codziennych zadań.",
-    "note_gpt4": "Bardziej zaawansowany model, który potrafi zrozumieć złożone pytania, widzieć obrazy, generować zdjęcia i wyszukiwać informacje online, ale jest droższy.",
+    "note_gpt4": "Bardziej zaawansowany model, który potrafi zrozumieć złożone pytania, generować zdjęcia i wyszukiwać informacje online, ale jest droższy.",
     "note_mistral+": "Model open-source opracowany w UE z mniejszą liczbą ograniczeń, działa najlepiej w języku angielskim. Tańszy niż wersja GPT-4."
   },
   "settings": {

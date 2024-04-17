@@ -37,7 +37,7 @@
   "chipTooltip": "Dies ist der Betrag aus dem gemeinsamen Budget der Website, den Sie ausgegeben haben.",
   "mode": {
     "note_default": "Ein kostengünstiger und schneller Modus, empfohlen für die meisten alltäglichen Aufgaben.",
-    "note_gpt4": "Ein fortschrittlicheres Modell, das komplexe Fragen verstehen, Bilder sehen, Fotos generieren und Informationen online recherchieren kann, aber es ist teurer.",
+    "note_gpt4": "Ein fortschrittlicheres Modell, das komplexe Fragen verstehen, Fotos generieren und Informationen online recherchieren kann, aber es ist teurer.",
     "note_mistral+": "Ein in der EU entwickeltes Open-Source-Modell mit weniger Einschränkungen, funktioniert am besten auf Englisch. Günstiger als die GPT-4-Version."
   },
   "settings": {
