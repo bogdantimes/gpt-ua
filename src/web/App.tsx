@@ -62,7 +62,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 41;
+const VERSION = 42;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -329,7 +329,7 @@ export default function App(): JSX.Element {
   const handleSend = (el: PromptElem) => {
     setError("");
 
-    if (el.getText().length <= 1 && (mode !== "gpt4" || !el.getImage())) {
+    if (el.getText().length <= 1 && (mode === "mistral+" || !el.getImage())) {
       setError(t("errors.notEnoughDetails"));
       return;
     }
