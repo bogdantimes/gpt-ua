@@ -62,7 +62,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 42;
+const VERSION = 43;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -828,7 +828,7 @@ function buildMessages(
   lang: string,
   mode: ChatMode,
 ): Message[] {
-  const vision = mode === "gpt4";
+  const vision = mode !== "mistral+";
   const messages: Message[] = [];
   for (const elem of conversation) {
     if (elem.dropped) continue;
