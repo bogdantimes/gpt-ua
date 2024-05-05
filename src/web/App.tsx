@@ -2,46 +2,41 @@ import "./styles.css";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
-  Alert,
-  Badge,
-  Box,
-  Button,
-  ButtonGroup,
-  Collapse,
-  Container,
-  CssBaseline,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Grid,
-  IconButton,
-  Link,
-  Stack,
-  ThemeProvider,
-  Tooltip,
-  Typography,
-  useMediaQuery,
+    Alert,
+    Badge,
+    Box,
+    Button,
+    ButtonGroup,
+    Collapse,
+    Container,
+    CssBaseline,
+    Dialog,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Divider,
+    Grid,
+    IconButton,
+    Link,
+    Stack,
+    ThemeProvider,
+    Tooltip,
+    Typography,
+    useMediaQuery
 } from "@mui/material";
 import {
-  CheckCircleOutline,
-  ExpandMore,
-  HelpOutline,
-  Instagram,
-  Replay,
-  Settings,
-  Telegram,
-  Twitter,
+    CheckCircleOutline,
+    ExpandMore,
+    HelpOutline,
+    Instagram,
+    Replay,
+    Settings,
+    Telegram,
+    Twitter
 } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import Answer from "./Answer";
-import {
-  type ChatMode,
-  ChatModes,
-  ConversationElem,
-  type PromptElem,
-} from "./Types";
+import { type ChatMode, ChatModes, ConversationElem, type PromptElem } from "./Types";
 import { FundingBar } from "./FundingBar";
 import { cyberpunkTheme, darkTheme, lightTheme, personalTheme } from "./themes";
 import { YesNoOverlay } from "./YesNoOverlay";
@@ -53,7 +48,6 @@ import { StyledLinearProgress } from "./StyledLinearProgress";
 import { PersonalBudget } from "./PersonalBudget";
 import PromptVision from "./PromptVision";
 import { SettingsModal } from "./SettingsModal";
-import { handleImage } from "./FileHandlers";
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -63,7 +57,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 44;
+const VERSION = 45;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
