@@ -1,267 +1,228 @@
 import * as React from "react";
 import {
-  Box,
-  IconButton,
-  InputAdornment,
-  styled,
-  TextField,
+    Box,
+    IconButton,
+    InputAdornment,
+    styled,
+    TextField
 } from "@mui/material";
 import { AttachFile, Cancel, Clear, Send } from "@mui/icons-material";
 import { type PromptElem } from "./Types";
 import { t } from "i18next";
 import { pdfjs } from "react-pdf"; // Import for PDF.js
+import { FileDetail } from "./Types";
+import { handleImage, handlePDF } from "./FileHandlers";
+
+const MAX_FILES = 5;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-// Styling the Paper component with MUI's styled API
+// Styling the ImagePreview component with MUI's styled API
 const ImagePreview = styled("img")(({ theme }) => ({
-  position: "absolute",
-  left: -5,
-  top: "50%",
-  transform: "translateY(-50%)",
-  width: 40,
-  height: 40,
-  objectFit: "cover",
-  borderRadius: theme.shape.borderRadius * 2,
-  boxShadow: theme.shadows[3],
+    width: 50,
+    height: 50,
+    objectFit: "cover",
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: theme.shadows[3],
+    marginRight: theme.spacing(2)
+}));
+
+const PDFPreview = styled("div")(({ theme, fileName }) => ({
+    width: 50,
+    height: 50,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: theme.palette.grey[200],
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: theme.shadows[3],
+    marginRight: theme.spacing(1),
+    fontSize: "0.875rem",
+    color: theme.palette.grey[500],
+    "& .file-name": {
+        fontSize: "0.75rem",
+        marginTop: theme.spacing(1),
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        maxWidth: 50
+    }
 }));
 
 const DeleteButton = styled(IconButton)(({ theme }) => ({
-  position: "absolute",
-  padding: 0,
-  left: 24,
-  top: -24,
-  zIndex: 1,
-  color: theme.palette.grey[500],
-  backgroundColor: theme.palette.background.paper,
-  "&:hover": {
-    color: theme.palette.error.main,
+    position: "absolute",
+    padding: 0,
+    right: 3,
+    top: -8,
+    zIndex: 1,
+    color: theme.palette.grey[500],
     backgroundColor: theme.palette.background.paper,
-  },
-  borderRadius: "50%",
-}));
-
-const UploadIcon = styled(AttachFile)(({ theme }) => ({
-  position: "absolute",
-  left: 2,
-  top: "50%",
-  transform: "translateY(-50%)",
+    "&:hover": {
+        color: theme.palette.error.main,
+        backgroundColor: theme.palette.background.paper
+    },
+    borderRadius: "50%"
 }));
 
 interface PromptProps {
-  elem: PromptElem;
-  onClickSend: (el: PromptElem) => void;
-  onClear: () => void;
-  sendDisabled: boolean;
-  showClear: boolean;
-  visionDisabled: boolean;
+    elem: PromptElem;
+    onClickSend: (el: PromptElem) => void;
+    onClear: () => void;
+    sendDisabled: boolean;
+    showClear: boolean;
+    visionDisabled: boolean;
 }
 
 const PromptVision: React.FC<PromptProps> = ({
-  elem,
-  onClickSend,
-  onClear,
-  sendDisabled,
-  showClear,
-  visionDisabled,
-}) => {
-  const [text, setText] = React.useState(elem.getText());
-  const [imageSrc, setImageSrc] = React.useState<string>(elem.getImage());
-  const isStartPrompt = elem.getId() === 0;
-  const isAnsweredReply = !isStartPrompt && elem.isAnswered();
-  const label = isStartPrompt ? t("conversation.start") : t("conversation.you");
+                                                 elem,
+                                                 onClickSend,
+                                                 onClear,
+                                                 sendDisabled,
+                                                 showClear,
+                                                 visionDisabled
+                                             }) => {
+    const [text, setText] = React.useState(elem.getText());
+    const [files, setFiles] = React.useState<FileDetail[]>(elem.getFiles());
+    const isStartPrompt = elem.getId() === 0;
+    const isAnsweredReply = !isStartPrompt && elem.isAnswered();
+    const label = isStartPrompt ? t("conversation.start") : t("conversation.you");
 
-  const handlePaste = (items: DataTransferItemList | File[]) => {
-    const MAX_FILES = 5;
-    let processedFiles = 0;
+    const handleFileUpload = async (newFiles: File[]) => {
+        const updatedFiles: FileDetail[] = [...files];
+        for (const file of newFiles) {
+            if (updatedFiles.length >= MAX_FILES) break; // Limit the number of files
+            const type = file.type.includes("image") ? "image" : "pdf";
+            const newFile: FileDetail = {
+                name: file.name,
+                type,
+                content: type === 'image' ? await handleImage(file): await handlePDF(file)
+            };
+            updatedFiles.push(newFile);
+        }
+        setFiles(updatedFiles);
+    };
 
-    for (const item of items) {
-      if (processedFiles >= MAX_FILES) break; // Limit the number of files
-      const file = item instanceof File ? item : item.getAsFile();
-      if (!file) continue;
+    const handleDeleteFile = (index: number) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    };
 
-      if (/^image\/(png|jpeg|webp|gif)$/.test(file.type)) {
-        handleImage(setImageSrc, file);
-      } else if (file.type === "application/pdf") {
-        handlePDF(setText, file);
-      }
-      processedFiles++;
-    }
-  };
+    const handlePaste = async (items: DataTransferItemList | File[]) => {
+        const newFiles: File[] = [];
+        for (const item of items) {
+            if (newFiles.length + files.length >= MAX_FILES) break; // Limit the total number of files
+            const file = item instanceof File ? item : item.getAsFile();
+            if (!file) continue;
+            newFiles.push(file);
+        }
+        await handleFileUpload(newFiles);
+    };
 
-  const handleDeleteImage = () => {
-    setImageSrc("");
-  };
-
-  return (
-    <Box sx={{ position: "relative", display: "flex", alignItems: "center" }}>
-      <TextField
-        id={`prompt-${elem.getId()}`}
-        label={label}
-        value={text}
-        multiline
-        fullWidth
-        focused={isAnsweredReply ? false : undefined}
-        onChange={(event) => {
-          setText(event.target.value);
-        }}
-        helperText={!isAnsweredReply && "Ctrl+Enter"}
-        onKeyDown={(event) => {
-          if (event.ctrlKey && event.key === "Enter") {
-            elem.setText(text);
-            elem.setImage(imageSrc);
-            onClickSend(elem);
-          }
-        }}
-        InputProps={{
-          readOnly: isAnsweredReply,
-          onPaste: (event) => {
-            !visionDisabled && handlePaste(event.clipboardData.items);
-          },
-          startAdornment: (
-            <InputAdornment position="start">
-              <Box
-                sx={{
-                  minWidth:
-                    imageSrc || (!isAnsweredReply && !visionDisabled)
-                      ? "40px"
-                      : undefined,
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                position: "relative"
+            }}
+        >
+            {!!files.length && <Box sx={{ display: "flex", mb: 2 }}>
+                {files.map((file, index) => (
+                    <Box key={index} sx={{ position: "relative" }}>
+                        {file.type === "image" ? (
+                                <ImagePreview
+                                    src={file.content}
+                                    alt={file.name}
+                                />
+                            ) : (
+                                <PDFPreview fileName={file.name}>
+                                    <AttachFile />
+                                    <div className="file-name">{file.name}</div>
+                                </PDFPreview>
+                            )}
+                            {!isAnsweredReply && <DeleteButton size="medium" onClick={() => handleDeleteFile(index)}>
+                                <Cancel fontSize="medium" />
+                            </DeleteButton>}
+                    </Box>
+                ))}
+            </Box>}
+            <TextField
+                id={`prompt-${elem.getId()}`}
+                label={label}
+                value={text}
+                multiline
+                fullWidth
+                focused={isAnsweredReply ? false : undefined}
+                onChange={(event) => {
+                    setText(event.target.value);
                 }}
-              >
-                {imageSrc && (
-                  <Box position={"relative"}>
-                    {!isAnsweredReply && (
-                      <DeleteButton size="small" onClick={handleDeleteImage}>
-                        <Cancel fontSize="small" />
-                      </DeleteButton>
-                    )}
-                    <ImagePreview src={imageSrc} alt="Pasted" />
-                  </Box>
-                )}
-                {!visionDisabled && !imageSrc && !isAnsweredReply && (
-                  <Box sx={{ mt: "-4px" }}>
-                    <input
-                      accept="image/png,image/jpeg,image/webp,image/gif,application/pdf"
-                      multiple
-                      style={{ display: "none" }}
-                      id="raised-button-file"
-                      type="file"
-                      onChange={(event) => {
-                        handlePaste(event.target.files);
-                      }}
-                    />
-                    <label htmlFor="raised-button-file">
-                      <IconButton component={"span"}>
-                        <UploadIcon />
-                      </IconButton>
-                    </label>
-                  </Box>
-                )}
-              </Box>
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position="end">
-              {isStartPrompt && (text || showClear) && (
-                <IconButton
-                  onClick={() => {
-                    setText("");
-                    onClear();
-                    setImageSrc("");
-                  }}
-                >
-                  <Clear />
-                </IconButton>
-              )}
-              {!isAnsweredReply && (
-                <IconButton
-                  disabled={sendDisabled}
-                  onClick={() => {
-                    elem.setText(text);
-                    elem.setImage(imageSrc);
-                    onClickSend(elem);
-                  }}
-                >
-                  <Send />
-                </IconButton>
-              )}
-            </InputAdornment>
-          ),
-        }}
-      />
-    </Box>
-  );
+                helperText={!isAnsweredReply && "Ctrl+Enter"}
+                onKeyDown={(event) => {
+                    if (event.ctrlKey && event.key === "Enter") {
+                        elem.setText(text);
+                        elem.setFiles(files);
+                        console.log(elem, files, text);
+                        onClickSend(elem);
+                    }
+                }}
+                InputProps={{
+                    readOnly: isAnsweredReply,
+                    onPaste: async (event) => {
+                        !visionDisabled && await handlePaste(event.clipboardData.items);
+                    },
+                    endAdornment: (
+                        <InputAdornment position="end" sx={{alignSelf: 'end', mb: '10px'}}>
+                            {isStartPrompt && (text || showClear) && (
+                                <IconButton
+                                    onClick={() => {
+                                        setText("");
+                                        onClear();
+                                        setFiles([]);
+                                    }}
+                                >
+                                    <Clear />
+                                </IconButton>
+                            )}
+                                {!isAnsweredReply && files.length < MAX_FILES && (
+                                    <Box>
+                                        <input
+                                            accept="image/png,image/jpeg,image/webp,image/gif,application/pdf"
+                                            multiple
+                                            style={{ display: "none" }}
+                                            id={`file-btn-${elem.getId()}`}
+                                            type="file"
+                                            onChange={async (event) => {
+                                                if (event.target.files) {
+                                                    await handleFileUpload(Array.from(event.target.files));
+                                                }
+                                            }}
+                                        />
+                                        <label htmlFor={`file-btn-${elem.getId()}`}>
+                                            <IconButton component={"span"}>
+                                                <AttachFile />
+                                            </IconButton>
+                                        </label>
+                                    </Box>
+                                )}
+                                {!isAnsweredReply && (
+                                    <IconButton
+                                        disabled={sendDisabled}
+                                        onClick={() => {
+                                            elem.setText(text);
+                                            elem.setFiles(files);
+                                            onClickSend(elem);
+                                        }}
+                                    >
+                                        <Send />
+                                    </IconButton>
+                                )}
+                        </InputAdornment>
+                    )
+                }}
+            />
+        </Box>
+    );
 };
 
 export default PromptVision;
-
-function handleImage(
-  setImageSrc: (value: string | ((prevState: string) => string)) => void,
-  file,
-) {
-  const reader = new FileReader();
-  reader.onload = (e: ProgressEvent<FileReader>) => {
-    const img = new Image();
-    img.onload = () => {
-      let scaleDownFactor = 1;
-      const resizeAndCheck = () => {
-        const targetWidth = img.width * scaleDownFactor;
-        const targetHeight = img.height * scaleDownFactor;
-
-        // Create a canvas to draw the scaled image
-        const canvas = document.createElement("canvas");
-        canvas.width = targetWidth;
-        canvas.height = targetHeight;
-        const ctx = canvas.getContext("2d");
-        ctx?.drawImage(img, 0, 0, targetWidth, targetHeight);
-
-        // Convert the canvas to a data URL and check size
-        const imageDataURL = canvas.toDataURL("image/jpeg");
-        const byteString = atob(imageDataURL.split(",")[1]);
-        const byteStringLength = byteString.length;
-        console.log("SIZE", byteStringLength);
-        if (byteStringLength > 3145728) {
-          // More than 3 MB
-          scaleDownFactor *= 0.75; // Reduce size by 25%
-          console.log("SIZE REDUCED 10%");
-          resizeAndCheck(); // Recursive call
-        } else {
-          setImageSrc(imageDataURL);
-        }
-      };
-      resizeAndCheck();
-    };
-    // Set the source of the image to the FileReader result
-    img.src = e.target?.result as string;
-  };
-  reader.readAsDataURL(file);
-}
-
-function handlePDF(
-  setText: (value: string | ((prevState: string) => string)) => void,
-  file,
-) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const typedArray = new Uint8Array(e.target.result);
-    pdfjs.getDocument({ data: typedArray }).promise.then((pdf) => {
-      let texts = "";
-      for (let num = 1; num <= pdf.numPages; num++) {
-        pdf.getPage(num).then((page) => {
-          page.getTextContent().then((textContent) => {
-            textContent.items.forEach((item) => (texts += item.str + " "));
-            if (num === pdf.numPages) {
-              setText((prev) => `${prev}
-
-${file.name.toUpperCase()}:
-\`\`\`
-${texts}
-\`\`\``.trim());
-            }
-          });
-        });
-      }
-    });
-  };
-  reader.readAsArrayBuffer(file);
-}

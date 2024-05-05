@@ -2,41 +2,46 @@ import "./styles.css";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
-    Alert,
-    Badge,
-    Box,
-    Button,
-    ButtonGroup,
-    Collapse,
-    Container,
-    CssBaseline,
-    Dialog,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Divider,
-    Grid,
-    IconButton,
-    Link,
-    Stack,
-    ThemeProvider,
-    Tooltip,
-    Typography,
-    useMediaQuery
+  Alert,
+  Badge,
+  Box,
+  Button,
+  ButtonGroup,
+  Collapse,
+  Container,
+  CssBaseline,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Grid,
+  IconButton,
+  Link,
+  Stack,
+  ThemeProvider,
+  Tooltip,
+  Typography,
+  useMediaQuery,
 } from "@mui/material";
 import {
-    CheckCircleOutline,
-    ExpandMore,
-    HelpOutline,
-    Instagram,
-    Replay,
-    Settings,
-    Telegram,
-    Twitter
+  CheckCircleOutline,
+  ExpandMore,
+  HelpOutline,
+  Instagram,
+  Replay,
+  Settings,
+  Telegram,
+  Twitter,
 } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import Answer from "./Answer";
-import { type ChatMode, ChatModes, ConversationElem, type PromptElem } from "./Types";
+import {
+  type ChatMode,
+  ChatModes,
+  ConversationElem,
+  type PromptElem,
+} from "./Types";
 import { FundingBar } from "./FundingBar";
 import { cyberpunkTheme, darkTheme, lightTheme, personalTheme } from "./themes";
 import { YesNoOverlay } from "./YesNoOverlay";
@@ -48,6 +53,7 @@ import { StyledLinearProgress } from "./StyledLinearProgress";
 import { PersonalBudget } from "./PersonalBudget";
 import PromptVision from "./PromptVision";
 import { SettingsModal } from "./SettingsModal";
+import { handleImage } from "./FileHandlers";
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -305,7 +311,7 @@ export default function App(): JSX.Element {
       });
   }
 
-  function clearConversation(startText: string, image: string) {
+  function clearConversation(elem?: PromptElem) {
     const pinned = conversation
       .filter((el) => el.pinned)
       .map((e) => {
@@ -315,8 +321,8 @@ export default function App(): JSX.Element {
         return e;
       });
     conversation.splice(0);
-    const initPrompt = ConversationElem.newPrompt(0, startText);
-    initPrompt.setImage(image);
+    const initPrompt = ConversationElem.newPrompt(0, elem?.getText() || "");
+    initPrompt.setFiles(elem?.getFiles().slice() || []);
     conversation.push(...pinned, initPrompt);
     setConversation([...conversation]);
   }
@@ -324,14 +330,18 @@ export default function App(): JSX.Element {
   const handleSend = (el: PromptElem) => {
     setError("");
 
-    if (el.getText().length <= 1 && (mode === "mistral+" || !el.getImage())) {
+    if (
+      el.getText().length <= 1 &&
+      (mode === "mistral+" || !el.getFiles().length)
+    ) {
       setError(t("errors.notEnoughDetails"));
       return;
     }
 
-    // if el is start prompt, then clear the conversation
+    // if el is start prompt, then clear the conversation except keep the first prompt
+    // as the intention is to send only it
     if (el.getId() === 0) {
-      clearConversation(el.getText(), el.getImage());
+      clearConversation(el);
     }
 
     setLoading(true);
@@ -606,12 +616,10 @@ export default function App(): JSX.Element {
                 (e) => e.id === elem.id && e.pinned,
               );
               const promptProps = {
-                key: `${i}_${elem.text.length}`,
+                key: `${elem.getId()}`,
                 elem,
                 onClickSend: handleSend,
-                onClear: () => {
-                  clearConversation("", "");
-                },
+                onClear: clearConversation,
                 showClear: conversationLength() > 1,
                 sendDisabled: loading,
                 visionDisabled: mode === "mistral+",
@@ -827,17 +835,18 @@ function buildMessages(
   const messages: Message[] = [];
   for (const elem of conversation) {
     if (elem.dropped) continue;
-    const images: string[] = [];
-    if (elem.image) {
-      images.push(elem.image);
-    }
+    const images =
+      elem.files?.filter((f) => f.type === "image").map((f) => f.content) || [];
+    console.log(elem.files);
+    const textBlocks =
+      elem.files?.filter((f) => f.type === "pdf").map((f) => f.content) || [];
     elem.media?.forEach((m) => {
       images.push(`data:image/png;base64,${m.b64_json}`);
     });
     messages.push({
       lang,
       id: elem.getId(),
-      original: `${elem.getText()}`,
+      original: `${textBlocks}\n\n${elem.getText()}`.trim(),
       isUser: elem.isUser,
       images: vision ? images : undefined,
     });

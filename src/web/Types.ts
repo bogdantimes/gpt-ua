@@ -1,10 +1,16 @@
+export interface FileDetail {
+  name: string;
+  type: "pdf" | "image";
+  content: string;
+}
+
 export interface PromptElem {
   getId: () => number;
   getText: () => string;
   setText: (text: string) => void;
-  getImage: () => string;
-  setImage: (imgSrc: string) => void;
   isAnswered: () => boolean;
+  getFiles: () => FileDetail[];
+  setFiles: (files: FileDetail[]) => void;
 }
 
 export interface AnswerElem {
@@ -25,9 +31,9 @@ export class ConversationElem implements PromptElem, AnswerElem {
   answered = false;
   dropped = false;
   pinned = false;
-  image = "";
   media: Array<{ b64_json: string; revised_prompt: string }> | undefined;
   mode: ChatMode = "default";
+  files: FileDetail[] = [];
 
   static newPrompt(id: number, text: string): ConversationElem {
     const elem = new ConversationElem();
@@ -63,12 +69,12 @@ export class ConversationElem implements PromptElem, AnswerElem {
     this.text = text;
   }
 
-  setImage(imgSrc: string): void {
-    this.image = imgSrc;
+  getFiles(): FileDetail[] {
+    return this.files;
   }
 
-  getImage(): string {
-    return this.image;
+  setFiles(files: FileDetail[]) {
+    this.files = files;
   }
 
   isPinned(): boolean {

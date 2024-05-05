@@ -5,7 +5,7 @@
   "welcomeMessage": "We've created a group where you can ask questions and stay updated with the latest site news:",
   "telegramLinkText": "Join",
   "conversation": {
-    "start": "Start the dialog (in any language)",
+    "start": "Start the dialog",
     "you": "Your response"
   },
   "input": {
@@ -40,7 +40,7 @@
     "gpt4": "GPT4",
     "gpt4+": "GPT4+",
     "mistral+": "Mistral",
-    "note_default": "A cost-effective and fast mode, recommended for most everyday tasks. You can upload an image or up to five PDF documents.",
+    "note_default": "A cost-effective and fast mode, recommended for most everyday tasks. You can attach up to five images and/or PDF documents.",
     "note_gpt4": "A more advanced model that can understand complex questions, generate photos, and research information online, but it's more expensive.",
     "note_mistral+": "An open-source model developed in the EU with fewer restrictions, works best in English. Cheaper than the GPT-4 version."
   },
