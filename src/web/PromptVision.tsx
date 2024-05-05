@@ -93,10 +93,13 @@ const PromptVision: React.FC<PromptProps> = ({
         for (const file of newFiles) {
             if (updatedFiles.length >= MAX_FILES) break; // Limit the number of files
             const type = file.type.includes("image") ? "image" : "pdf";
+            if (visionDisabled && type === "image") {
+                continue;
+            }
             const newFile: FileDetail = {
                 name: file.name,
                 type,
-                content: type === 'image' ? await handleImage(file): await handlePDF(file)
+                content: type === "image" ? await handleImage(file) : await handlePDF(file)
             };
             updatedFiles.push(newFile);
         }
@@ -131,19 +134,19 @@ const PromptVision: React.FC<PromptProps> = ({
                 {files.map((file, index) => (
                     <Box key={index} sx={{ position: "relative" }}>
                         {file.type === "image" ? (
-                                <ImagePreview
-                                    src={file.content}
-                                    alt={file.name}
-                                />
-                            ) : (
-                                <PDFPreview fileName={file.name}>
-                                    <AttachFile />
-                                    <div className="file-name">{file.name}</div>
-                                </PDFPreview>
-                            )}
-                            {!isAnsweredReply && <DeleteButton size="medium" onClick={() => handleDeleteFile(index)}>
-                                <Cancel fontSize="medium" />
-                            </DeleteButton>}
+                            <ImagePreview
+                                src={file.content}
+                                alt={file.name}
+                            />
+                        ) : (
+                            <PDFPreview fileName={file.name}>
+                                <AttachFile />
+                                <div className="file-name">{file.name}</div>
+                            </PDFPreview>
+                        )}
+                        {!isAnsweredReply && <DeleteButton size="medium" onClick={() => handleDeleteFile(index)}>
+                            <Cancel fontSize="medium" />
+                        </DeleteButton>}
                     </Box>
                 ))}
             </Box>}
@@ -169,10 +172,10 @@ const PromptVision: React.FC<PromptProps> = ({
                 InputProps={{
                     readOnly: isAnsweredReply,
                     onPaste: async (event) => {
-                        !visionDisabled && await handlePaste(event.clipboardData.items);
+                        await handlePaste(event.clipboardData.items);
                     },
                     endAdornment: (
-                        <InputAdornment position="end" sx={{alignSelf: 'end', mb: '10px'}}>
+                        <InputAdornment position="end" sx={{ alignSelf: "end", mb: "10px" }}>
                             {isStartPrompt && (text || showClear) && (
                                 <IconButton
                                     onClick={() => {
@@ -184,39 +187,39 @@ const PromptVision: React.FC<PromptProps> = ({
                                     <Clear />
                                 </IconButton>
                             )}
-                                {!isAnsweredReply && files.length < MAX_FILES && (
-                                    <Box>
-                                        <input
-                                            accept="image/png,image/jpeg,image/webp,image/gif,application/pdf"
-                                            multiple
-                                            style={{ display: "none" }}
-                                            id={`file-btn-${elem.getId()}`}
-                                            type="file"
-                                            onChange={async (event) => {
-                                                if (event.target.files) {
-                                                    await handleFileUpload(Array.from(event.target.files));
-                                                }
-                                            }}
-                                        />
-                                        <label htmlFor={`file-btn-${elem.getId()}`}>
-                                            <IconButton component={"span"}>
-                                                <AttachFile />
-                                            </IconButton>
-                                        </label>
-                                    </Box>
-                                )}
-                                {!isAnsweredReply && (
-                                    <IconButton
-                                        disabled={sendDisabled}
-                                        onClick={() => {
-                                            elem.setText(text);
-                                            elem.setFiles(files);
-                                            onClickSend(elem);
+                            {!isAnsweredReply && files.length < MAX_FILES && (
+                                <Box>
+                                    <input
+                                        accept={visionDisabled ? "application/pdf" : "image/png,image/jpeg,image/webp,image/gif,application/pdf"}
+                                        multiple
+                                        style={{ display: "none" }}
+                                        id={`file-btn-${elem.getId()}`}
+                                        type="file"
+                                        onChange={async (event) => {
+                                            if (event.target.files) {
+                                                await handleFileUpload(Array.from(event.target.files));
+                                            }
                                         }}
-                                    >
-                                        <Send />
-                                    </IconButton>
-                                )}
+                                    />
+                                    <label htmlFor={`file-btn-${elem.getId()}`}>
+                                        <IconButton component={"span"}>
+                                            <AttachFile />
+                                        </IconButton>
+                                    </label>
+                                </Box>
+                            )}
+                            {!isAnsweredReply && (
+                                <IconButton
+                                    disabled={sendDisabled}
+                                    onClick={() => {
+                                        elem.setText(text);
+                                        elem.setFiles(files);
+                                        onClickSend(elem);
+                                    }}
+                                >
+                                    <Send />
+                                </IconButton>
+                            )}
                         </InputAdornment>
                     )
                 }}
