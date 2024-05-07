@@ -42,7 +42,7 @@
     "mistral+": "Mistral",
     "note_default": "A cost-effective and fast mode, recommended for most everyday tasks. You can attach up to five images and/or PDF documents.",
     "note_gpt4": "A more advanced model that can understand complex questions, generate photos, and research information online, but it's more expensive.",
-    "note_mistral+": "An open-source model developed in the EU with fewer restrictions, works best in English. Cheaper than the GPT-4 version."
+    "note_mistral+": "An open-source model developed in the EU with fewer restrictions, works best in English."
   },
   "settings": {
     "title": "Customize Assistant",
