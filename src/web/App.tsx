@@ -465,7 +465,7 @@ export default function App(): JSX.Element {
       <CssBaseline />
 
       {firstTimeModalOpen && (
-        <Dialog open={firstTimeModalOpen}>
+        <Dialog open={firstTimeModalOpen} onClose={() => setFirstTimeModalOpen(false)}>
           <DialogTitle style={{ fontWeight: "bold", textAlign: "center" }}>
             {t("welcomeTitle")}
           </DialogTitle>

@@ -10,6 +10,8 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@parcel/packager-raw-url": "^2.10.3",
+    "@parcel/transformer-jsonld": "^2.10.3",
     "@typescript-eslint/eslint-plugin": "6.17.0",
     "buffer": "6.0.3",
     "eslint": "8.56.0",
