@@ -2,43 +2,48 @@ import "./styles.css";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
-    Alert,
-    Badge,
-    Box,
-    Button,
-    ButtonGroup,
-    Collapse,
-    Container,
-    CssBaseline,
-    Dialog,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Divider,
-    Grid,
-    IconButton,
-    Link,
-    Stack,
-    ThemeProvider,
-    Tooltip,
-    Typography,
-    useMediaQuery
+  Alert,
+  Badge,
+  Box,
+  Button,
+  ButtonGroup,
+  Collapse,
+  Container,
+  CssBaseline,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Grid,
+  IconButton,
+  Link,
+  Stack,
+  ThemeProvider,
+  Tooltip,
+  Typography,
+  useMediaQuery,
 } from "@mui/material";
 import {
-    CheckCircleOutline,
-    ExpandMore,
-    HelpOutline,
-    Instagram,
-    Replay,
-    Settings,
-    Telegram,
-    Twitter
+  CheckCircleOutline,
+  ExpandMore,
+  HelpOutline,
+  Instagram,
+  Replay,
+  Settings,
+  Telegram,
+  Twitter,
 } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import Answer from "./Answer";
-import { type ChatMode, ChatModes, ConversationElem, type PromptElem } from "./Types";
+import {
+  type ChatMode,
+  ChatModes,
+  ConversationElem,
+  type PromptElem,
+} from "./Types";
 import { FundingBar } from "./FundingBar";
-import { cyberpunkTheme, darkTheme, lightTheme, personalTheme } from "./themes";
+import { cyberpunkTheme, darkTheme, lightTheme } from "./themes";
 import { YesNoOverlay } from "./YesNoOverlay";
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/system";
@@ -85,15 +90,9 @@ export default function App(): JSX.Element {
     return window.location.hash.includes("theme=cyber");
   };
 
-  const checkForApiKey = () => {
-    return window.location.search.includes("key=");
-  };
-
   const getTheme = () => {
     if (checkForCyberTheme()) {
       return cyberpunkTheme;
-    } else if (checkForApiKey()) {
-      return personalTheme;
     } else {
       return darkScheme ? darkTheme : lightTheme;
     }
@@ -187,7 +186,7 @@ export default function App(): JSX.Element {
   const [theme, setTheme] = useState(getTheme());
   useEffect(() => {
     setTheme(getTheme());
-  }, [darkScheme, apiKey]);
+  }, [darkScheme]);
 
   function handleAnswer({
     answer = "",
@@ -465,7 +464,12 @@ export default function App(): JSX.Element {
       <CssBaseline />
 
       {firstTimeModalOpen && (
-        <Dialog open={firstTimeModalOpen} onClose={() => setFirstTimeModalOpen(false)}>
+        <Dialog
+          open={firstTimeModalOpen}
+          onClose={() => {
+            setFirstTimeModalOpen(false);
+          }}
+        >
           <DialogTitle style={{ fontWeight: "bold", textAlign: "center" }}>
             {t("welcomeTitle")}
           </DialogTitle>
@@ -560,6 +564,7 @@ export default function App(): JSX.Element {
                     />
                   ) : (
                     <HelpOutline
+                      className={"pulsate"}
                       sx={{
                         fontSize: "1rem",
                         color: theme.palette.info.main,
