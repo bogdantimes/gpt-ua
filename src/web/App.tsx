@@ -323,10 +323,11 @@ export default function App(): JSX.Element {
   const handleSend = (el: PromptElem) => {
     setError("");
 
-    if (
-      el.getText().length <= 1 &&
-      (mode === "mistral+" || !el.getFiles().length)
-    ) {
+    const emptyMessage =
+      (mode === "mistral+" && !el.getText()) || // mistral does not support images
+      (!el.getFiles().length && !el.getText()); // if no images - require some text
+
+    if (emptyMessage) {
       setError(t("errors.notEnoughDetails"));
       return;
     }
