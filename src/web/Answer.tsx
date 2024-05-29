@@ -21,7 +21,7 @@ import {
   QuestionMark,
 } from "@mui/icons-material";
 import { type AnswerElem, type ChatMode } from "./Types";
-import { defaultIconBase64, gptIconBase64, mistralIconBase64 } from "./Icon";
+import { icons } from "./Icons";
 import { t } from "i18next";
 import { useTheme } from "@mui/material/styles";
 import Markdown from "markdown-to-jsx";
@@ -143,13 +143,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
                 alignSelf: "center",
               }}
               alt="GPT-UA Avatar"
-              src={
-                elem.getMode() === "mistral+"
-                  ? mistralIconBase64
-                  : elem.getMode() === "default"
-                    ? defaultIconBase64
-                    : gptIconBase64
-              }
+              src={icons[`${elem.getMode()}IconBase64`]}
             />
           </Grid>
         )}

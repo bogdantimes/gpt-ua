@@ -39,9 +39,11 @@
     "default": "Claude-3",
     "gpt4": "GPT-4o",
     "mistral+": "Mixtral",
+    "naviguru": "NaviGuru",
     "note_default": "A cost-effective and fast mode, recommended for most everyday tasks. You can attach up to five images and/or PDF documents.",
     "note_gpt4": "A more advanced model that can understand complex questions, generate photos, and research information online, but it's more expensive.",
-    "note_mistral+": "An open-source model developed in the EU with fewer restrictions, works best in English."
+    "note_mistral+": "An open-source model developed in the EU with fewer restrictions, works best in English.",
+    "note_naviguru": "Specializes in creating detailed customized Google Maps routes with specific stopping points."
   },
   "settings": {
     "title": "Customize Assistant",
