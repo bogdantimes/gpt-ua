@@ -38,7 +38,8 @@
   "mode": {
     "note_default": "Tryb opłacalny i szybki, zalecany do większości codziennych zadań. Możesz załączyć do pięciu zdjęć i/lub dokumentów PDF.",
     "note_gpt4": "Bardziej zaawansowany model, który potrafi zrozumieć złożone pytania, generować zdjęcia i wyszukiwać informacje online, ale jest droższy.",
-    "note_mistral+": "Model open-source opracowany w UE z mniejszą liczbą ograniczeń, działa najlepiej w języku angielskim."
+    "note_mistral+": "Model open-source opracowany w UE z mniejszą liczbą ograniczeń, działa najlepiej w języku angielskim.",
+    "note_naviguru": "Specjalizuje się w tworzeniu szczegółowych, dostosowanych tras w Google Maps z określonymi punktami postojowymi."
   },
   "settings": {
     "title": "Dostosuj Asystenta",

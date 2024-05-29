@@ -143,7 +143,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
                 alignSelf: "center",
               }}
               alt="GPT-UA Avatar"
-              src={icons[`${elem.getMode()}IconBase64`]}
+              src={icons[elem.getMode()]}
             />
           </Grid>
         )}
