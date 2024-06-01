@@ -621,7 +621,7 @@ export default function App(): JSX.Element {
                 onClear: clearConversation,
                 showClear: conversationLength() > 1,
                 sendDisabled: loading,
-                visionDisabled: mode === "mistral+",
+                visionDisabled: !VisionSupport.includes(mode),
               };
               return elem.isUser ? (
                 <PromptVision {...promptProps} />

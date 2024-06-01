@@ -106,4 +106,4 @@ export const ChatModes: ChatMode[] = [
   "llama",
   "naviguru",
 ];
-export const VisionSupport: ChatMode[] = ["default", "gpt4"];
+export const VisionSupport: ChatMode[] = ["default", "gpt4", "naviguru"];
