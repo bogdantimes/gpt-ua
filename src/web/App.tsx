@@ -41,6 +41,7 @@ import {
   ChatModes,
   ConversationElem,
   type PromptElem,
+  VisionSupport,
 } from "./Types";
 import { FundingBar } from "./FundingBar";
 import { cyberpunkTheme, darkTheme, lightTheme } from "./themes";
@@ -52,7 +53,7 @@ import ExtensionIcon from "@mui/icons-material/Extension";
 import { StyledLinearProgress } from "./StyledLinearProgress";
 import { PersonalBudget } from "./PersonalBudget";
 import PromptVision from "./PromptVision";
-import { SettingsModal } from "./SettingsModal";
+import { SettingsModal } from "./SettingsModal"; // Define a styled Chip for better visuals
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -62,7 +63,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: "0.8rem",
 }));
 
-const VERSION = 45;
+const VERSION = 47;
 const YES_KEY = "yesAnswer";
 const NO_KEY = "noAnswer";
 const SESSION_COST_KEY = "sessionCost";
@@ -324,7 +325,7 @@ export default function App(): JSX.Element {
     setError("");
 
     const emptyMessage =
-      (mode === "mistral+" && !el.getText()) || // mistral does not support images
+      (!VisionSupport.includes(mode) && !el.getText()) || // some modes do not support images
       (!el.getFiles().length && !el.getText()); // if no images - require some text
 
     if (emptyMessage) {
@@ -418,8 +419,6 @@ export default function App(): JSX.Element {
     setSessionCost(0);
     setRequestsNum(0);
   }
-
-  const modes: ChatMode[] = ["default", "gpt4", "mistral+", "naviguru"];
 
   const topUpButton = (
     <>
@@ -538,7 +537,7 @@ export default function App(): JSX.Element {
               color="primary"
               aria-label="outlined primary button group"
             >
-              {modes.map((m: ChatMode) => (
+              {ChatModes.map((m: ChatMode) => (
                 <Button
                   key={m}
                   variant={mode === m ? "contained" : "outlined"}

@@ -39,7 +39,8 @@
     "note_default": "Ein kostengünstiger und schneller Modus, empfohlen für die meisten alltäglichen Aufgaben. Sie können bis zu fünf Bilder und/oder PDF-Dokumente anhängen.",
     "note_gpt4": "Ein fortschrittlicheres Modell, das komplexe Fragen verstehen, Fotos generieren und Informationen online recherchieren kann, aber es ist teurer.",
     "note_mistral+": "Ein in der EU entwickeltes Open-Source-Modell mit weniger Einschränkungen, funktioniert am besten auf Englisch.",
-    "note_naviguru": "Spezialisiert sich auf die Erstellung detaillierter, maßgeschneiderter Google Maps-Routen mit bestimmten Haltepunkten."
+    "note_naviguru": "Spezialisiert sich auf die Erstellung detaillierter, maßgeschneiderter Google Maps-Routen mit bestimmten Haltepunkten.",
+    "note_llama": "Ein fortschrittliches, quelloffenes Modell von Meta, geeignet für komplexe Textaufgaben, optimiert für Englisch, unterstützt Mehrsprachenverwendung."
   },
   "settings": {
     "title": "Assistent anpassen",
