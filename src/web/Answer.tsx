@@ -76,11 +76,8 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
 
   const showSpoiler = elem.isPinned();
 
-  const spoilerVisibleText = elem
-    .getText()
-    .slice(0, PinSpoiler)
-    .replace(/\S+$/, "")
-    .trim();
+  const spoilerVisibleText =
+    elem.getText().slice(0, PinSpoiler).replace(/\S+$/, "").trim() || "🖼️";
   const markdownOptions = {
     overrides: {
       img: {
@@ -134,7 +131,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
         </Box>
       )}
       <Grid container direction={"row"} spacing={2} rowSpacing={-1}>
-        {!elem.getMedia() && (
+        {(!elem.getMedia() || showSpoiler) && (
           <Grid item xs={1}>
             <Avatar
               sx={{
@@ -149,7 +146,7 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
         )}
         <Grid
           item
-          xs={elem.getMedia() ? 12 : 11}
+          xs={elem.getMedia() && (!showSpoiler || isSpoilerOpen) ? 12 : 11}
           style={{ padding: elem.getMedia() ? 0 : undefined }}
         >
           <Box
@@ -158,7 +155,8 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
               display: showSpoiler ? "flex" : "block",
               alignItems: "center",
               cursor: showSpoiler ? "pointer" : "default",
-              pl: elem.getMedia() ? 0 : 1,
+              pl: 0,
+              pr: elem.getMedia() ? 0 : 1,
               color:
                 showSpoiler && isSpoilerOpen
                   ? theme.palette.text.disabled
