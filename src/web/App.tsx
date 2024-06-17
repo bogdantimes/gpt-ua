@@ -1,6 +1,6 @@
-import "./styles.css";
-import * as React from "react";
-import { useEffect, useState } from "react";
+import './styles.css';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import {
   Alert,
   Badge,
@@ -23,7 +23,7 @@ import {
   Tooltip,
   Typography,
   useMediaQuery,
-} from "@mui/material";
+} from '@mui/material';
 import {
   CheckCircleOutline,
   ExpandMore,
@@ -33,41 +33,41 @@ import {
   Settings,
   Telegram,
   Twitter,
-} from "@mui/icons-material";
-import { useTranslation } from "react-i18next";
-import Answer from "./Answer";
+} from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
+import Answer from './Answer';
 import {
   type ChatMode,
   ChatModes,
   ConversationElem,
   type PromptElem,
   VisionSupport,
-} from "./Types";
-import { FundingBar } from "./FundingBar";
-import { cyberpunkTheme, darkTheme, lightTheme } from "./themes";
-import { YesNoOverlay } from "./YesNoOverlay";
-import Chip from "@mui/material/Chip";
-import { styled } from "@mui/system";
-import InfoIcon from "@mui/icons-material/Info";
-import ExtensionIcon from "@mui/icons-material/Extension";
-import { StyledLinearProgress } from "./StyledLinearProgress";
-import { PersonalBudget } from "./PersonalBudget";
-import PromptVision from "./PromptVision";
-import { SettingsModal } from "./SettingsModal"; // Define a styled Chip for better visuals
+} from './Types';
+import { FundingBar } from './FundingBar';
+import { cyberpunkTheme, darkTheme, lightTheme } from './themes';
+import { YesNoOverlay } from './YesNoOverlay';
+import Chip from '@mui/material/Chip';
+import { styled } from '@mui/system';
+import InfoIcon from '@mui/icons-material/Info';
+import ExtensionIcon from '@mui/icons-material/Extension';
+import { StyledLinearProgress } from './StyledLinearProgress';
+import { PersonalBudget } from './PersonalBudget';
+import PromptVision from './PromptVision';
+import { SettingsModal } from './SettingsModal'; // Define a styled Chip for better visuals
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   color: theme.palette.common.white,
-  fontWeight: "bold",
-  fontSize: "0.8rem",
+  fontWeight: 'bold',
+  fontSize: '0.8rem',
 }));
 
 const VERSION = 47;
-const YES_KEY = "yesAnswer";
-const NO_KEY = "noAnswer";
-const SESSION_COST_KEY = "sessionCost";
-const REQUESTS_NUM_KEY = "requestsNum";
+const YES_KEY = 'yesAnswer';
+const NO_KEY = 'noAnswer';
+const SESSION_COST_KEY = 'sessionCost';
+const REQUESTS_NUM_KEY = 'requestsNum';
 const USD_UAH_RATE = 40;
 
 export default function App(): JSX.Element {
@@ -75,20 +75,20 @@ export default function App(): JSX.Element {
 
   useEffect(() => {
     // Retrieve the visit count from local storage, or start with 0 if it doesn't exist
-    const visitCount = parseInt(localStorage.getItem("visitCount") || "0", 10);
+    const visitCount = parseInt(localStorage.getItem('visitCount') || '0', 10);
     // Increment the visit count
-    localStorage.setItem("visitCount", (visitCount + 1).toString());
+    localStorage.setItem('visitCount', (visitCount + 1).toString());
     // If this is the second visit (visitCount was 1 before incrementing), open the modal
     if (visitCount === 1) {
       setFirstTimeModalOpen(true);
     }
   }, []);
 
-  const { t, i18n } = useTranslation("translation");
+  const { t, i18n } = useTranslation('translation');
   const darkScheme = useMediaQuery(`(prefers-color-scheme: dark)`);
 
   const checkForCyberTheme = () => {
-    return window.location.hash.includes("theme=cyber");
+    return window.location.hash.includes('theme=cyber');
   };
 
   const getTheme = () => {
@@ -101,33 +101,33 @@ export default function App(): JSX.Element {
 
   const [mode, setMode] = useState<ChatMode>(() => {
     try {
-      const _mode = (localStorage.getItem("mode") as ChatMode) || "default";
-      return ChatModes.includes(_mode) ? _mode : "default";
+      const _mode = (localStorage.getItem('mode') as ChatMode) || 'default';
+      return ChatModes.includes(_mode) ? _mode : 'default';
     } catch (e) {
-      return "default";
+      return 'default';
     }
   });
   useEffect(() => {
     try {
-      localStorage.setItem("mode", mode);
+      localStorage.setItem('mode', mode);
     } catch (e) {}
   }, [mode]);
 
-  const [error, setError] = useState<null | string>("");
+  const [error, setError] = useState<null | string>('');
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState<number | null>(null);
 
   const [limitBudget, setLimitBudget] = useState(() => {
     try {
-      return !!localStorage.getItem("lb");
+      return !!localStorage.getItem('lb');
     } catch (e) {}
   });
   useEffect(() => {
     try {
       if (limitBudget) {
-        localStorage.setItem("lb", "1");
+        localStorage.setItem('lb', '1');
       } else {
-        localStorage.removeItem("lb");
+        localStorage.removeItem('lb');
       }
     } catch (e) {}
   }, [limitBudget]);
@@ -139,11 +139,11 @@ export default function App(): JSX.Element {
 
   useEffect(() => {
     if (!conversationLength()) {
-      conversation.push(ConversationElem.newPrompt(conversationLength(), ""));
+      conversation.push(ConversationElem.newPrompt(conversationLength(), ''));
       setConversation([...conversation]);
     }
     try {
-      localStorage.setItem("gpt_conversation", JSON.stringify(conversation));
+      localStorage.setItem('gpt_conversation', JSON.stringify(conversation));
     } catch (e) {}
   }, [conversation]);
 
@@ -156,29 +156,29 @@ export default function App(): JSX.Element {
   // initiate lang using the browser's language
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const browserLang = navigator?.language?.split("-")[0] || "en";
-    const lang = params.get("lang") || browserLang;
+    const browserLang = navigator?.language?.split('-')[0] || 'en';
+    const lang = params.get('lang') || browserLang;
     changeLanguage(lang);
   }, []);
 
-  const [apiKey, setApiKey] = useState("");
-  const [topUpLink, setTopUpLink] = useState("");
+  const [apiKey, setApiKey] = useState('');
+  const [topUpLink, setTopUpLink] = useState('');
   // read the api-key (if present)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const key = params.get("key") || "";
+    const key = params.get('key') || '';
     setApiKey(key);
   }, []);
 
   useEffect(() => {
-    document.title = t("title");
+    document.title = t('title');
   }, [lang]);
 
   useEffect(() => {
     const hash = window.location.hash;
     const promptMatch = /#prompt=([^&]*)/.exec(hash);
     if (promptMatch) {
-      window.location.hash = "";
+      window.location.hash = '';
       const prompt = decodeURIComponent(promptMatch[1]);
       handleSend(ConversationElem.newPrompt(0, prompt));
     }
@@ -190,7 +190,7 @@ export default function App(): JSX.Element {
   }, [darkScheme]);
 
   function handleAnswer({
-    answer = "",
+    answer = '',
     lastDroppedMessageId = -1,
     media = undefined,
   }) {
@@ -201,7 +201,7 @@ export default function App(): JSX.Element {
     aElem.addMedia(media);
     aElem.setMode(mode);
     conversation.push(aElem);
-    conversation.push(ConversationElem.newPrompt(conversationLength(), ""));
+    conversation.push(ConversationElem.newPrompt(conversationLength(), ''));
 
     // Mark dropped messages
     if (lastDroppedMessageId >= 0) {
@@ -216,16 +216,16 @@ export default function App(): JSX.Element {
     const messages = buildMessages(conversation, lang, mode);
     // @ts-expect-error external grecaptcha.enterprise
     grecaptcha.enterprise
-      .execute("6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom", { action: "login" })
+      .execute('6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom', { action: 'login' })
       .then(function (token) {
         const serviceURL =
-          "https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws";
+          'https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws';
         const headers = {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: apiKey ? `Bearer ${apiKey}` : undefined,
         };
         fetch(serviceURL, {
-          method: "POST",
+          method: 'POST',
           headers: headers as HeadersInit,
           body: JSON.stringify({
             v: VERSION,
@@ -258,7 +258,7 @@ export default function App(): JSX.Element {
               if (gptReply?.error) {
                 setError(gptReply?.answer || gptReply?.error);
               } else {
-                setError("");
+                setError('');
                 const cost = gptReply?.cost || 0;
                 setSessionCost(sessionCost + +cost);
                 setRequestsNum(requestsNum + 1);
@@ -268,7 +268,7 @@ export default function App(): JSX.Element {
                 if (lastPrompt) {
                   lastPrompt.answered = true;
                 }
-                const answer = gptReply?.answer ?? "";
+                const answer = gptReply?.answer ?? '';
                 if (answer) {
                   handleAnswer(gptReply);
                 }
@@ -280,7 +280,7 @@ export default function App(): JSX.Element {
                   setTopUpLink(gptReply.topUpLink);
                 }
                 if (!gptReply.topUpLink && apiKey) {
-                  setError(t("errors.apiKey", { key: apiKey }));
+                  setError(t('errors.apiKey', { key: apiKey }));
                 }
                 if (budget <= 0 && !apiKey) {
                   setLimitBudget(true);
@@ -315,21 +315,21 @@ export default function App(): JSX.Element {
         return e;
       });
     conversation.splice(0);
-    const initPrompt = ConversationElem.newPrompt(0, elem?.getText() || "");
+    const initPrompt = ConversationElem.newPrompt(0, elem?.getText() || '');
     initPrompt.setFiles(elem?.getFiles().slice() || []);
     conversation.push(...pinned, initPrompt);
     setConversation([...conversation]);
   }
 
   const handleSend = (el: PromptElem) => {
-    setError("");
+    setError('');
 
     const emptyMessage =
       (!VisionSupport.includes(mode) && !el.getText()) || // some modes do not support images
       (!el.getFiles().length && !el.getText()); // if no images - require some text
 
     if (emptyMessage) {
-      setError(t("errors.notEnoughDetails"));
+      setError(t('errors.notEnoughDetails'));
       return;
     }
 
@@ -372,11 +372,11 @@ export default function App(): JSX.Element {
   }, [requestsNum]);
 
   useEffect(() => {
-    localStorage.setItem(YES_KEY, yesAnswer || "");
+    localStorage.setItem(YES_KEY, yesAnswer || '');
   }, [yesAnswer]);
 
   useEffect(() => {
-    localStorage.setItem(NO_KEY, noAnswer || "");
+    localStorage.setItem(NO_KEY, noAnswer || '');
   }, [noAnswer]);
 
   function isTimePassed(date: string | null, duration: number) {
@@ -401,19 +401,19 @@ export default function App(): JSX.Element {
 
   const handleClickYes = () => {
     setAskQuestion(false);
-    setNoAnswer("");
+    setNoAnswer('');
     setYesAnswer(new Date().toISOString());
   };
 
   const handleClickNo = () => {
     setAskQuestion(false);
-    setYesAnswer("");
+    setYesAnswer('');
     setNoAnswer(new Date().toISOString());
   };
 
   function handleTopUpBtnClick() {
-    gtag("event", "budget_top_up_open");
-    window.open(topUpLink, "_blank");
+    gtag('event', 'budget_top_up_open');
+    window.open(topUpLink, '_blank');
     // reset the budget limit timer
     setLimitBudget(false);
     setSessionCost(0);
@@ -424,14 +424,14 @@ export default function App(): JSX.Element {
     <>
       <Button
         variant="contained"
-        size={"small"}
+        size={'small'}
         onClick={handleTopUpBtnClick}
         sx={{
           backgroundColor:
-            theme.palette.mode === "light" ? "black" : "darkgrey",
-          color: "white",
+            theme.palette.mode === 'light' ? 'black' : 'darkgrey',
+          color: 'white',
           borderRadius: `8px`,
-          mt: "16px",
+          mt: '16px',
           display: `flex`,
           mr: `auto`,
           ml: `auto`,
@@ -439,7 +439,7 @@ export default function App(): JSX.Element {
       >
         {t(`budget.mono`)}
       </Button>
-      <Typography ml={"auto"} mr={"auto"} variant={"caption"}>
+      <Typography ml={'auto'} mr={'auto'} variant={'caption'}>
         (Apple Pay / Google Pay / Visa / Mastercard)
       </Typography>
     </>
@@ -453,10 +453,10 @@ export default function App(): JSX.Element {
 
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [customInstructions, setCustomInstructions] = useState(() => {
-    return localStorage.getItem("customInstructions") || "";
+    return localStorage.getItem('customInstructions') || '';
   });
   useEffect(() => {
-    localStorage.setItem("customInstructions", customInstructions);
+    localStorage.setItem('customInstructions', customInstructions);
   }, [customInstructions]);
 
   return (
@@ -470,12 +470,12 @@ export default function App(): JSX.Element {
             setFirstTimeModalOpen(false);
           }}
         >
-          <DialogTitle style={{ fontWeight: "bold", textAlign: "center" }}>
-            {t("welcomeTitle")}
+          <DialogTitle style={{ fontWeight: 'bold', textAlign: 'center' }}>
+            {t('welcomeTitle')}
           </DialogTitle>
-          <DialogContent style={{ textAlign: "center" }}>
+          <DialogContent style={{ textAlign: 'center' }}>
             <DialogContentText sx={{ mb: 1 }}>
-              {t("welcomeMessage")}
+              {t('welcomeMessage')}
             </DialogContentText>
             <Button
               variant="contained"
@@ -485,18 +485,18 @@ export default function App(): JSX.Element {
                 setFirstTimeModalOpen(false);
               }} // Closes modal on click
               style={{
-                backgroundImage: "linear-gradient(45deg, #0198E1, #0575E6)",
-                boxShadow: "0 4px 10px 0 rgba(0, 0, 0, 0.25)",
-                color: "#ffffff",
-                fontWeight: "bold",
-                textTransform: "none",
-                padding: "12px 30px",
-                fontSize: "1rem",
+                backgroundImage: 'linear-gradient(45deg, #0198E1, #0575E6)',
+                boxShadow: '0 4px 10px 0 rgba(0, 0, 0, 0.25)',
+                color: '#ffffff',
+                fontWeight: 'bold',
+                textTransform: 'none',
+                padding: '12px 30px',
+                fontSize: '1rem',
               }}
             >
               <Telegram />
               &nbsp;
-              {t("telegramLinkText")}
+              {t('telegramLinkText')}
             </Button>
           </DialogContent>
         </Dialog>
@@ -516,11 +516,11 @@ export default function App(): JSX.Element {
       <Container maxWidth="sm" sx={{ padding: 2 }}>
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}
-          <Box sx={{ padding: 1, textAlign: "center", position: "relative" }}>
-            <h1>{t("name")}</h1>
+          <Box sx={{ padding: 1, textAlign: 'center', position: 'relative' }}>
+            <h1>{t('name')}</h1>
             <p
               style={{
-                marginTop: "-33px",
+                marginTop: '-33px',
                 marginBottom: 0,
                 padding: 0,
               }}
@@ -530,17 +530,17 @@ export default function App(): JSX.Element {
               🔎🌐
             </p>
           </Box>
-          <Box sx={{ textAlign: "center", p: 1 }}>
+          <Box sx={{ textAlign: 'center', p: 1 }}>
             <ButtonGroup
-              sx={{ "flex-wrap": "wrap", "justify-content": "center" }}
-              size={"small"}
+              sx={{ 'flex-wrap': 'wrap', 'justify-content': 'center' }}
+              size={'small'}
               color="primary"
               aria-label="outlined primary button group"
             >
               {ChatModes.map((m: ChatMode) => (
                 <Button
                   key={m}
-                  variant={mode === m ? "contained" : "outlined"}
+                  variant={mode === m ? 'contained' : 'outlined'}
                   onClick={() => {
                     setMode(m);
                   }}
@@ -551,22 +551,22 @@ export default function App(): JSX.Element {
               <Badge
                 overlap="circular"
                 anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 badgeContent={
                   customInstructions ? (
                     <CheckCircleOutline
                       sx={{
-                        fontSize: "1rem",
+                        fontSize: '1rem',
                         color: theme.palette.success.main,
                       }}
                     />
                   ) : (
                     <HelpOutline
-                      className={"pulsate"}
+                      className={'pulsate'}
                       sx={{
-                        fontSize: "1rem",
+                        fontSize: '1rem',
                         color: theme.palette.info.main,
                       }}
                     />
@@ -587,7 +587,7 @@ export default function App(): JSX.Element {
                 </IconButton>
               </Badge>
             </ButtonGroup>
-            <Alert severity={"info"} sx={{ mt: 1 }}>
+            <Alert severity={'info'} sx={{ mt: 1 }}>
               <Typography variant="body2" color="textSecondary" align="center">
                 {t(`mode.note_${mode}`)}
               </Typography>
@@ -607,7 +607,7 @@ export default function App(): JSX.Element {
                 />
               );
             })}
-          <Divider style={{ marginBottom: "24px" }} />
+          <Divider style={{ marginBottom: '24px' }} />
           {conversation
             .filter((e) => !e.isPinned())
             .map((elem, i) => {
@@ -615,7 +615,6 @@ export default function App(): JSX.Element {
                 (e) => e.id === elem.id && e.pinned,
               );
               const promptProps = {
-                key: `${elem.getId()}`,
                 elem,
                 onClickSend: handleSend,
                 onClear: clearConversation,
@@ -624,7 +623,7 @@ export default function App(): JSX.Element {
                 visionDisabled: !VisionSupport.includes(mode),
               };
               return elem.isUser ? (
-                <PromptVision {...promptProps} />
+                <PromptVision key={`${elem.getId()}`} {...promptProps} />
               ) : (
                 <Answer
                   key={i}
@@ -678,7 +677,7 @@ export default function App(): JSX.Element {
             </Alert>
           )}
           {!!sessionCost && (
-            <Box sx={{ textAlign: "center", pt: 3 }}>
+            <Box sx={{ textAlign: 'center', pt: 3 }}>
               <Tooltip
                 enterTouchDelay={1}
                 leaveTouchDelay={2000}
@@ -686,7 +685,7 @@ export default function App(): JSX.Element {
                 placement="top"
               >
                 <StyledChip
-                  icon={<InfoIcon color={"inherit"} />}
+                  icon={<InfoIcon color={'inherit'} />}
                   label={t(`spentChip`, {
                     costUSD: +sessionCost.toFixed(
                       sessionCost > 0.01 ? 2 : sessionCost > 0.001 ? 3 : 4,
@@ -700,11 +699,11 @@ export default function App(): JSX.Element {
           {topUpLink && Number.isFinite(moneyLeft) && (
             <Alert
               sx={{
-                textAlign: "center",
-                "& .MuiAlert-message": { width: "100%" },
+                textAlign: 'center',
+                '& .MuiAlert-message': { width: '100%' },
               }}
               icon={false}
-              severity={moneyLeft! <= 1 ? "warning" : "info"}
+              severity={moneyLeft! <= 1 ? 'warning' : 'info'}
             >
               {apiKey ? (
                 <PersonalBudget value={moneyLeft!}>
@@ -721,7 +720,7 @@ export default function App(): JSX.Element {
             container
             justifyContent="center"
             spacing={2}
-            paddingRight={"30px"}
+            paddingRight={'30px'}
           >
             <Grid item>
               <Link href="https://twitter.com/PlentyOfClarity" target="_blank">
@@ -753,7 +752,7 @@ export default function App(): JSX.Element {
             </Grid>
           </Grid>
           {theme !== cyberpunkTheme && (
-            <Box sx={{ textAlign: "center", pt: 1 }}>
+            <Box sx={{ textAlign: 'center', pt: 1 }}>
               <Link
                 href="https://gpt-ua.click/#theme=cyber"
                 className="cyber-link"
@@ -762,40 +761,31 @@ export default function App(): JSX.Element {
               </Link>
             </Box>
           )}
-          {/*  Link to check OpenAI service status */}
-          <Box sx={{ textAlign: "center" }}>
-            <span style={{ fontSize: "12px" }}>{t(`openai.slowResponse`)}</span>{" "}
-            <Link
-              href="https://status.openai.com/"
-              target="_blank"
-              style={{ fontSize: "12px" }}
-            >
-              OpenAI status
-            </Link>
+          <Box sx={{ textAlign: 'center' }}>
             <Box
-              sx={{ display: "block", marginLeft: "auto", marginRight: "auto" }}
+              sx={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
             >
-              <span style={{ fontSize: "12px" }}>Dashboard</span>
-              <IconButton size={"small"} onClick={handleExpandClick}>
+              <span style={{ fontSize: '12px' }}>Dashboard</span>
+              <IconButton size={'small'} onClick={handleExpandClick}>
                 <ExpandMore
                   sx={{
-                    transform: dashBoardExpanded ? "rotate(180deg)" : "none",
-                    transition: theme.transitions.create("transform", {
+                    transform: dashBoardExpanded ? 'rotate(180deg)' : 'none',
+                    transition: theme.transitions.create('transform', {
                       duration: theme.transitions.duration.shortest,
                     }),
                   }}
                 />
               </IconButton>
             </Box>
-            <Box sx={{ position: "relative", pb: "130%", scale: "0.5" }}>
+            <Box sx={{ position: 'relative', pb: '130%', scale: '0.5' }}>
               <Collapse in={dashBoardExpanded} timeout="auto" unmountOnExit>
                 <iframe
                   style={{
-                    position: "absolute",
-                    top: "-50%",
-                    width: "200%",
-                    height: "100%",
-                    left: "-50%",
+                    position: 'absolute',
+                    top: '-50%',
+                    width: '200%',
+                    height: '100%',
+                    left: '-50%',
                   }}
                   src="https://cloudwatch.amazonaws.com/dashboard.html?theme=light&dashboard=GPT-UA_Dashboard&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTIwNjgxMTU4MDM2NSIsIlUiOiJ1cy1lYXN0LTFfSUlPV3l6WGc0IiwiQyI6IjRldGQ2cTZtNHZqYzZidGRldGprYjdnNXBjIiwiSSI6InVzLWVhc3QtMTpjMDVkYTA4ZS0yMDdjLTQ0YTAtOWY0OC00Yzk1MWM5OTk5YTIiLCJNIjoiUHVibGljIn0="
                 ></iframe>
@@ -830,15 +820,15 @@ function buildMessages(
   lang: string,
   mode: ChatMode,
 ): Message[] {
-  const vision = mode !== "mistral+";
+  const vision = mode !== 'mistral+';
   const messages: Message[] = [];
   for (const elem of conversation) {
     if (elem.dropped) continue;
     const images =
-      elem.files?.filter((f) => f.type === "image").map((f) => f.content) || [];
+      elem.files?.filter((f) => f.type === 'image').map((f) => f.content) || [];
     console.log(elem.files);
     const textBlocks =
-      elem.files?.filter((f) => f.type === "pdf").map((f) => f.content) || [];
+      elem.files?.filter((f) => f.type === 'pdf').map((f) => f.content) || [];
     elem.media?.forEach((m) => {
       images.push(`data:image/png;base64,${m.b64_json}`);
     });
@@ -855,16 +845,16 @@ function buildMessages(
 
 const conversationLoader = () => {
   try {
-    const c = localStorage.getItem("gpt_conversation");
+    const c = localStorage.getItem('gpt_conversation');
     if (c) {
       const convArr = JSON.parse(c) as ConversationElem[];
       return convArr.map((e) => {
         return Object.assign(new ConversationElem(), e, { staticMode: true });
       });
     } else {
-      return [ConversationElem.newPrompt(0, "")];
+      return [ConversationElem.newPrompt(0, '')];
     }
   } catch (e) {
-    return [ConversationElem.newPrompt(0, "")];
+    return [ConversationElem.newPrompt(0, '')];
   }
 };

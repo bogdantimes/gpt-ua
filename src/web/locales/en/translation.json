@@ -26,9 +26,6 @@
     "remaining": "Available budget",
     "personal": "Personal budget"
   },
-  "openai": {
-    "slowResponse": "No response? Check the status:"
-  },
   "requestSummary": "So far, you have made {{requestsNum}} request(s), costing approximately ${{costUSD}} (≈ {{costUAH}}₴).",
   "topUpQuestion": "Have you topped up the website's budget?",
   "yes": "Yes",

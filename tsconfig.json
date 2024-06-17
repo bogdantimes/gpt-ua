@@ -1,22 +1,20 @@
 {
     "compilerOptions": {
-        // web
-        "lib": [
-            "esnext",
-            "dom"
-        ],
-        "jsx": "react",
+        "target": "ESNext",
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "allowJs": true,
+        "skipLibCheck": true,
         "esModuleInterop": true,
-        // gas
-        "target": "ES2019",
-        "module": "None",
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "ESNext",
         "moduleResolution": "node",
-        "noImplicitUseStrict": true,
-        "experimentalDecorators": true,
-        "strictNullChecks": true,
-        "skipLibCheck": true
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx"
     },
-    "include": [
-        "src/**/*"
-    ]
+    "include": ["src"],
+    "references": [{ "path": "./tsconfig.node.json" }]
 }

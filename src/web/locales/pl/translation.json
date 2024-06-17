@@ -26,9 +26,6 @@
     "remaining": "Dostępny budżet",
     "personal": "Budżet osobisty"
   },
-  "openai": {
-    "slowResponse": "Brak odpowiedzi? Sprawdź status:"
-  },
   "requestSummary": "Do tej pory złożyłeś {{requestsNum}} zapytań, kosztujących łącznie około ${{costUSD}} (≈ {{costUAH}}₴).",
   "topUpQuestion": "Czy doładowałeś budżet strony?",
   "yes": "Tak",
@@ -50,5 +47,4 @@
   },
   "cancel": "Anuluj",
   "save": "Zapisz"
-
 }

@@ -26,9 +26,6 @@
     "remaining": "Доступный бюджет",
     "personal": "Личный бюджет"
   },
-  "openai": {
-    "slowResponse": "Нет ответа? Проверьте статус:"
-  },
   "requestSummary": "На данный момент вы сделали {{requestsNum}} запрос(ов) на общую сумму примерно ${{costUSD}} (≈ {{costUAH}}₴).",
   "topUpQuestion": "Вы пополнили бюджет сайта?",
   "yes": "Да",

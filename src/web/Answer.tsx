@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useState } from "react";
+import * as React from 'react';
+import { useCallback, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -12,20 +12,20 @@ import {
   ImageListItem,
   Stack,
   Tooltip,
-} from "@mui/material";
+} from '@mui/material';
 import {
   ContentCopy,
   ExpandMore,
   PushPin,
   PushPinOutlined,
   QuestionMark,
-} from "@mui/icons-material";
-import { type AnswerElem, type ChatMode } from "./Types";
-import { icons } from "./Icons";
-import { t } from "i18next";
-import { useTheme } from "@mui/material/styles";
-import Markdown from "markdown-to-jsx";
-import ImageViewer from "./ImageViewer";
+} from '@mui/icons-material';
+import { type AnswerElem, type ChatMode } from './Types';
+import { icons } from './Icons';
+import { t } from 'i18next';
+import { useTheme } from '@mui/material/styles';
+import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
+import ImageViewer from './ImageViewer';
 
 interface AnswerProps {
   elem: AnswerElem;
@@ -57,43 +57,44 @@ function renderMedia(elem: AnswerElem) {
   );
 }
 
-const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
+const Answer: React.FC<AnswerProps> = ({ elem, onPin, onUnpin }) => {
   const [cbTooltipOpen, setCbTooltipOpen] = useState(false);
   const [isSpoilerOpen, setIsSpoilerOpen] = useState(false);
   const theme = useTheme();
+  const answerText = elem.getText().replace(/```/g, '\n```');
 
   const toggleSpoiler = () => {
     setIsSpoilerOpen(!isSpoilerOpen);
   };
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(elem.getText());
+  const handleCopy = useCallback(async () => {
+    await navigator.clipboard.writeText(answerText);
     setCbTooltipOpen(true);
     setTimeout(() => {
       setCbTooltipOpen(false);
     }, 2000);
-  };
+  }, []);
 
   const showSpoiler = elem.isPinned();
 
   const spoilerVisibleText =
-    elem.getText().slice(0, PinSpoiler).replace(/\S+$/, "").trim() || "🖼️";
-  const markdownOptions = {
+    answerText.slice(0, PinSpoiler).replace(/\S+$/, '').trim() || '🖼️';
+  const markdownOptions: MarkdownToJSX.Options = {
     overrides: {
       img: {
         props: {
-          width: "90%",
+          width: '90%',
           crossOrigin: null,
         },
       },
       a: {
         props: {
-          target: "_blank",
+          target: '_blank',
         },
       },
       pre: {
         props: {
-          style: { "overflow-x": "auto" },
+          style: { overflowX: 'auto' },
         },
       },
     },
@@ -101,43 +102,43 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
   return (
     <Card
       sx={{
-        padding: elem.isPinned() && !isSpoilerOpen ? "8px 16px" : "28px 16px",
+        padding: elem.isPinned() && !isSpoilerOpen ? '8px 16px' : '28px 16px',
         paddingRight: elem.getMedia() ? 0 : undefined,
-        overflowX: "auto",
-        position: "relative",
+        overflowX: 'auto',
+        position: 'relative',
         background: elem.isPinned()
           ? undefined
-          : theme.palette.mode === "dark"
-            ? "linear-gradient(90deg, rgba(10, 24, 61, 1) 0%, rgba(3, 54, 73, 1) 100%)" // Dark theme gradient
-            : "linear-gradient(90deg, rgba(216, 251, 204, 1) 0%, rgba(171, 229, 255, 1) 100%)", // Lighter light theme gradient
-        transition: "padding 0.3s ease", // Adding transition for padding
+          : theme.palette.mode === 'dark'
+            ? 'linear-gradient(90deg, rgba(10, 24, 61, 1) 0%, rgba(3, 54, 73, 1) 100%)' // Dark theme gradient
+            : 'linear-gradient(90deg, rgba(216, 251, 204, 1) 0%, rgba(171, 229, 255, 1) 100%)', // Lighter light theme gradient
+        transition: 'padding 0.3s ease', // Adding transition for padding
       }}
     >
       {!elem.isPinned() && (
         <Box
           sx={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             right: 0,
-            backgroundColor: "rgba(72, 52, 212, 0.6)",
+            backgroundColor: 'rgba(72, 52, 212, 0.6)',
             padding: 1,
-            borderRadius: "0 0 0 4px", // Rounded corner
-            fontSize: "16px", // Size of the watermark
-            color: "#D3D3D3",
-            lineHeight: "10px",
+            borderRadius: '0 0 0 4px', // Rounded corner
+            fontSize: '16px', // Size of the watermark
+            color: '#D3D3D3',
+            lineHeight: '10px',
           }}
         >
           ⚡ gpt-ua.click
         </Box>
       )}
-      <Grid container direction={"row"} spacing={2} rowSpacing={-1}>
+      <Grid container direction={'row'} spacing={2} rowSpacing={-1}>
         {(!elem.getMedia() || showSpoiler) && (
           <Grid item xs={1}>
             <Avatar
               sx={{
                 width: 24,
                 height: 24,
-                alignSelf: "center",
+                alignSelf: 'center',
               }}
               alt="GPT-UA Avatar"
               src={icons[elem.getMode()]}
@@ -152,27 +153,27 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
           <Box
             onClick={toggleSpoiler}
             sx={{
-              display: showSpoiler ? "flex" : "block",
-              alignItems: "center",
-              cursor: showSpoiler ? "pointer" : "default",
+              display: showSpoiler ? 'flex' : 'block',
+              alignItems: 'center',
+              cursor: showSpoiler ? 'pointer' : 'default',
               pl: 0,
               pr: elem.getMedia() ? 0 : 1,
               color:
                 showSpoiler && isSpoilerOpen
                   ? theme.palette.text.disabled
                   : undefined,
-              transition: "color 0.3s ease",
+              transition: 'color 0.3s ease',
             }}
           >
             <Markdown options={markdownOptions}>
-              {showSpoiler ? spoilerVisibleText + "..." : elem.getText()}
+              {showSpoiler ? spoilerVisibleText + '...' : answerText}
             </Markdown>
             {!showSpoiler && renderMedia(elem)}
             {showSpoiler && (
               <ExpandMore
                 sx={{
-                  transform: isSpoilerOpen ? "rotate(180deg)" : "rotate(0deg)",
-                  transition: ".3s",
+                  transform: isSpoilerOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: '.3s',
                   ml: 0,
                 }}
               />
@@ -181,17 +182,17 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
           <Collapse in={isSpoilerOpen && showSpoiler}>
             {showSpoiler && (
               <Box mt={1}>
-                <Markdown options={markdownOptions}>{elem.getText()}</Markdown>
+                <Markdown options={markdownOptions}>{answerText}</Markdown>
                 {renderMedia(elem)}
               </Box>
             )}
           </Collapse>
         </Grid>
-        <Box sx={{ position: "absolute", right: 0, bottom: 0 }}>
+        <Box sx={{ position: 'absolute', right: 0, bottom: 0 }}>
           <Tooltip
             disableHoverListener
             open={cbTooltipOpen}
-            title={t("clipboard.tooltip")}
+            title={t('clipboard.tooltip')}
             placement="left"
             TransitionComponent={Fade}
             TransitionProps={{ timeout: 600 }}
@@ -200,8 +201,8 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
               {!elem.isPinned() && (
                 <IconButton
                   onClick={() => {
-                    gtag("event", "tg_chat_open");
-                    window.open("https://t.me/gpt_ua_chat", "_blank");
+                    gtag('event', 'tg_chat_open');
+                    window.open('https://t.me/gpt_ua_chat', '_blank');
                   }}
                 >
                   <QuestionMark fontSize="small" />
@@ -219,17 +220,17 @@ const Answer: React.FC<AnswerProps> = ({ elem, mode, onPin, onUnpin }) => {
               {onUnpin && (
                 <IconButton
                   onClick={() => {
-                    gtag("event", "answer_unpinned");
+                    gtag('event', 'answer_unpinned');
                     onUnpin();
                   }}
                 >
                   <PushPin fontSize="small" />
                 </IconButton>
-              )}{" "}
+              )}{' '}
               {onPin && (
                 <IconButton
                   onClick={() => {
-                    gtag("event", "answer_pinned");
+                    gtag('event', 'answer_pinned');
                     onPin();
                   }}
                 >
