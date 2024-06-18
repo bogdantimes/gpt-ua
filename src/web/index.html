@@ -90,55 +90,5 @@
 <script type="module">
     import "./index.tsx";
 </script>
-
-<style>
-    :root {
-        --ad-bg-color: #f5f5f5; /* Light theme background color */
-        --ad-text-color: #1f1f1f; /* Light theme text color */
-        --ad-shadow-color: rgba(0, 0, 0, 0.1); /* Light theme shadow color */
-    }
-
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --ad-bg-color: #1f1f1f; /* Dark theme background color */
-            --ad-text-color: #f5f5f5; /* Dark theme text color */
-            --ad-shadow-color: rgba(255, 255, 255, 0.1); /* Dark theme shadow color */
-        }
-    }
-
-    @media (min-width: 1300px) {
-        #tradingHelperAd {
-            position: absolute;
-            right: 50px;
-            top: 100px;
-            max-width: 300px;
-            padding: 10px;
-            border-radius: 8px;
-            background: var(--ad-bg-color);
-            color: var(--ad-text-color);
-            box-shadow: 0 4px 8px var(--ad-shadow-color);
-            z-index: 1000;
-        }
-    }
-
-    /* Hide the ad by default on smaller devices */
-    @media (max-width: 1299px) {
-        #tradingHelperAd {
-            display: none;
-        }
-    }
-</style>
-
-<div id="tradingHelperAd">
-    <img src="https://user-images.githubusercontent.com/7527778/167810306-0b882d1b-64b0-4fab-b647-9c3ef01e46b4.png"
-         alt="Trading Helper Logo" style="max-width: 50%; display: block; margin: auto;">
-    <h3 style="text-align:center; font-size: 16px; margin-top: 10px;">Бінанс бот від автора GPT-UA</h3>
-    <p style="text-align:center; font-size: 14px; color: #555; margin-top: 5px;">Автоматичний дохід від 100% на рік.
-        Захищена технологія (Google Apps). Встановлення за 1.5 хвилини. Керування з будь якого пристрою. Зв'язок в Телеграм: <a href="https://t.me/digitalbk" target="_blank">@digitalbk</a></p>
-    <p style="text-align: center; margin-top: 10px;">
-        <a href="https://trading-helper.click" target="_blank"
-           style="background-color: #4CAF50; color: white; padding: 8px 15px; text-align: left; text-decoration: none; display: inline-block; border-radius: 5px; font-size: 14px;">Веб-сайт</a>
-    </p>
-</div>
 </body>
 </html>
