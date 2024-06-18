@@ -117,21 +117,6 @@ export default function App(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [moneyLeft, setMoneyLeft] = useState<number | null>(null);
 
-  const [limitBudget, setLimitBudget] = useState(() => {
-    try {
-      return !!localStorage.getItem('lb');
-    } catch (e) {}
-  });
-  useEffect(() => {
-    try {
-      if (limitBudget) {
-        localStorage.setItem('lb', '1');
-      } else {
-        localStorage.removeItem('lb');
-      }
-    } catch (e) {}
-  }, [limitBudget]);
-
   const [conversation, setConversation] =
     useState<ConversationElem[]>(conversationLoader);
 
@@ -229,7 +214,6 @@ export default function App(): JSX.Element {
           headers: headers as HeadersInit,
           body: JSON.stringify({
             v: VERSION,
-            l: !apiKey && limitBudget && requestsNum,
             token,
             messages,
             mode,
@@ -281,9 +265,6 @@ export default function App(): JSX.Element {
                 }
                 if (!gptReply.topUpLink && apiKey) {
                   setError(t('errors.apiKey', { key: apiKey }));
-                }
-                if (budget <= 0 && !apiKey) {
-                  setLimitBudget(true);
                 }
               }
             },
