@@ -1,6 +1,6 @@
 export interface FileDetail {
   name: string;
-  type: "pdf" | "image";
+  type: 'pdf' | 'image';
   content: string;
 }
 
@@ -26,13 +26,13 @@ export interface AnswerElem {
 
 export class ConversationElem implements PromptElem, AnswerElem {
   id = 0;
-  text = "";
+  text = '';
   isUser = false;
   answered = false;
   dropped = false;
   pinned = false;
   media: Array<{ b64_json: string; revised_prompt: string }> | undefined;
-  mode: ChatMode = "default";
+  mode: ChatMode = 'default';
   files: FileDetail[] = [];
 
   static newPrompt(id: number, text: string): ConversationElem {
@@ -56,7 +56,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
 
   getText(): string {
     if (this.text.trim() === this.media?.[0]?.revised_prompt.trim()) {
-      return "";
+      return '';
     }
     return this.text.trim();
   }
@@ -98,12 +98,19 @@ export class ConversationElem implements PromptElem, AnswerElem {
   }
 }
 
-export type ChatMode = "default" | "gpt4" | "mistral+" | "llama" | "naviguru";
-export const ChatModes: ChatMode[] = [
-  "default",
-  "gpt4",
-  "mistral+",
-  "llama",
-  "naviguru",
+export type ChatMode =
+  | 'default'
+  | 'claude3_5'
+  | 'gpt4'
+  | 'mistral+'
+  | 'llama'
+  | 'naviguru';
+export const ChatModes: Array<ChatMode> = [
+  'default',
+  'claude3_5',
+  'gpt4',
+  'mistral+',
+  'llama',
+  'naviguru',
 ];
-export const VisionSupport: ChatMode[] = ["default", "gpt4", "naviguru"];
+export const VisionSupport: Array<ChatMode> = ['default', 'gpt4', 'naviguru'];

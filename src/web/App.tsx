@@ -63,7 +63,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: '0.8rem',
 }));
 
-const VERSION = 47;
+const VERSION = 48;
 const YES_KEY = 'yesAnswer';
 const NO_KEY = 'noAnswer';
 const SESSION_COST_KEY = 'sessionCost';
@@ -198,7 +198,11 @@ export default function App(): JSX.Element {
   }
 
   function sendConversation() {
-    const messages = buildMessages(conversation, lang, mode);
+    const messages = buildMessages(
+      conversation,
+      lang,
+      VisionSupport.includes(mode),
+    );
     // @ts-expect-error external grecaptcha.enterprise
     grecaptcha.enterprise
       .execute('6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom', { action: 'login' })
@@ -799,9 +803,8 @@ interface Message {
 function buildMessages(
   conversation: ConversationElem[],
   lang: string,
-  mode: ChatMode,
+  vision: boolean,
 ): Message[] {
-  const vision = mode !== 'mistral+';
   const messages: Message[] = [];
   for (const elem of conversation) {
     if (elem.dropped) continue;

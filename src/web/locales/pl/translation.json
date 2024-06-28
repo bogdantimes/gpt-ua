@@ -33,11 +33,12 @@
   "spentChip": "Wydałeś: ${{costUSD}} (≈ {{costUAH}}₴)",
   "chipTooltip": "To jest kwota z wspólnego budżetu strony, którą wydałeś.",
   "mode": {
-    "note_default": "Tryb opłacalny i szybki, zalecany do większości codziennych zadań. Możesz załączyć do pięciu zdjęć i/lub dokumentów PDF.",
-    "note_gpt4": "Bardziej zaawansowany model, który potrafi zrozumieć złożone pytania, generować zdjęcia i wyszukiwać informacje online, ale jest droższy.",
-    "note_mistral+": "Model open-source opracowany w UE z mniejszą liczbą ograniczeń, działa najlepiej w języku angielskim.",
-    "note_naviguru": "Specjalizuje się w tworzeniu szczegółowych, dostosowanych tras w Google Maps z określonymi punktami postojowymi.",
-    "note_llama": "Zaawansowany, otwarty model od Meta, odpowiedni do złożonych zadań tekstowych, zoptymalizowany dla języka angielskiego, obsługuje wielojęzyczne użycie."
+    "note_default": "Ekonomiczny i szybki model firmy Anthropic, zalecany do większości codziennych zadań. Można dołączyć do pięciu obrazów i/lub dokumentów PDF.",
+    "note_claude3_5": "Najnowszy model firmy Anthropic, o wiele bardziej zaawansowany, doskonały w złożonym rozumowaniu, analizie i zadaniach twórczych. Droższy w użyciu.",
+    "note_gpt4": "Nieco starszy, ale zaawansowany model od OpenAI, który może generować zdjęcia i wyszukiwać informacje online. Również drogi w użyciu.",
+    "note_llama": "Darmowy model open-source od Meta, odpowiedni do złożonych zadań tekstowych, zoptymalizowany dla języka angielskiego, obsługuje wiele języków.",
+    "note_mistral+": "Średnio zaawansowany model open-source opracowany w UE przez firmę Mistral, najlepiej działa w języku angielskim.",
+    "note_naviguru": "Specjalizuje się w tworzeniu szczegółowych, dostosowanych tras Google Maps z konkretnymi punktami przystankowymi."
   },
   "settings": {
     "title": "Dostosuj Asystenta",
