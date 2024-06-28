@@ -40,7 +40,7 @@
     "llama": "LLAMA-3",
     "naviguru": "NaviGuru",
     "note_default": "A cost-effective and fast model by Anthropic, recommended for most everyday tasks. You can attach up to five images and/or PDF documents.",
-    "note_claude3_5": "A newest model by Anthropic, that is much more capable model, excelling at complex reasoning, analysis, and creative tasks. More expensive to use.",
+    "note_claude3_5": "A newest model by Anthropic, that is much more capable, excelling at complex reasoning, analysis, and creative tasks. More expensive to use.",
     "note_gpt4": "A bit older, but an advanced model from OpenAI that can generate photos and research information online. Also expensive to use.",
     "note_llama": "A free to use, open-source model by Meta, suitable for complex text tasks, optimized for English, supports multilingual use.",
     "note_mistral+": "An mid-range open-source model developed in the EU by Mistral, works best in English.",
