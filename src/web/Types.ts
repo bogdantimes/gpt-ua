@@ -106,11 +106,14 @@ export type ChatMode =
   | 'llama'
   | 'naviguru';
 export const ChatModes: Array<ChatMode> = [
+  'llama',
   'default',
   'claude3_5',
   'gpt4',
   'mistral+',
-  'llama',
   'naviguru',
 ];
+
+export const DefaultMode: ChatMode = 'default';
+export const FreeModes: Array<ChatMode> = ['llama'];
 export const VisionSupport: Array<ChatMode> = ['default', 'gpt4', 'naviguru'];

@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Collapse,
   Container,
   CssBaseline,
   Dialog,
@@ -26,7 +25,6 @@ import {
 } from '@mui/material';
 import {
   CheckCircleOutline,
-  ExpandMore,
   HelpOutline,
   Instagram,
   Replay,
@@ -40,6 +38,7 @@ import {
   type ChatMode,
   ChatModes,
   ConversationElem,
+  DefaultMode,
   type PromptElem,
   VisionSupport,
 } from './Types';
@@ -53,7 +52,8 @@ import ExtensionIcon from '@mui/icons-material/Extension';
 import { StyledLinearProgress } from './StyledLinearProgress';
 import { PersonalBudget } from './PersonalBudget';
 import PromptVision from './PromptVision';
-import { SettingsModal } from './SettingsModal'; // Define a styled Chip for better visuals
+import { SettingsModal } from './SettingsModal';
+import ModeSelector from './ModeSelector'; // Define a styled Chip for better visuals
 
 // Define a styled Chip for better visuals
 const StyledChip = styled(Chip)(({ theme }) => ({
@@ -101,10 +101,10 @@ export default function App(): JSX.Element {
 
   const [mode, setMode] = useState<ChatMode>(() => {
     try {
-      const _mode = (localStorage.getItem('mode') as ChatMode) || 'default';
-      return ChatModes.includes(_mode) ? _mode : 'default';
+      const _mode = (localStorage.getItem('mode') as ChatMode) || DefaultMode;
+      return ChatModes.includes(_mode) ? _mode : DefaultMode;
     } catch (e) {
-      return 'default';
+      return DefaultMode;
     }
   });
   useEffect(() => {
@@ -242,7 +242,6 @@ export default function App(): JSX.Element {
               moneyLeft: number;
               topUpLink: string;
             }) => {
-              console.log(gptReply);
               if (gptReply?.error) {
                 setError(gptReply?.answer || gptReply?.error);
               } else {
@@ -330,12 +329,6 @@ export default function App(): JSX.Element {
     }, new Date().getMilliseconds());
   };
 
-  const [dashBoardExpanded, setDashBoardExpanded] = useState(false);
-
-  const handleExpandClick = () => {
-    setDashBoardExpanded(!dashBoardExpanded);
-  };
-
   const [askQuestion, setAskQuestion] = useState(false);
   const [yesAnswer, setYesAnswer] = useState(localStorage.getItem(YES_KEY));
   const [noAnswer, setNoAnswer] = useState(localStorage.getItem(NO_KEY));
@@ -399,8 +392,6 @@ export default function App(): JSX.Element {
   function handleTopUpBtnClick() {
     gtag('event', 'budget_top_up_open');
     window.open(topUpLink, '_blank');
-    // reset the budget limit timer
-    setLimitBudget(false);
     setSessionCost(0);
     setRequestsNum(0);
   }
@@ -516,62 +507,13 @@ export default function App(): JSX.Element {
             </p>
           </Box>
           <Box sx={{ textAlign: 'center', p: 1 }}>
-            <ButtonGroup
-              sx={{ 'flex-wrap': 'wrap', 'justify-content': 'center' }}
-              size={'small'}
-              color="primary"
-              aria-label="outlined primary button group"
-            >
-              {ChatModes.map((m: ChatMode) => (
-                <Button
-                  key={m}
-                  variant={mode === m ? 'contained' : 'outlined'}
-                  onClick={() => {
-                    setMode(m);
-                  }}
-                >
-                  {t(`mode.${m}`)}
-                </Button>
-              ))}
-              <Badge
-                overlap="circular"
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                badgeContent={
-                  customInstructions ? (
-                    <CheckCircleOutline
-                      sx={{
-                        fontSize: '1rem',
-                        color: theme.palette.success.main,
-                      }}
-                    />
-                  ) : (
-                    <HelpOutline
-                      className={'pulsate'}
-                      sx={{
-                        fontSize: '1rem',
-                        color: theme.palette.info.main,
-                      }}
-                    />
-                  )
-                }
-              >
-                <IconButton
-                  onClick={() => {
-                    setSettingsModalOpen(true);
-                  }}
-                  sx={
-                    {
-                      // Apply additional styling if needed
-                    }
-                  }
-                >
-                  <Settings />
-                </IconButton>
-              </Badge>
-            </ButtonGroup>
+            <ModeSelector
+              ChatModes={ChatModes}
+              mode={mode}
+              setMode={setMode}
+              onSettingsClick={() => setSettingsModalOpen(true)}
+              showCheck={!!customInstructions}
+            />
             <Alert severity={'info'} sx={{ mt: 1 }}>
               <Typography variant="body2" color="textSecondary" align="center">
                 {t(`mode.note_${mode}`)}
@@ -746,37 +688,6 @@ export default function App(): JSX.Element {
               </Link>
             </Box>
           )}
-          <Box sx={{ textAlign: 'center' }}>
-            <Box
-              sx={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-            >
-              <span style={{ fontSize: '12px' }}>Dashboard</span>
-              <IconButton size={'small'} onClick={handleExpandClick}>
-                <ExpandMore
-                  sx={{
-                    transform: dashBoardExpanded ? 'rotate(180deg)' : 'none',
-                    transition: theme.transitions.create('transform', {
-                      duration: theme.transitions.duration.shortest,
-                    }),
-                  }}
-                />
-              </IconButton>
-            </Box>
-            <Box sx={{ position: 'relative', pb: '130%', scale: '0.5' }}>
-              <Collapse in={dashBoardExpanded} timeout="auto" unmountOnExit>
-                <iframe
-                  style={{
-                    position: 'absolute',
-                    top: '-50%',
-                    width: '200%',
-                    height: '100%',
-                    left: '-50%',
-                  }}
-                  src="https://cloudwatch.amazonaws.com/dashboard.html?theme=light&dashboard=GPT-UA_Dashboard&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTIwNjgxMTU4MDM2NSIsIlUiOiJ1cy1lYXN0LTFfSUlPV3l6WGc0IiwiQyI6IjRldGQ2cTZtNHZqYzZidGRldGprYjdnNXBjIiwiSSI6InVzLWVhc3QtMTpjMDVkYTA4ZS0yMDdjLTQ0YTAtOWY0OC00Yzk1MWM5OTk5YTIiLCJNIjoiUHVibGljIn0="
-                ></iframe>
-              </Collapse>
-            </Box>
-          </Box>
         </Stack>
       </Container>
       {sessionCost * USD_UAH_RATE >= 1 && askQuestion && (

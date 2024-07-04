@@ -35,7 +35,7 @@
   "mode": {
     "note_default": "Ekonomiczny i szybki model firmy Anthropic, zalecany do większości codziennych zadań. Można dołączyć do pięciu obrazów i/lub dokumentów PDF.",
     "note_claude3_5": "Najnowszy model firmy Anthropic, o wiele bardziej zaawansowany, doskonały w złożonym rozumowaniu, analizie i zadaniach twórczych. Droższy w użyciu.",
-    "note_gpt4": "Nieco starszy, ale zaawansowany model od OpenAI, który może generować zdjęcia i wyszukiwać informacje online. Również drogi w użyciu.",
+    "note_gpt4": "Zaawansowany model od OpenAI, który może generować zdjęcia i wyszukiwać informacje w internecie. Również drogi w użyciu.",
     "note_llama": "Darmowy model open-source od Meta, odpowiedni do złożonych zadań tekstowych, zoptymalizowany dla języka angielskiego, obsługuje wiele języków.",
     "note_mistral+": "Średnio zaawansowany model open-source opracowany w UE przez firmę Mistral, najlepiej działa w języku angielskim.",
     "note_naviguru": "Specjalizuje się w tworzeniu szczegółowych, dostosowanych tras Google Maps z konkretnymi punktami przystankowymi."
