@@ -3,10 +3,8 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import {
   Alert,
-  Badge,
   Box,
   Button,
-  ButtonGroup,
   Container,
   CssBaseline,
   Dialog,
@@ -23,15 +21,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import {
-  CheckCircleOutline,
-  HelpOutline,
-  Instagram,
-  Replay,
-  Settings,
-  Telegram,
-  Twitter,
-} from '@mui/icons-material';
+import { Instagram, Replay, Telegram, Twitter } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import Answer from './Answer';
 import {
@@ -63,7 +53,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: '0.8rem',
 }));
 
-const VERSION = 48;
+const VERSION = 49;
 const YES_KEY = 'yesAnswer';
 const NO_KEY = 'noAnswer';
 const SESSION_COST_KEY = 'sessionCost';
