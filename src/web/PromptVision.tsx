@@ -15,7 +15,7 @@ import { handleImage, handlePDF } from './FileHandlers';
 
 const MAX_FILES = 5;
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.mjs`;
 
 // Styling the ImagePreview component with MUI's styled API
 const ImagePreview = styled('img')(({ theme }) => ({
