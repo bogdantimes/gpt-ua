@@ -12,10 +12,12 @@ import { t } from 'i18next';
 import { pdfjs } from 'react-pdf'; // Import for PDF.js
 import { FileDetail } from './Types';
 import { handleImage, handlePDF } from './FileHandlers';
+import 'pdfjs-dist/build/pdf.worker.min';
 
 const MAX_FILES = 5;
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.mjs`;
+pdfjs.GlobalWorkerOptions.workerSrc =
+  '../../node_modules/pdfjs-dist/build/pdf.worker.min.mjs';
 
 // Styling the ImagePreview component with MUI's styled API
 const ImagePreview = styled('img')(({ theme }) => ({
