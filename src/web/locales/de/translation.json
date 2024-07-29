@@ -37,6 +37,7 @@
     "note_claude3_5": "Das neueste Modell von Anthropic, das viel leistungsfähiger ist und sich durch komplexes Denken, Analyse und kreative Aufgaben auszeichnet. Teurer in der Nutzung.",
     "note_gpt4": "Ein fortschrittliches Modell von OpenAI, das Fotos generieren und Informationen online recherchieren kann. Auch teuer in der Nutzung.",
     "note_llama": "Ein kostenloses Open-Source-Modell von Meta, geeignet für komplexe Textaufgaben, optimiert für Englisch, unterstützt mehrsprachige Nutzung.",
+    "note_llama31": "Ein next-generation-Modell mit Open-Source-Code von Meta AI, wahrscheinlich das leistungsfähigste am Markt gerade jetzt, mit kostenlosem Gebrauch, aber eingeschränkter Verfügbarkeit.",
     "note_mistral+": "Ein Open-Source-Modell der mittleren Klasse, das in der EU von Mistral entwickelt wurde und am besten auf Englisch funktioniert.",
     "note_naviguru": "Spezialisiert sich auf die Erstellung detaillierter, angepasster Google Maps-Routen mit spezifischen Haltepunkten."
   },

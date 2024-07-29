@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ButtonGroup, Button, Chip, Badge, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import { t } from 'i18next';
 import { CheckCircleOutline, HelpOutline, Settings } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
+import { ChatModeConfig, ChatMode } from './Types';
 
 const StyledChip = styled(Chip)(({ theme }) => ({
   position: 'absolute',
@@ -13,37 +14,60 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   height: '20px',
 }));
 
-const ModeSelector = ({
-  ChatModes,
+interface ModeSelectorProps {
+  modes: ChatModeConfig[];
+  mode: ChatMode;
+  setMode: (mode: ChatMode) => void;
+  onSettingsClick: () => void;
+  showCheck: boolean;
+}
+
+const ModeSelector: React.FC<ModeSelectorProps> = ({
+  modes,
   mode,
   setMode,
   onSettingsClick,
   showCheck,
 }) => {
   const theme = useTheme();
+  const [showFree, setShowFree] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowFree((prev) => !prev);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <ButtonGroup
-      sx={{ 'flex-wrap': 'wrap', 'justify-content': 'center' }}
-      size={'small'}
+      sx={{ flexWrap: 'wrap', justifyContent: 'center' }}
+      size="small"
       color="primary"
       aria-label="outlined primary button group"
     >
-      {ChatModes.map((m) => (
+      {modes.map((modeConfig) => (
         <Button
-          key={m}
-          variant={mode === m ? 'contained' : 'outlined'}
+          key={modeConfig.id}
+          variant={mode === modeConfig.id ? 'contained' : 'outlined'}
           onClick={() => {
-            setMode(m);
+            setMode(modeConfig.id);
           }}
           sx={{ position: 'relative' }}
         >
-          {t(`mode.${m}`)}
-          {m === 'llama' && (
+          {t(`mode.${modeConfig.id}`)}
+          {modeConfig.isFree && modeConfig.isNew ? (
+            showFree ? (
+              <StyledChip label="Free" color="success" size="small" />
+            ) : (
+              <StyledChip label="New" color="info" size="small" />
+            )
+          ) : modeConfig.isFree ? (
             <StyledChip label="Free" color="success" size="small" />
-          )}
-          {m === 'claude3_5' && (
+          ) : modeConfig.isNew ? (
             <StyledChip label="New" color="info" size="small" />
-          )}
+          ) : null}
         </Button>
       ))}
       <Badge
@@ -62,7 +86,7 @@ const ModeSelector = ({
             />
           ) : (
             <HelpOutline
-              className={'pulsate'}
+              className="pulsate"
               sx={{
                 fontSize: '1rem',
                 color: theme.palette.info.main,

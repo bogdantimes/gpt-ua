@@ -98,22 +98,30 @@ export class ConversationElem implements PromptElem, AnswerElem {
   }
 }
 
+export interface ChatModeConfig {
+  id: ChatMode;
+  isVisionSupported: boolean;
+  isFree: boolean;
+  isNew?: boolean;
+}
+
 export type ChatMode =
   | 'default'
   | 'claude3_5'
   | 'gpt4'
   | 'mistral+'
   | 'llama'
+  | 'llama31'
   | 'naviguru';
-export const ChatModes: Array<ChatMode> = [
-  'llama',
-  'default',
-  'claude3_5',
-  'gpt4',
-  'mistral+',
-  'naviguru',
+
+export const ChatModes: ChatModeConfig[] = [
+  { id: 'llama', isVisionSupported: false, isFree: true },
+  { id: 'llama31', isVisionSupported: true, isFree: true, isNew: true },
+  { id: 'default', isVisionSupported: true, isFree: false },
+  { id: 'claude3_5', isVisionSupported: false, isFree: false, isNew: true },
+  //  { id: 'gpt4', isVisionSupported: true, isFree: false },
+  { id: 'mistral+', isVisionSupported: false, isFree: false },
+  { id: 'naviguru', isVisionSupported: true, isFree: false },
 ];
 
 export const DefaultMode: ChatMode = 'default';
-export const FreeModes: Array<ChatMode> = ['llama'];
-export const VisionSupport: Array<ChatMode> = ['default', 'gpt4', 'naviguru'];

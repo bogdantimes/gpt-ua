@@ -30,7 +30,6 @@ import {
   ConversationElem,
   DefaultMode,
   type PromptElem,
-  VisionSupport,
 } from './Types';
 import { FundingBar } from './FundingBar';
 import { cyberpunkTheme, darkTheme, lightTheme } from './themes';
@@ -53,7 +52,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: '0.8rem',
 }));
 
-const VERSION = 50;
+const VERSION = 51;
 const YES_KEY = 'yesAnswer';
 const NO_KEY = 'noAnswer';
 const SESSION_COST_KEY = 'sessionCost';
@@ -188,11 +187,7 @@ export default function App(): JSX.Element {
   }
 
   function sendConversation() {
-    const messages = buildMessages(
-      conversation,
-      lang,
-      VisionSupport.includes(mode),
-    );
+    const messages = buildMessages(conversation, lang, mode);
     // @ts-expect-error external grecaptcha.enterprise
     grecaptcha.enterprise
       .execute('6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom', { action: 'login' })
@@ -298,8 +293,9 @@ export default function App(): JSX.Element {
   const handleSend = (el: PromptElem) => {
     setError('');
 
+    const currentModeConfig = ChatModes.find((m) => m.id === mode);
     const emptyMessage =
-      (!VisionSupport.includes(mode) && !el.getText()) || // some modes do not support images
+      (!currentModeConfig?.isVisionSupported && !el.getText()) || // some modes do not support images
       (!el.getFiles().length && !el.getText()); // if no images - require some text
 
     if (emptyMessage) {
@@ -483,7 +479,9 @@ export default function App(): JSX.Element {
         <Stack spacing={2}>
           {/* center aligned GPT-UA */}
           <Box sx={{ padding: 1, textAlign: 'center', position: 'relative' }}>
-            <h1>{t('name')}</h1>
+            <h1 onClick={() => window.open('https://gpt-ua.click', '_self')}>
+              {t('name')}
+            </h1>
             <p
               style={{
                 marginTop: '-33px',
@@ -498,7 +496,7 @@ export default function App(): JSX.Element {
           </Box>
           <Box sx={{ textAlign: 'center', p: 1 }}>
             <ModeSelector
-              ChatModes={ChatModes}
+              modes={ChatModes}
               mode={mode}
               setMode={setMode}
               onSettingsClick={() => setSettingsModalOpen(true)}
@@ -537,7 +535,8 @@ export default function App(): JSX.Element {
                 onClear: clearConversation,
                 showClear: conversationLength() > 1,
                 sendDisabled: loading,
-                visionDisabled: !VisionSupport.includes(mode),
+                visionDisabled: !ChatModes.find((m) => m.id === mode)
+                  ?.isVisionSupported,
               };
               return elem.isUser ? (
                 <PromptVision key={`${elem.getId()}`} {...promptProps} />
@@ -704,8 +703,10 @@ interface Message {
 function buildMessages(
   conversation: ConversationElem[],
   lang: string,
-  vision: boolean,
+  mode: ChatMode,
 ): Message[] {
+  const currentModeConfig = ChatModes.find((m) => m.id === mode);
+  const vision = currentModeConfig?.isVisionSupported ?? false;
   const messages: Message[] = [];
   for (const elem of conversation) {
     if (elem.dropped) continue;
