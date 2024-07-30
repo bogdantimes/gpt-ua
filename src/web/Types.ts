@@ -116,9 +116,9 @@ export type ChatMode =
 
 export const ChatModes: ChatModeConfig[] = [
   { id: 'llama', isVisionSupported: false, isFree: true },
-  { id: 'llama31', isVisionSupported: true, isFree: true, isNew: true },
+  { id: 'llama31', isVisionSupported: false, isFree: true, isNew: true },
   { id: 'default', isVisionSupported: true, isFree: false },
-  { id: 'claude3_5', isVisionSupported: false, isFree: false, isNew: true },
+  { id: 'claude3_5', isVisionSupported: true, isFree: false, isNew: true },
   //  { id: 'gpt4', isVisionSupported: true, isFree: false },
   { id: 'mistral+', isVisionSupported: false, isFree: false },
   { id: 'naviguru', isVisionSupported: true, isFree: false },
