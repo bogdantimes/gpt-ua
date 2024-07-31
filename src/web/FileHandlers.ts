@@ -82,20 +82,10 @@ export async function handlePDF(file: File): Promise<string> {
 
 export async function handleTextFile(file: File): Promise<string> {
   try {
-    const text = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target) {
-          resolve(event.target.result as string);
-        } else {
-          reject(new Error('Failed to read file'));
-        }
-      };
-      reader.onerror = (error) => reject(error);
-      reader.readAsText(file);
-    });
+    const text = await file.text();
     return `${file.name.toUpperCase()}:\n\`\`\`\n${text.trim()}\n\`\`\``;
   } catch (e) {
+    console.error('Error reading file:', e);
     return '';
   }
 }
