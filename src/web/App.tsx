@@ -52,7 +52,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: '0.8rem',
 }));
 
-const VERSION = 51;
+const VERSION = 52;
 const YES_KEY = 'yesAnswer';
 const NO_KEY = 'noAnswer';
 const SESSION_COST_KEY = 'sessionCost';
@@ -91,7 +91,7 @@ export default function App(): JSX.Element {
   const [mode, setMode] = useState<ChatMode>(() => {
     try {
       const _mode = (localStorage.getItem('mode') as ChatMode) || DefaultMode;
-      return ChatModes.includes(_mode) ? _mode : DefaultMode;
+      return ChatModes.find((m) => m.id === _mode) ? _mode : DefaultMode;
     } catch (e) {
       return DefaultMode;
     }
@@ -191,7 +191,7 @@ export default function App(): JSX.Element {
     // @ts-expect-error external grecaptcha.enterprise
     grecaptcha.enterprise
       .execute('6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom', { action: 'login' })
-      .then(function (token) {
+      .then(function (token: string) {
         const serviceURL =
           'https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws';
         const headers = {
@@ -714,7 +714,7 @@ function buildMessages(
       elem.files?.filter((f) => f.type === 'image').map((f) => f.content) || [];
     console.log(elem.files);
     const textBlocks =
-      elem.files?.filter((f) => f.type === 'pdf').map((f) => f.content) || [];
+      elem.files?.filter((f) => f.type === 'text').map((f) => f.content) || [];
     elem.media?.forEach((m) => {
       images.push(`data:image/png;base64,${m.b64_json}`);
     });

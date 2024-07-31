@@ -1,6 +1,6 @@
 export interface FileDetail {
   name: string;
-  type: 'pdf' | 'image';
+  type: 'image' | 'text';
   content: string;
 }
 

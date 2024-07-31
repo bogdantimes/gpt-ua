@@ -6,12 +6,18 @@ import {
   styled,
   TextField,
 } from '@mui/material';
-import { AttachFile, Cancel, Clear, Send } from '@mui/icons-material';
+import {
+  AttachFile,
+  Description,
+  Cancel,
+  Clear,
+  Send,
+} from '@mui/icons-material';
 import { type PromptElem } from './Types';
 import { t } from 'i18next';
 import { pdfjs } from 'react-pdf'; // Import for PDF.js
 import { FileDetail } from './Types';
-import { handleImage, handlePDF } from './FileHandlers';
+import { handleImage, handlePDF, handleTextFile } from './FileHandlers';
 import 'pdfjs-dist/build/pdf.worker.min';
 
 const MAX_FILES = 5;
@@ -37,6 +43,29 @@ const PDFPreview = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: theme.palette.grey[200],
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[3],
+  marginRight: theme.spacing(1),
+  fontSize: '0.875rem',
+  color: theme.palette.grey[500],
+  '& .file-name': {
+    fontSize: '0.75rem',
+    marginTop: theme.spacing(1),
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: 50,
+  },
+}));
+
+const TextFilePreview = styled('div')(({ theme }) => ({
+  width: 50,
+  height: 50,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: theme.palette.grey[100],
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[3],
   marginRight: theme.spacing(1),
@@ -93,17 +122,26 @@ const PromptVision: React.FC<PromptProps> = ({
   const handleFileUpload = async (newFiles: File[]) => {
     const updatedFiles: FileDetail[] = [...files];
     for (const file of newFiles) {
-      if (updatedFiles.length >= MAX_FILES) break; // Limit the number of files
-      const type = file.type.includes('image') ? 'image' : 'pdf';
+      if (updatedFiles.length >= MAX_FILES) break;
+      let type: 'image' | 'text';
+      let content: string;
+
+      if (file.type.includes('image')) {
+        type = 'image';
+        content = await handleImage(file);
+      } else if (file.type === 'application/pdf') {
+        type = 'text';
+        content = await handlePDF(file);
+      } else {
+        type = 'text';
+        content = await handleTextFile(file);
+      }
+
       if (visionDisabled && type === 'image') {
         continue;
       }
-      const newFile: FileDetail = {
-        name: file.name,
-        type,
-        content:
-          type === 'image' ? await handleImage(file) : await handlePDF(file),
-      };
+
+      const newFile: FileDetail = { name: file.name, type, content };
       updatedFiles.push(newFile);
     }
     setFiles(updatedFiles);
@@ -124,6 +162,7 @@ const PromptVision: React.FC<PromptProps> = ({
     await handleFileUpload(newFiles);
   };
 
+  let textTypes = 'application/pdf,application/json,text/*,.ts*,.js*,.md';
   return (
     <Box
       sx={{
@@ -137,13 +176,14 @@ const PromptVision: React.FC<PromptProps> = ({
         <Box sx={{ display: 'flex', mb: 2 }}>
           {files.map((file, index) => (
             <Box key={index} sx={{ position: 'relative' }}>
-              {file.type === 'image' ? (
+              {file.type === 'image' && (
                 <ImagePreview src={file.content} alt={file.name} />
-              ) : (
-                <PDFPreview fileName={file.name}>
-                  <AttachFile />
+              )}
+              {file.type === 'text' && (
+                <TextFilePreview>
+                  <Description />
                   <div className="file-name">{file.name}</div>
-                </PDFPreview>
+                </TextFilePreview>
               )}
               {!isAnsweredReply && (
                 <DeleteButton
@@ -202,8 +242,8 @@ const PromptVision: React.FC<PromptProps> = ({
                   <input
                     accept={
                       visionDisabled
-                        ? 'application/pdf'
-                        : 'image/png,image/jpeg,image/webp,image/gif,application/pdf'
+                        ? textTypes
+                        : `image/png,image/jpeg,image/webp,image/gif,${textTypes}`
                     }
                     multiple
                     style={{ display: 'none' }}

@@ -22,4 +22,5 @@ export const icons: Record<ChatMode, string> = {
   gpt4: gpt4IconBase64,
   naviguru: naviGuruIconBase64,
   llama: llamaIconBase64,
+  llama31: llamaIconBase64,
 };
