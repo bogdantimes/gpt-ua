@@ -11,6 +11,8 @@ export interface PromptElem {
   isAnswered: () => boolean;
   getFiles: () => FileDetail[];
   setFiles: (files: FileDetail[]) => void;
+  setAudioData: (audioData: string) => void;
+  getAudioData: () => string;
 }
 
 export interface AnswerElem {
@@ -34,6 +36,8 @@ export class ConversationElem implements PromptElem, AnswerElem {
   media: Array<{ b64_json: string; revised_prompt: string }> | undefined;
   mode: ChatMode = 'default';
   files: FileDetail[] = [];
+  audioData = '';
+  generation = 0;
 
   static newPrompt(id: number, text: string): ConversationElem {
     const elem = new ConversationElem();
@@ -66,6 +70,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
   }
 
   setText(text: string): void {
+    this.generation++;
     this.text = text;
   }
 
@@ -73,7 +78,17 @@ export class ConversationElem implements PromptElem, AnswerElem {
     return this.files;
   }
 
+  getAudioData(): string {
+    return this.audioData;
+  }
+
+  setAudioData(audioData: string): void {
+    this.generation++;
+    this.audioData = audioData;
+  }
+
   setFiles(files: FileDetail[]) {
+    this.generation++;
     this.files = files;
   }
 
@@ -82,6 +97,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
   }
 
   addMedia(media?: Array<{ b64_json: string; revised_prompt: string }>) {
+    this.generation++;
     this.media = media;
   }
 
@@ -90,6 +106,7 @@ export class ConversationElem implements PromptElem, AnswerElem {
   }
 
   setMode(mode: ChatMode) {
+    this.generation++;
     this.mode = mode;
   }
 

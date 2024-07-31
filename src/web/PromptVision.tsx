@@ -12,10 +12,13 @@ import {
   Cancel,
   Clear,
   Send,
+  Mic,
+  Stop,
+  AudioFile,
 } from '@mui/icons-material';
 import { type PromptElem } from './Types';
 import { t } from 'i18next';
-import { pdfjs } from 'react-pdf'; // Import for PDF.js
+import { pdfjs } from 'react-pdf';
 import { FileDetail } from './Types';
 import { handleImage, handlePDF, handleTextFile } from './FileHandlers';
 import 'pdfjs-dist/build/pdf.worker.min';
@@ -35,19 +38,19 @@ const ImagePreview = styled('img')(({ theme }) => ({
   marginRight: theme.spacing(2),
 }));
 
-const PDFPreview = styled('div')(({ theme }) => ({
+const AudioPreview = styled('div')(({ theme }) => ({
   width: 50,
   height: 50,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: theme.palette.grey[200],
+  backgroundColor: theme.palette.primary.light,
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[3],
   marginRight: theme.spacing(1),
   fontSize: '0.875rem',
-  color: theme.palette.grey[500],
+  color: theme.palette.common.white,
   '& .file-name': {
     fontSize: '0.75rem',
     marginTop: theme.spacing(1),
@@ -115,9 +118,18 @@ const PromptVision: React.FC<PromptProps> = ({
 }) => {
   const [text, setText] = React.useState(elem.getText());
   const [files, setFiles] = React.useState<FileDetail[]>(elem.getFiles());
+  const [isRecording, setIsRecording] = React.useState(false);
+  const [audioData, setAudioData] = React.useState<string>(elem.getAudioData());
+  const mediaRecorderRef = React.useRef<MediaRecorder | null>(null);
+
   const isStartPrompt = elem.getId() === 0;
   const isAnsweredReply = !isStartPrompt && elem.isAnswered();
   const label = isStartPrompt ? t('conversation.start') : t('conversation.you');
+
+  const handleDeleteAudio = () => {
+    setAudioData('');
+    setText(''); // Clear text when audio is deleted
+  };
 
   const handleFileUpload = async (newFiles: File[]) => {
     const updatedFiles: FileDetail[] = [...files];
@@ -163,6 +175,48 @@ const PromptVision: React.FC<PromptProps> = ({
   };
 
   let textTypes = 'application/pdf,application/json,text/*,.ts*,.js*,.md';
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'audio/webm',
+      });
+      mediaRecorderRef.current = mediaRecorder;
+
+      const audioChunks: Blob[] = [];
+      mediaRecorder.addEventListener('dataavailable', (event) => {
+        audioChunks.push(event.data);
+      });
+
+      mediaRecorder.addEventListener('stop', () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64Audio = reader.result as string;
+          setAudioData(base64Audio);
+          setText(''); // Clear text when audio is recorded
+        };
+        reader.readAsDataURL(audioBlob);
+      });
+
+      mediaRecorder.start();
+      setIsRecording(true);
+      setText(''); // Clear text when starting to record
+    } catch (error) {
+      console.error('Error starting recording:', error);
+    }
+  };
+  const stopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  // Determine if the text input should be disabled
+  const isTextInputDisabled = isAnsweredReply || !!audioData;
+
   return (
     <Box
       sx={{
@@ -172,31 +226,44 @@ const PromptVision: React.FC<PromptProps> = ({
         position: 'relative',
       }}
     >
-      {!!files.length && (
-        <Box sx={{ display: 'flex', mb: 2 }}>
-          {files.map((file, index) => (
-            <Box key={index} sx={{ position: 'relative' }}>
-              {file.type === 'image' && (
-                <ImagePreview src={file.content} alt={file.name} />
-              )}
-              {file.type === 'text' && (
-                <TextFilePreview>
-                  <Description />
-                  <div className="file-name">{file.name}</div>
-                </TextFilePreview>
-              )}
-              {!isAnsweredReply && (
-                <DeleteButton
-                  size="medium"
-                  onClick={() => handleDeleteFile(index)}
-                >
-                  <Cancel fontSize="medium" />
-                </DeleteButton>
-              )}
-            </Box>
-          ))}
-        </Box>
-      )}
+      <Box
+        sx={{ display: !!files.length || audioData ? 'flex' : 'none', mb: 2 }}
+      >
+        {files.map((file, index) => (
+          <Box key={index} sx={{ position: 'relative' }}>
+            {file.type === 'image' && (
+              <ImagePreview src={file.content} alt={file.name} />
+            )}
+            {file.type === 'text' && (
+              <TextFilePreview>
+                <Description />
+                <div className="file-name">{file.name}</div>
+              </TextFilePreview>
+            )}
+            {!isAnsweredReply && (
+              <DeleteButton
+                size="medium"
+                onClick={() => handleDeleteFile(index)}
+              >
+                <Cancel fontSize="medium" />
+              </DeleteButton>
+            )}
+          </Box>
+        ))}
+        {audioData && (
+          <Box sx={{ position: 'relative' }}>
+            <AudioPreview>
+              <AudioFile />
+              <div className="file-name">voice_rec.webm</div>
+            </AudioPreview>
+            {!isAnsweredReply && (
+              <DeleteButton size="medium" onClick={handleDeleteAudio}>
+                <Cancel fontSize="medium" />
+              </DeleteButton>
+            )}
+          </Box>
+        )}
+      </Box>
       <TextField
         id={`prompt-${elem.getId()}`}
         label={label}
@@ -205,21 +272,26 @@ const PromptVision: React.FC<PromptProps> = ({
         fullWidth
         focused={isAnsweredReply ? false : undefined}
         onChange={(event) => {
-          setText(event.target.value);
+          if (!isTextInputDisabled) {
+            setText(event.target.value);
+          }
         }}
         helperText={!isAnsweredReply && 'Ctrl+Enter'}
         onKeyDown={(event) => {
-          if (event.ctrlKey && event.key === 'Enter') {
+          if (event.ctrlKey && event.key === 'Enter' && !isTextInputDisabled) {
             elem.setText(text);
             elem.setFiles(files);
-            console.log(elem, files, text);
+            elem.setAudioData(audioData);
             onClickSend(elem);
           }
         }}
         InputProps={{
-          readOnly: isAnsweredReply,
+          readOnly: isTextInputDisabled,
+          disabled: isTextInputDisabled,
           onPaste: async (event) => {
-            await handlePaste(event.clipboardData.items);
+            if (!isTextInputDisabled) {
+              await handlePaste(event.clipboardData.items);
+            }
           },
           endAdornment: (
             <InputAdornment
@@ -232,6 +304,7 @@ const PromptVision: React.FC<PromptProps> = ({
                     setText('');
                     onClear();
                     setFiles([]);
+                    setAudioData('');
                   }}
                 >
                   <Clear />
@@ -264,10 +337,18 @@ const PromptVision: React.FC<PromptProps> = ({
               )}
               {!isAnsweredReply && (
                 <IconButton
-                  disabled={sendDisabled}
+                  onClick={isRecording ? stopRecording : startRecording}
+                >
+                  {isRecording ? <Stop /> : <Mic />}
+                </IconButton>
+              )}
+              {!isAnsweredReply && (
+                <IconButton
+                  disabled={sendDisabled || (!text && !audioData)}
                   onClick={() => {
                     elem.setText(text);
                     elem.setFiles(files);
+                    elem.setAudioData(audioData);
                     onClickSend(elem);
                   }}
                 >

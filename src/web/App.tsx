@@ -166,8 +166,15 @@ export default function App(): JSX.Element {
   function handleAnswer({
     answer = '',
     lastDroppedMessageId = -1,
+    lastMsgAudioTranscription = '',
     media = undefined,
   }) {
+    if (lastMsgAudioTranscription) {
+      const lastPrompt = conversation.slice(-1)[0];
+      lastPrompt.setAudioData('');
+      lastPrompt.setText(lastMsgAudioTranscription);
+    }
+
     const aElem: ConversationElem = ConversationElem.newAnswer(
       conversationLength(),
       answer,
@@ -286,6 +293,7 @@ export default function App(): JSX.Element {
     conversation.splice(0);
     const initPrompt = ConversationElem.newPrompt(0, elem?.getText() || '');
     initPrompt.setFiles(elem?.getFiles().slice() || []);
+    initPrompt.setAudioData(elem?.getAudioData() || '');
     conversation.push(...pinned, initPrompt);
     setConversation([...conversation]);
   }
@@ -295,8 +303,10 @@ export default function App(): JSX.Element {
 
     const currentModeConfig = ChatModes.find((m) => m.id === mode);
     const emptyMessage =
-      (!currentModeConfig?.isVisionSupported && !el.getText()) || // some modes do not support images
-      (!el.getFiles().length && !el.getText()); // if no images - require some text
+      (!currentModeConfig?.isVisionSupported &&
+        !el.getText() &&
+        !el.getAudioData()) || // some modes do not support images
+      (!el.getFiles().length && !el.getText() && !el.getAudioData()); // if no images - require audio or text
 
     if (emptyMessage) {
       setError(t('errors.notEnoughDetails'));
@@ -539,7 +549,10 @@ export default function App(): JSX.Element {
                   ?.isVisionSupported,
               };
               return elem.isUser ? (
-                <PromptVision key={`${elem.getId()}`} {...promptProps} />
+                <PromptVision
+                  key={`${elem.getId()}_${elem.generation}`}
+                  {...promptProps}
+                />
               ) : (
                 <Answer
                   key={i}
@@ -698,6 +711,7 @@ interface Message {
   original: string;
   isUser: boolean;
   images?: string[];
+  audio?: string;
 }
 
 function buildMessages(
@@ -712,7 +726,6 @@ function buildMessages(
     if (elem.dropped) continue;
     const images =
       elem.files?.filter((f) => f.type === 'image').map((f) => f.content) || [];
-    console.log(elem.files);
     const textBlocks =
       elem.files?.filter((f) => f.type === 'text').map((f) => f.content) || [];
     elem.media?.forEach((m) => {
@@ -724,11 +737,11 @@ function buildMessages(
       original: `${textBlocks}\n\n${elem.getText()}`.trim(),
       isUser: elem.isUser,
       images: vision ? images : undefined,
+      audio: elem.getAudioData(),
     });
   }
   return messages;
 }
-
 const conversationLoader = () => {
   try {
     const c = localStorage.getItem('gpt_conversation');
