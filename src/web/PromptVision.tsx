@@ -121,6 +121,7 @@ const PromptVision: React.FC<PromptProps> = ({
   const [isRecording, setIsRecording] = React.useState(false);
   const [audioData, setAudioData] = React.useState<string>(elem.getAudioData());
   const mediaRecorderRef = React.useRef<MediaRecorder | null>(null);
+  const audioChunksRef = React.useRef<Blob[]>([]);
 
   const isStartPrompt = elem.getId() === 0;
   const isAnsweredReply = !isStartPrompt && elem.isAnswered();
@@ -179,18 +180,26 @@ const PromptVision: React.FC<PromptProps> = ({
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: 'audio/webm',
-      });
-      mediaRecorderRef.current = mediaRecorder;
+      let options: MediaRecorderOptions = {};
+      
+      if (MediaRecorder.isTypeSupported('audio/webm')) {
+        options.mimeType = 'audio/webm';
+      } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+        options.mimeType = 'audio/mp4';
+      } else {
+        options.mimeType = 'audio/ogg';
+      }
 
-      const audioChunks: Blob[] = [];
+      const mediaRecorder = new MediaRecorder(stream, options);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
       mediaRecorder.addEventListener('dataavailable', (event) => {
-        audioChunks.push(event.data);
+        audioChunksRef.current.push(event.data);
       });
 
       mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const audioBlob = new Blob(audioChunksRef.current, { type: mediaRecorder.mimeType });
         const reader = new FileReader();
         reader.onloadend = () => {
           const base64Audio = reader.result as string;
@@ -207,8 +216,9 @@ const PromptVision: React.FC<PromptProps> = ({
       console.error('Error starting recording:', error);
     }
   };
+
   const stopRecording = () => {
-    if (mediaRecorderRef.current) {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
     }
