@@ -176,6 +176,16 @@ const PromptVision: React.FC<PromptProps> = ({
     await handleFileUpload(newFiles);
   };
 
+  const handleTextPaste = async (text: string) => {
+    if (text.length > 500) {
+      const blob = new Blob([text], { type: 'text/plain' });
+      const file = new File([blob], 'pasted.txt', { type: 'text/plain' });
+      await handleFileUpload([file]);
+    } else {
+      setText(text);
+    }
+  };
+
   let textTypes = 'application/pdf,application/json,text/*,.ts*,.js*,.md';
 
   const startRecording = async () => {
@@ -260,7 +270,7 @@ const PromptVision: React.FC<PromptProps> = ({
             </AudioPreview>
             {!isAnsweredReply && (
               <DeleteButton size="medium" onClick={handleDeleteAudio}>
-                <Cancel fontSize="medium" />
+                <Cancel />
               </DeleteButton>
             )}
           </Box>
@@ -292,7 +302,12 @@ const PromptVision: React.FC<PromptProps> = ({
           disabled: isTextInputDisabled,
           onPaste: async (event) => {
             if (!isTextInputDisabled) {
-              await handlePaste(event.clipboardData.items);
+              const pastedText = event.clipboardData.getData('text');
+              if (pastedText) {
+                await handleTextPaste(pastedText);
+              } else {
+                await handlePaste(event.clipboardData.items);
+              }
             }
           },
           startAdornment: (
@@ -353,7 +368,7 @@ const PromptVision: React.FC<PromptProps> = ({
               )}
               {!isAnsweredReply && (
                 <IconButton
-                  disabled=sendDisabled
+                  disabled={sendDisabled}
                   onClick={() => {
                     elem.setText(text);
                     elem.setFiles(files);
