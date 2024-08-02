@@ -300,18 +300,6 @@ const PromptVision: React.FC<PromptProps> = ({
               position="end"
               sx={{ alignSelf: 'end', mb: '10px' }}
             >
-              {isStartPrompt && (text || showClear) && (
-                <IconButton
-                  onClick={() => {
-                    setText('');
-                    onClear();
-                    setFiles([]);
-                    setAudioData('');
-                  }}
-                >
-                  <Clear />
-                </IconButton>
-              )}
               {!isAnsweredReply && files.length < MAX_FILES && (
                 <Box>
                   <input
@@ -337,6 +325,18 @@ const PromptVision: React.FC<PromptProps> = ({
                   </label>
                 </Box>
               )}
+              {isStartPrompt && (text || showClear) && (
+                <IconButton
+                  onClick={() => {
+                    setText('');
+                    onClear();
+                    setFiles([]);
+                    setAudioData('');
+                  }}
+                >
+                  <Clear />
+                </IconButton>
+              )}
               {!isAnsweredReply && !audioData && !isIOS && !text && (
                 <IconButton
                   onClick={isRecording ? stopRecording : startRecording}
@@ -356,6 +356,38 @@ const PromptVision: React.FC<PromptProps> = ({
                 >
                   <Send />
                 </IconButton>
+              )}
+            </InputAdornment>
+          ),
+          startAdornment: (
+            <InputAdornment
+              position="start"
+              sx={{ alignSelf: 'start', mb: '10px' }}
+            >
+              {!isAnsweredReply && files.length < MAX_FILES && (
+                <Box>
+                  <input
+                    accept={
+                      visionDisabled
+                        ? textTypes
+                        : `image/png,image/jpeg,image/webp,image/gif,${textTypes}`
+                    }
+                    multiple
+                    style={{ display: 'none' }}
+                    id={`file-btn-start-${elem.getId()}`}
+                    type="file"
+                    onChange={async (event) => {
+                      if (event.target.files) {
+                        await handleFileUpload(Array.from(event.target.files));
+                      }
+                    }}
+                  />
+                  <label htmlFor={`file-btn-start-${elem.getId()}`}>
+                    <IconButton component={'span'}>
+                      <AttachFile />
+                    </IconButton>
+                  </label>
+                </Box>
               )}
             </InputAdornment>
           ),
