@@ -108,6 +108,8 @@ interface PromptProps {
   visionDisabled: boolean;
 }
 
+// TODO: do not render recording functionality on ios
+// TODO: do not render start recording if there's text present in the prompt input
 const PromptVision: React.FC<PromptProps> = ({
   elem,
   onClickSend,
