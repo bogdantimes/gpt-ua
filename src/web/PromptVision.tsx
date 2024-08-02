@@ -108,7 +108,7 @@ interface PromptProps {
   visionDisabled: boolean;
 }
 
-//When send button is disabled - do not render it. If audio data exists - do not render the start recording button.
+// Do not render the send button when it is disabled. Do not render the start recording button if audio data exists.
 const PromptVision: React.FC<PromptProps> = ({
   elem,
   onClickSend,
