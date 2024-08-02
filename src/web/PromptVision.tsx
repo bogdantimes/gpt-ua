@@ -110,6 +110,8 @@ interface PromptProps {
 
 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
+// TODO: move the file attachment button to the left side
+// TODO: remove the condition to not render send button if it's disabled, instead render it but in disabled state
 const PromptVision: React.FC<PromptProps> = ({
   elem,
   onClickSend,
