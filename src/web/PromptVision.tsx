@@ -176,6 +176,16 @@ const PromptVision: React.FC<PromptProps> = ({
     await handleFileUpload(newFiles);
   };
 
+  const handleTextPaste = async (text: string) => {
+    if (text.length > 1000) {
+      const blob = new Blob([text], { type: 'text/plain' });
+      const file = new File([blob], 'pasted.txt', { type: 'text/plain' });
+      await handleFileUpload([file]);
+    } else {
+      setText(text);
+    }
+  };
+
   let textTypes = 'application/pdf,application/json,text/*,.ts*,.js*,.md';
 
   const startRecording = async () => {
@@ -260,7 +270,7 @@ const PromptVision: React.FC<PromptProps> = ({
             </AudioPreview>
             {!isAnsweredReply && (
               <DeleteButton size="medium" onClick={handleDeleteAudio}>
-                <Cancel fontSize="medium" />
+                <Cancel fontSize="medium"/>
               </DeleteButton>
             )}
           </Box>
@@ -292,26 +302,19 @@ const PromptVision: React.FC<PromptProps> = ({
           disabled: isTextInputDisabled,
           onPaste: async (event) => {
             if (!isTextInputDisabled) {
-              await handlePaste(event.clipboardData.items);
+              const pastedText = event.clipboardData.getData('text');
+              if (pastedText) {
+                await handleTextPaste(pastedText);
+              } else {
+                await handlePaste(event.clipboardData.items);
+              }
             }
           },
-          endAdornment: (
+          startAdornment: (
             <InputAdornment
-              position="end"
+              position="start"
               sx={{ alignSelf: 'end', mb: '10px' }}
             >
-              {isStartPrompt && (text || showClear) && (
-                <IconButton
-                  onClick={() => {
-                    setText('');
-                    onClear();
-                    setFiles([]);
-                    setAudioData('');
-                  }}
-                >
-                  <Clear />
-                </IconButton>
-              )}
               {!isAnsweredReply && files.length < MAX_FILES && (
                 <Box>
                   <input
@@ -337,6 +340,25 @@ const PromptVision: React.FC<PromptProps> = ({
                   </label>
                 </Box>
               )}
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment
+              position="end"
+              sx={{ alignSelf: 'end', mb: '10px' }}
+            >
+              {isStartPrompt && (text || showClear) && (
+                <IconButton
+                  onClick={() => {
+                    setText('');
+                    onClear();
+                    setFiles([]);
+                    setAudioData('');
+                  }}
+                >
+                  <Clear />
+                </IconButton>
+              )}
               {!isAnsweredReply && !audioData && !isIOS && !text && (
                 <IconButton
                   onClick={isRecording ? stopRecording : startRecording}
@@ -344,8 +366,9 @@ const PromptVision: React.FC<PromptProps> = ({
                   {isRecording ? <Stop /> : <Mic />}
                 </IconButton>
               )}
-              {!isAnsweredReply && !sendDisabled && (text || audioData) && (
+              {!isAnsweredReply && (
                 <IconButton
+                  disabled={sendDisabled}
                   onClick={() => {
                     elem.setText(text);
                     elem.setFiles(files);
