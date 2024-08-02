@@ -181,6 +181,7 @@ const PromptVision: React.FC<PromptProps> = ({
       const blob = new Blob([text], { type: 'text/plain' });
       const file = new File([blob], 'pasted.txt', { type: 'text/plain' });
       await handleFileUpload([file]);
+      setText(''); // Clear the text input
     } else {
       setText(text);
     }
