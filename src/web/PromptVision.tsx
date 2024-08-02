@@ -108,6 +108,8 @@ interface PromptProps {
   visionDisabled: boolean;
 }
 
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 const PromptVision: React.FC<PromptProps> = ({
   elem,
   onClickSend,
@@ -335,7 +337,7 @@ const PromptVision: React.FC<PromptProps> = ({
                   </label>
                 </Box>
               )}
-              {!isAnsweredReply && !audioData && (
+              {!isAnsweredReply && !audioData && !isIOS && !text && (
                 <IconButton
                   onClick={isRecording ? stopRecording : startRecording}
                 >
