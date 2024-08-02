@@ -176,16 +176,6 @@ const PromptVision: React.FC<PromptProps> = ({
     await handleFileUpload(newFiles);
   };
 
-  const handleTextPaste = async (text: string) => {
-    if (text.length > 1000) {
-      const blob = new Blob([text], { type: 'text/plain' });
-      const file = new File([blob], 'pasted.txt', { type: 'text/plain' });
-      await handleFileUpload([file]);
-    } else {
-      setText(text);
-    }
-  };
-
   let textTypes = 'application/pdf,application/json,text/*,.ts*,.js*,.md';
 
   const startRecording = async () => {
@@ -302,12 +292,7 @@ const PromptVision: React.FC<PromptProps> = ({
           disabled: isTextInputDisabled,
           onPaste: async (event) => {
             if (!isTextInputDisabled) {
-              const pastedText = event.clipboardData.getData('text');
-              if (pastedText) {
-                await handleTextPaste(pastedText);
-              } else {
-                await handlePaste(event.clipboardData.items);
-              }
+              await handlePaste(event.clipboardData.items);
             }
           },
           startAdornment: (
