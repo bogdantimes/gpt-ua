@@ -342,9 +342,8 @@ const PromptVision: React.FC<PromptProps> = ({
                   {isRecording ? <Stop /> : <Mic />}
                 </IconButton>
               )}
-              {!isAnsweredReply && (
+              {!isAnsweredReply && !sendDisabled && (text || audioData) && (
                 <IconButton
-                  disabled={sendDisabled || (!text && !audioData)}
                   onClick={() => {
                     elem.setText(text);
                     elem.setFiles(files);
