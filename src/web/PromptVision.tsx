@@ -270,7 +270,7 @@ const PromptVision: React.FC<PromptProps> = ({
             </AudioPreview>
             {!isAnsweredReply && (
               <DeleteButton size="medium" onClick={handleDeleteAudio}>
-                <Cancel />
+                <Cancel fontSize="medium"/>
               </DeleteButton>
             )}
           </Box>
