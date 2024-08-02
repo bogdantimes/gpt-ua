@@ -177,7 +177,7 @@ const PromptVision: React.FC<PromptProps> = ({
   };
 
   const handleTextPaste = async (text: string) => {
-    if (text.length > 500) {
+    if (text.length > 1000) {
       const blob = new Blob([text], { type: 'text/plain' });
       const file = new File([blob], 'pasted.txt', { type: 'text/plain' });
       await handleFileUpload([file]);
