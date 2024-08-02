@@ -110,8 +110,6 @@ interface PromptProps {
 
 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-// TODO: move the file attachment button to the left side
-// TODO: remove the condition to not render send button if it's disabled, instead render it but in disabled state
 const PromptVision: React.FC<PromptProps> = ({
   elem,
   onClickSend,
@@ -346,7 +344,7 @@ const PromptVision: React.FC<PromptProps> = ({
                   {isRecording ? <Stop /> : <Mic />}
                 </IconButton>
               )}
-              {!isAnsweredReply && !sendDisabled && (text || audioData) && (
+              {!isAnsweredReply && (text || audioData) && (
                 <IconButton
                   onClick={() => {
                     elem.setText(text);
@@ -354,6 +352,7 @@ const PromptVision: React.FC<PromptProps> = ({
                     elem.setAudioData(audioData);
                     onClickSend(elem);
                   }}
+                  disabled={sendDisabled}
                 >
                   <Send />
                 </IconButton>
