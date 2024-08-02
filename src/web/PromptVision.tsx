@@ -110,9 +110,6 @@ interface PromptProps {
 
 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-//Todo:
-// 1) make send button visible but disabled (except when already answered)
-// 2) move file attachment to left side of the input (right now in the end side)
 const PromptVision: React.FC<PromptProps> = ({
   elem,
   onClickSend,
@@ -298,23 +295,11 @@ const PromptVision: React.FC<PromptProps> = ({
               await handlePaste(event.clipboardData.items);
             }
           },
-          endAdornment: (
+          startAdornment: (
             <InputAdornment
-              position="end"
+              position="start"
               sx={{ alignSelf: 'end', mb: '10px' }}
             >
-              {isStartPrompt && (text || showClear) && (
-                <IconButton
-                  onClick={() => {
-                    setText('');
-                    onClear();
-                    setFiles([]);
-                    setAudioData('');
-                  }}
-                >
-                  <Clear />
-                </IconButton>
-              )}
               {!isAnsweredReply && files.length < MAX_FILES && (
                 <Box>
                   <input
@@ -340,6 +325,25 @@ const PromptVision: React.FC<PromptProps> = ({
                   </label>
                 </Box>
               )}
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment
+              position="end"
+              sx={{ alignSelf: 'end', mb: '10px' }}
+            >
+              {isStartPrompt && (text || showClear) && (
+                <IconButton
+                  onClick={() => {
+                    setText('');
+                    onClear();
+                    setFiles([]);
+                    setAudioData('');
+                  }}
+                >
+                  <Clear />
+                </IconButton>
+              )}
               {!isAnsweredReply && !audioData && !isIOS && !text && (
                 <IconButton
                   onClick={isRecording ? stopRecording : startRecording}
@@ -356,6 +360,11 @@ const PromptVision: React.FC<PromptProps> = ({
                     onClickSend(elem);
                   }}
                 >
+                  <Send />
+                </IconButton>
+              )}
+              {!isAnsweredReply && sendDisabled && (
+                <IconButton disabled>
                   <Send />
                 </IconButton>
               )}
