@@ -108,8 +108,8 @@ interface PromptProps {
   visionDisabled: boolean;
 }
 
-// TODO: do not render recording functionality on ios
-// TODO: do not render start recording if there's text present in the prompt input
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 const PromptVision: React.FC<PromptProps> = ({
   elem,
   onClickSend,
@@ -337,7 +337,7 @@ const PromptVision: React.FC<PromptProps> = ({
                   </label>
                 </Box>
               )}
-              {!isAnsweredReply && !audioData && (
+              {!isAnsweredReply && !audioData && !isIOS && (
                 <IconButton
                   onClick={isRecording ? stopRecording : startRecording}
                 >
