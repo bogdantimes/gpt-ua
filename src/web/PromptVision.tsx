@@ -337,7 +337,7 @@ const PromptVision: React.FC<PromptProps> = ({
                   </label>
                 </Box>
               )}
-              {!isAnsweredReply && !audioData && !isIOS && (
+              {!isAnsweredReply && !audioData && !isIOS && !text && (
                 <IconButton
                   onClick={isRecording ? stopRecording : startRecording}
                 >
