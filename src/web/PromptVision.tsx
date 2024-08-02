@@ -110,6 +110,9 @@ interface PromptProps {
 
 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
+//Todo:
+// 1) make send button visible but disabled (except when already answered)
+// 2) move file attachment to left side of the input (right now in the end side)
 const PromptVision: React.FC<PromptProps> = ({
   elem,
   onClickSend,
