@@ -3,7 +3,6 @@ import {
   Box,
   IconButton,
   InputAdornment,
-  styled,
   TextField,
 } from '@mui/material';
 import {
@@ -21,83 +20,14 @@ import { t } from 'i18next';
 import { pdfjs } from 'react-pdf';
 import { FileDetail } from './Types';
 import { handleImage, handlePDF, handleTextFile } from './FileHandlers';
+import { ImagePreview, AudioPreview, TextFilePreview, DeleteButton } from './PromptVisionStyles';
 import 'pdfjs-dist/build/pdf.worker.min';
 
 const MAX_FILES = 5;
+const MAX_TEXT_LENGTH = 1000;
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   '../../node_modules/pdfjs-dist/build/pdf.worker.min.mjs';
-
-// Styling the ImagePreview component with MUI's styled API
-const ImagePreview = styled('img')(({ theme }) => ({
-  width: 50,
-  height: 50,
-  objectFit: 'cover',
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[3],
-  marginRight: theme.spacing(2),
-}));
-
-const AudioPreview = styled('div')(({ theme }) => ({
-  width: 50,
-  height: 50,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: theme.palette.primary.light,
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[3],
-  marginRight: theme.spacing(1),
-  fontSize: '0.875rem',
-  color: theme.palette.common.white,
-  '& .file-name': {
-    fontSize: '0.75rem',
-    marginTop: theme.spacing(1),
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    maxWidth: 50,
-  },
-}));
-
-const TextFilePreview = styled('div')(({ theme }) => ({
-  width: 50,
-  height: 50,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: theme.palette.grey[100],
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[3],
-  marginRight: theme.spacing(1),
-  fontSize: '0.875rem',
-  color: theme.palette.grey[500],
-  '& .file-name': {
-    fontSize: '0.75rem',
-    marginTop: theme.spacing(1),
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    maxWidth: 50,
-  },
-}));
-
-const DeleteButton = styled(IconButton)(({ theme }) => ({
-  position: 'absolute',
-  padding: 0,
-  right: 3,
-  top: -8,
-  zIndex: 1,
-  color: theme.palette.grey[500],
-  backgroundColor: theme.palette.background.paper,
-  '&:hover': {
-    color: theme.palette.error.main,
-    backgroundColor: theme.palette.background.paper,
-  },
-  borderRadius: '50%',
-}));
 
 interface PromptProps {
   elem: PromptElem;
@@ -164,18 +94,21 @@ const PromptVision: React.FC<PromptProps> = ({
     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
-  const handlePaste = async (items: DataTransferItemList | File[]) => {
-    const newFiles: File[] = [];
-    for (const item of items) {
-      if (newFiles.length + files.length >= MAX_FILES) break; // Limit the total number of files
-      const file = item instanceof File ? item : item.getAsFile();
-      if (!file) continue;
-      newFiles.push(file);
+  const handlePaste = async (event: React.ClipboardEvent) => {
+    const pastedText = event.clipboardData.getData('text');
+    
+    if (pastedText.length > MAX_TEXT_LENGTH) {
+      event.preventDefault();
+      // Create a new file from the pasted text
+      const blob = new Blob([pastedText], { type: 'text/plain' });
+      const file = new File([blob], 'pasted.txt', { type: 'text/plain' });
+      
+      // Use the existing handleFileUpload function to process the new file
+      await handleFileUpload([file]);
     }
-    await handleFileUpload(newFiles);
   };
 
-  let textTypes = 'application/pdf,application/json,text/*,.ts*,.js*,.md';
+  let textTypes = '.pdf,.json,text/*,.ts*,.js*,.md,.java,.go,.py,.csv,.c,.cpp,.h,.html,.xml,.y*ml,.toml,.css,.bash,.sh,.bat';
 
   const handleStartRecording = () => {
     setIsRecording(true);
@@ -243,11 +176,8 @@ const PromptVision: React.FC<PromptProps> = ({
               </TextFilePreview>
             )}
             {!isAnsweredReply && (
-              <DeleteButton
-                size="medium"
-                onClick={() => handleDeleteFile(index)}
-              >
-                <Cancel fontSize="medium" />
+              <DeleteButton onClick={() => handleDeleteFile(index)}>
+                <Cancel fontSize="small" />
               </DeleteButton>
             )}
           </Box>
@@ -259,8 +189,8 @@ const PromptVision: React.FC<PromptProps> = ({
               <div className="file-name">voice_rec.webm</div>
             </AudioPreview>
             {!isAnsweredReply && (
-              <DeleteButton size="medium" onClick={handleDeleteAudio}>
-                <Cancel fontSize="medium"/>
+              <DeleteButton onClick={handleDeleteAudio}>
+                <Cancel fontSize="small" />
               </DeleteButton>
             )}
           </Box>
@@ -278,6 +208,7 @@ const PromptVision: React.FC<PromptProps> = ({
             setText(event.target.value);
           }
         }}
+        onPaste={handlePaste}
         helperText={!isAnsweredReply && 'Ctrl+Enter'}
         onKeyDown={(event) => {
           if (event.ctrlKey && event.key === 'Enter' && !isTextInputDisabled) {
@@ -290,11 +221,6 @@ const PromptVision: React.FC<PromptProps> = ({
         InputProps={{
           readOnly: isTextInputDisabled,
           disabled: isTextInputDisabled,
-          onPaste: async (event) => {
-            if (!isTextInputDisabled) {
-              await handlePaste(event.clipboardData.items);
-            }
-          },
           startAdornment: (
             <InputAdornment
               position="start"
