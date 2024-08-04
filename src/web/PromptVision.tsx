@@ -108,6 +108,8 @@ interface PromptProps {
   visionDisabled: boolean;
 }
 
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 const PromptVision: React.FC<PromptProps> = ({
   elem,
   onClickSend,
@@ -120,8 +122,7 @@ const PromptVision: React.FC<PromptProps> = ({
   const [files, setFiles] = React.useState<FileDetail[]>(elem.getFiles());
   const [isRecording, setIsRecording] = React.useState(false);
   const [audioData, setAudioData] = React.useState<string>(elem.getAudioData());
-  const [stream, setStream] = React.useState<MediaStream | null>(null);
-  const [mediaRecorder, setMediaRecorder] = React.useState<MediaRecorder | null>(null);
+  const mediaRecorderRef = React.useRef<MediaRecorder | null>(null);
 
   const isStartPrompt = elem.getId() === 0;
   const isAnsweredReply = !isStartPrompt && elem.isAnswered();
@@ -177,42 +178,41 @@ const PromptVision: React.FC<PromptProps> = ({
 
   let textTypes = 'application/pdf,application/json,text/*,.ts*,.js*,.md';
 
-  const handleStartRecording = () => {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(stream => {
-        setStream(stream);
-        const mediaRecorder = new MediaRecorder(stream);
-        setMediaRecorder(mediaRecorder);
-        const audioChunks: Blob[] = [];
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'audio/webm',
+      });
+      mediaRecorderRef.current = mediaRecorder;
 
-        mediaRecorder.ondataavailable = event => {
-          audioChunks.push(event.data);
+      const audioChunks: Blob[] = [];
+      mediaRecorder.addEventListener('dataavailable', (event) => {
+        audioChunks.push(event.data);
+      });
+
+      mediaRecorder.addEventListener('stop', () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64Audio = reader.result as string;
+          setAudioData(base64Audio);
+          setText(''); // Clear text when audio is recorded
         };
+        reader.readAsDataURL(audioBlob);
+      });
 
-        mediaRecorder.onstop = () => {
-          const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const base64Audio = reader.result as string;
-            setAudioData(base64Audio);
-            setText(''); // Clear text when audio is recorded
-          };
-          reader.readAsDataURL(audioBlob);
-        };
-
-        setIsRecording(true);
-        mediaRecorder.start();
-      })
-      .catch(error => console.error('Error starting recording:', error));
-  };
-
-  const handleStopRecording = () => {
-    setIsRecording(false);
-    if (mediaRecorder) {
-      mediaRecorder.stop();
+      mediaRecorder.start();
+      setIsRecording(true);
+      setText(''); // Clear text when starting to record
+    } catch (error) {
+      console.error('Error starting recording:', error);
     }
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
+  };
+  const stopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
     }
   };
 
@@ -344,9 +344,9 @@ const PromptVision: React.FC<PromptProps> = ({
                   <Clear />
                 </IconButton>
               )}
-              {!isAnsweredReply && !audioData && !text && (
+              {!isAnsweredReply && !audioData && !isIOS && !text && (
                 <IconButton
-                  onClick={isRecording ? handleStopRecording : handleStartRecording}
+                  onClick={isRecording ? stopRecording : startRecording}
                 >
                   {isRecording ? <Stop /> : <Mic />}
                 </IconButton>
