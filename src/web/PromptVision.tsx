@@ -95,23 +95,20 @@ const PromptVision: React.FC<PromptProps> = ({
   };
 
   const handlePaste = async (event: React.ClipboardEvent) => {
-    event.preventDefault();
     const pastedText = event.clipboardData.getData('text');
     
     if (pastedText.length > MAX_TEXT_LENGTH) {
+      event.preventDefault();
       // Create a new file from the pasted text
       const blob = new Blob([pastedText], { type: 'text/plain' });
       const file = new File([blob], 'pasted.txt', { type: 'text/plain' });
       
       // Use the existing handleFileUpload function to process the new file
       await handleFileUpload([file]);
-    } else {
-      // For shorter text, update the text field as usual
-      setText((prevText) => prevText + pastedText);
     }
   };
 
-  let textTypes = 'application/pdf,application/json,text/*,.ts*,.js*,.md';
+  let textTypes = '.pdf,.json,text/*,.ts*,.js*,.md,.java,.go,.py,.csv,.c,.cpp,.h,.html,.xml,.y*ml,.toml,.css,.bash,.sh,.bat';
 
   const handleStartRecording = () => {
     setIsRecording(true);
