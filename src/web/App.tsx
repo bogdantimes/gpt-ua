@@ -200,7 +200,7 @@ export default function App(): JSX.Element {
       .execute('6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom', { action: 'login' })
       .then(function (token: string) {
         const serviceURL =
-          'https://2g5qt6esgqbgc6cuvkfp7kgq4m0ugzcm.lambda-url.eu-west-3.on.aws';
+          'https://service-gpt-ua.netlify.app/.netlify/functions/handler';
         const headers = {
           'Content-Type': 'application/json',
           Authorization: apiKey ? `Bearer ${apiKey}` : undefined,
