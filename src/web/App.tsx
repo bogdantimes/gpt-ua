@@ -52,7 +52,7 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   fontSize: '0.8rem',
 }));
 
-const VERSION = 53;
+const VERSION = 54;
 const YES_KEY = 'yesAnswer';
 const NO_KEY = 'noAnswer';
 const SESSION_COST_KEY = 'sessionCost';
@@ -200,7 +200,7 @@ export default function App(): JSX.Element {
       .execute('6LemuPokAAAAAGa_RpQfdiCHbbaolQ1i3g-EvNom', { action: 'login' })
       .then(function (token: string) {
         const serviceURL =
-          'https://service-gpt-ua.netlify.app/.netlify/functions/handler';
+          'https://fvbwacf4l23ldlhq3sjh3wjimu0fmovq.lambda-url.eu-west-3.on.aws';
         const headers = {
           'Content-Type': 'application/json',
           Authorization: apiKey ? `Bearer ${apiKey}` : undefined,
