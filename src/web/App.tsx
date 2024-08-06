@@ -179,6 +179,9 @@ export default function App(): JSX.Element {
       conversationLength(),
       answer,
     );
+    if (media) {
+      gtag('event', 'imageGen');
+    }
     aElem.addMedia(media);
     aElem.setMode(mode);
     conversation.push(aElem);
