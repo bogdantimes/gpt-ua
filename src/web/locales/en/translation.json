@@ -1,6 +1,6 @@
 {
   "name": "GPT-UA",
-  "title": "GPT-UA: ChatGPT free without registration: Claude 3, GPT-4o Vision, Mixtral-8X22B, Dall-E 3, LLAMA-3",
+  "title": "GPT-UA: AI-assitance for everyone: Claude 3.5, FLUX.1, Mixtral-8X22B, LLAMA-3.1",
   "welcomeTitle": "Welcome back!",
   "welcomeMessage": "We've created a group where you can ask questions and stay updated with the latest site news:",
   "telegramLinkText": "Join",
@@ -40,8 +40,8 @@
     "llama": "LLAMA-3",
     "llama31": "LLAMA-3.1",
     "naviguru": "NaviGuru",
-    "note_default": "A cost-effective and fast model by Anthropic, recommended for most everyday tasks. You can attach up to five images and/or PDF documents.",
-    "note_claude3_5": "A newest model by Anthropic, that is much more capable, excelling at complex reasoning, analysis, and creative tasks. More expensive to use.",
+    "note_default": "A cost-effective and fast model by Anthropic, recommended for most everyday tasks. You can attach up to five images and/or PDF documents. Now includes FLUX.1 for high-quality image generation.",
+    "note_claude3_5": "A newest model by Anthropic, that is much more capable, excelling at complex reasoning, analysis, and creative tasks. More expensive to use. Includes FLUX.1 for high-quality image generation.",
     "note_gpt4": "An advanced model from OpenAI that can generate photos and research information online. Also expensive to use.",
     "note_llama": "A free to use, open-source model by Meta AI, suitable for complex text tasks, optimized for English, supports multilingual use.",
     "note_llama31": "A next-generation, open-source model by Meta AI, arguably the most capable on the market right now, with free usage but limited availability.",
