@@ -1,0 +1,59 @@
+{
+  "name": "GPT-UA",
+  "title": "GPT-UA: 适用于每个人的AI助手: Claude 3.5, FLUX.1, Mixtral-8X22B, LLAMA-3.1",
+  "welcomeTitle": "欢迎回来！",
+  "welcomeMessage": "我们创建了一个群组，您可以在那里提问并获取最新的网站新闻：",
+  "telegramLinkText": "加入",
+  "conversation": {
+    "start": "开始对话",
+    "you": "您的回复"
+  },
+  "input": {
+    "placeholder": "问我任何问题"
+  },
+  "clipboard": {
+    "tooltip": "已复制到剪贴板"
+  },
+  "errors": {
+    "internal": "抱歉，发生了未知错误。请重试。",
+    "notEnoughDetails": "请为您的请求提供更多详细信息。",
+    "insecureContext": "此功能仅在某些或所有支持的浏览器的安全上下文（HTTPS）中可用。",
+    "apiKey": "API '{{key}}' 未关联到任何预算。请确保网站URL正确。"
+  },
+  "budget": {
+    "mono": "充值",
+    "donate": "🚨 应用程序的创建者帮助资助它，但由于用户数量众多，这通常不够。请考虑独立贡献的可能性 - 过程是自动化和简单的。🙏",
+    "remaining": "可用预算",
+    "personal": "个人预算"
+  },
+  "requestSummary": "到目前为止，您已经发出了 {{requestsNum}} 个请求，大约花费 ${{costUSD}}。",
+  "topUpQuestion": "您是否已经为网站预算充值？",
+  "yes": "是",
+  "no": "否",
+  "spentChip": "您已花费：${{costUSD}}",
+  "chipTooltip": "这是您从网站共享预算中花费的金额。",
+  "mode": {
+    "default": "Claude-3",
+    "claude3_5": "Claude-3.5",
+    "gpt4": "GPT-4o",
+    "mistral+": "Mixtral",
+    "llama": "LLAMA-3",
+    "llama31": "LLAMA-3.1",
+    "naviguru": "NaviGuru",
+    "note_default": "Anthropic的经济高效和快速模型，推荐用于大多数日常任务。您可以附加最多五张图片和/或PDF文档。现在包括FLUX.1用于高质量图像生成。",
+    "note_claude3_5": "Anthropic的最新模型，功能更强大，擅长复杂推理、分析和创意任务。使用成本更高。包括FLUX.1用于高质量图像生成。",
+    "note_gpt4": "OpenAI的高级模型，可以生成照片并在线研究信息。使用也很昂贵。",
+    "note_llama": "Meta AI的免费开源模型，适用于复杂的文本任务，针对英语进行了优化，支持多语言使用。",
+    "note_llama31": "Meta AI的下一代开源模型，可能是目前市场上最强大的，免费使用但可用性有限。",
+    "note_mistral+": "由Mistral在欧盟开发的中级开源模型，英语效果最佳。",
+    "note_naviguru": "专门创建带有特定停靠点的详细定制Google地图路线。"
+  },
+  "settings": {
+    "title": "自定义助手",
+    "label": "事实和指示",
+    "placeholder": "例如，我喜欢简短的回答。",
+    "helper": "提供任何您希望助手记住的关于您的事实或指示。"
+  },
+  "cancel": "取消",
+  "save": "保存"
+}

@@ -7,6 +7,7 @@ import translationUK from "./locales/uk/translation.json";
 import translationRU from "./locales/ru/translation.json";
 import translationDE from "./locales/de/translation.json";
 import translationPL from "./locales/pl/translation.json";
+import translationCh from "./locales/ch/translation.json";
 
 const resources = {
   en: {
@@ -24,6 +25,9 @@ const resources = {
   pl: {
     translation: translationPL,
   },
+  ch: {
+    translation: translationCh,
+  }
 };
 
 i18n
